@@ -18,9 +18,6 @@ import org.andengine.input.touch.detector.PinchZoomDetector.IPinchZoomDetectorLi
 import org.andengine.input.touch.detector.ScrollDetector;
 import org.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener;
 import org.andengine.input.touch.detector.SurfaceScrollDetector;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
@@ -41,8 +38,12 @@ public class AloneSpaceAndEngineActivity extends SimpleBaseGameActivity implemen
 	private ZoomCamera camera;
 	private PinchZoomDetector pinchZoomDetector;
 	private float startingZoom;
-	private BitmapTexture mTexture;
-	private TextureRegion mFaceTextureRegion;
+	private BitmapTexture shipTexture;
+	private TextureRegion shipTextureRegion;
+	private TextureRegion star1TR;
+	private TextureRegion star2TR;
+	private TextureRegion star3TR;
+	private TextureRegion bonusOilTR;
 
 	@Override
 	public EngineOptions onCreateEngineOptions()
@@ -59,7 +60,7 @@ public class AloneSpaceAndEngineActivity extends SimpleBaseGameActivity implemen
 	{
 		try
 		{
-			this.mTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			this.shipTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
 			{
 				@Override
 				public InputStream open() throws IOException
@@ -67,9 +68,57 @@ public class AloneSpaceAndEngineActivity extends SimpleBaseGameActivity implemen
 					return getAssets().open( "gfx/ship.png" );
 				}
 			} );
+			this.shipTexture.load();
+			this.shipTextureRegion = TextureRegionFactory.extractFromTexture( this.shipTexture );
 
-			this.mTexture.load();
-			this.mFaceTextureRegion = TextureRegionFactory.extractFromTexture( this.mTexture );
+			BitmapTexture star1Text = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			{
+
+				@Override
+				public InputStream open() throws IOException
+				{
+					return getAssets().open( "gdx/stars/star.png" );
+				}
+			} );
+			star1Text.load();
+			star1TR = TextureRegionFactory.extractFromTexture( star1Text );
+
+			BitmapTexture star2Text = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			{
+
+				@Override
+				public InputStream open() throws IOException
+				{
+					return getAssets().open( "gdx/stars/star2.png" );
+				}
+			} );
+			star2Text.load();
+			star2TR = TextureRegionFactory.extractFromTexture( star2Text );
+
+			BitmapTexture star3Text = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			{
+
+				@Override
+				public InputStream open() throws IOException
+				{
+					return getAssets().open( "gdx/stars/star3.png" );
+				}
+			} );
+			star3Text.load();
+			star3TR = TextureRegionFactory.extractFromTexture( star3Text );
+
+			BitmapTexture bonusOil = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			{
+
+				@Override
+				public InputStream open() throws IOException
+				{
+					return getAssets().open( "gdx/bonuses/oil.png" );
+				}
+			} );
+			bonusOil.load();
+			bonusOilTR = TextureRegionFactory.extractFromTexture( bonusOil );
+
 		}
 		catch( IOException e )
 		{
@@ -85,16 +134,21 @@ public class AloneSpaceAndEngineActivity extends SimpleBaseGameActivity implemen
 		final Scene scene = new Scene();
 		scene.setBackground( new Background( 0, 0, 0 ) );
 
-		float x = (this.camera.getWidth() - this.mFaceTextureRegion.getWidth()) / 2;
-		float y = (this.camera.getHeight() - this.mFaceTextureRegion.getHeight()) / 2;
+		float x = (this.camera.getWidth() - this.shipTextureRegion.getWidth()) / 2;
+		float y = (this.camera.getHeight() - this.shipTextureRegion.getHeight()) / 2;
 
-		Sprite face = new Sprite( x, y, this.mFaceTextureRegion, this.getVertexBufferObjectManager() );
+		Sprite face = new Sprite( x, y, this.shipTextureRegion, this.getVertexBufferObjectManager() );
 		face.setRotation( 90f );
+
+		//StarsManager stars = new StarsManager( new CelestialBody[] { new CelestialBody( this.star1TR, 0.01f, 0.2f, new Bonuses[] { new Bonus( Bonus.Oil, 100) ),
+		//new CelestialBody( this.star2TR, 0.02f, 0.2f ), new CelestialBody( this.star3TR, 0.02f, 0.02f ) } );
+
+		//scene.attachChild(stars);
 		scene.attachChild( face );
 
-		surfaceScrollDetector = new SurfaceScrollDetector( this );
-		pinchZoomDetector = new PinchZoomDetector( this );
-		scene.setOnSceneTouchListener( this );
+		//surfaceScrollDetector = new SurfaceScrollDetector( stars );
+		//pinchZoomDetector = new PinchZoomDetector( stars );
+		//scene.setOnSceneTouchListener( stars );
 
 		return scene;
 	}

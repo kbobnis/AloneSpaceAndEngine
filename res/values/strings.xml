@@ -3,5 +3,6 @@
 
     <string name="hello">Hello World, AloneSpaceAndEnginActivity!</string>
     <string name="app_name">AloneSpaceAndEngin</string>
+    <string name="newGame">New game</string>
 
 </resources>
