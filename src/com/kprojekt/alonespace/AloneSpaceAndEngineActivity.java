@@ -1,17 +1,16 @@
 package com.kprojekt.alonespace;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.io.IOException;
+import java.io.InputStream;
 
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
-import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.input.touch.detector.PinchZoomDetector;
@@ -19,8 +18,15 @@ import org.andengine.input.touch.detector.PinchZoomDetector.IPinchZoomDetectorLi
 import org.andengine.input.touch.detector.ScrollDetector;
 import org.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener;
 import org.andengine.input.touch.detector.SurfaceScrollDetector;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.bitmap.BitmapTexture;
+import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.adt.io.in.IInputStreamOpener;
+import org.andengine.util.debug.Debug;
 
 import android.view.Display;
 
@@ -28,23 +34,15 @@ public class AloneSpaceAndEngineActivity extends SimpleBaseGameActivity implemen
 		IPinchZoomDetectorListener, IOnSceneTouchListener
 
 {
-	/* Initializing the Random generator produces a comparable result over different versions. */
-	private static final long RANDOM_SEED = 1234567890;
-
-	private static final int CAMERA_WIDTH = 128;
-	private static final int CAMERA_HEIGHT = 72;
-
-	private static final int LINE_COUNT = 100;
-
-	private List<Line> lines = new ArrayList<Line>();
+	private static final int CAMERA_WIDTH = 1280;
+	private static final int CAMERA_HEIGHT = 720;
 
 	private SurfaceScrollDetector surfaceScrollDetector;
-
 	private ZoomCamera camera;
-
 	private PinchZoomDetector pinchZoomDetector;
-
 	private float startingZoom;
+	private BitmapTexture mTexture;
+	private TextureRegion mFaceTextureRegion;
 
 	@Override
 	public EngineOptions onCreateEngineOptions()
@@ -52,14 +50,31 @@ public class AloneSpaceAndEngineActivity extends SimpleBaseGameActivity implemen
 
 		this.camera = new ZoomCamera( 0, 0, CAMERA_WIDTH, CAMERA_HEIGHT );
 
-		return new EngineOptions( true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy( CAMERA_WIDTH,
+		return new EngineOptions( true, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy( CAMERA_WIDTH,
 				CAMERA_HEIGHT ), camera );
 	}
 
 	@Override
 	public void onCreateResources()
 	{
+		try
+		{
+			this.mTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			{
+				@Override
+				public InputStream open() throws IOException
+				{
+					return getAssets().open( "gfx/ship.png" );
+				}
+			} );
 
+			this.mTexture.load();
+			this.mFaceTextureRegion = TextureRegionFactory.extractFromTexture( this.mTexture );
+		}
+		catch( IOException e )
+		{
+			Debug.e( e );
+		}
 	}
 
 	@Override
@@ -68,28 +83,15 @@ public class AloneSpaceAndEngineActivity extends SimpleBaseGameActivity implemen
 		this.mEngine.registerUpdateHandler( new FPSLogger() );
 
 		final Scene scene = new Scene();
-		scene.setBackground( new Background( 0.09804f, 0.6274f, 0.8784f ) );
+		scene.setBackground( new Background( 0, 0, 0 ) );
 
-		final Random random = new Random( RANDOM_SEED );
+		float x = (this.camera.getWidth() - this.mFaceTextureRegion.getWidth()) / 2;
+		float y = (this.camera.getHeight() - this.mFaceTextureRegion.getHeight()) / 2;
 
-		final VertexBufferObjectManager vertexBufferObjectManager = this.getVertexBufferObjectManager();
-		float lastX = 0;
-		float lastY = 0;
-		for( int i = 0; i < LINE_COUNT; i++ )
-		{
-			final float x1 = random.nextFloat() * CAMERA_WIDTH;
-			final float y1 = random.nextFloat() * CAMERA_HEIGHT;
-			final float lineWidth = 10; // random.nextFloat() * 5;
+		Sprite face = new Sprite( x, y, this.mFaceTextureRegion, this.getVertexBufferObjectManager() );
+		face.setRotation( 90f );
+		scene.attachChild( face );
 
-			final Line line = new Line( x1, y1, lastX, lastY, lineWidth, vertexBufferObjectManager );
-			lastX = x1;
-			lastY = y1;
-
-			line.setColor( random.nextFloat(), random.nextFloat(), random.nextFloat() );
-
-			scene.attachChild( line );
-			this.lines.add( line );
-		}
 		surfaceScrollDetector = new SurfaceScrollDetector( this );
 		pinchZoomDetector = new PinchZoomDetector( this );
 		scene.setOnSceneTouchListener( this );
@@ -100,8 +102,6 @@ public class AloneSpaceAndEngineActivity extends SimpleBaseGameActivity implemen
 	@Override
 	public void onScrollStarted( ScrollDetector pScollDetector, int pPointerID, float pDistanceX, float pDistanceY )
 	{
-		// TODO @Krzysiek Auto-generated method stub
-
 	}
 
 	@Override
@@ -134,10 +134,7 @@ public class AloneSpaceAndEngineActivity extends SimpleBaseGameActivity implemen
 	@Override
 	public void onPinchZoomStarted( PinchZoomDetector pPinchZoomDetector, TouchEvent pSceneTouchEvent )
 	{
-
-		// TODO @Krzysiek Auto-generated method stub
 		this.startingZoom = this.camera.getZoomFactor();
-
 	}
 
 	@Override
@@ -151,17 +148,11 @@ public class AloneSpaceAndEngineActivity extends SimpleBaseGameActivity implemen
 		this.camera.setCenter( centerX - pTouchEvent.getX(), centerY - pTouchEvent.getY() );
 		this.camera.setZoomFactor( pZoomFactor * this.startingZoom );
 		this.camera.setCenter( centerX, centerY );
-		//for( Line line : this.lines )
-		//{
-		//line.setLineWidth( line.getLineWidth() * this.camera.getZoomFactor() );
-		//}
 
 	}
 
 	@Override
 	public void onPinchZoomFinished( PinchZoomDetector pPinchZoomDetector, TouchEvent pTouchEvent, float pZoomFactor )
 	{
-		// TODO @Krzysiek Auto-generated method stub
-
 	}
 }
