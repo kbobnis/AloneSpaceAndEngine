@@ -25,9 +25,10 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.debug.Debug;
 
+import android.os.Bundle;
 import android.view.Display;
 
-public class AloneSpaceAndEngineActivity extends SimpleBaseGameActivity implements IScrollDetectorListener,
+public class MinigameActivity extends SimpleBaseGameActivity implements IScrollDetectorListener,
 		IPinchZoomDetectorListener, IOnSceneTouchListener
 
 {
@@ -44,6 +45,11 @@ public class AloneSpaceAndEngineActivity extends SimpleBaseGameActivity implemen
 	private TextureRegion star2TR;
 	private TextureRegion star3TR;
 	private TextureRegion bonusOilTR;
+
+	@Override
+	protected void onCreate( Bundle savedInstanceState )
+	{
+	}
 
 	@Override
 	public EngineOptions onCreateEngineOptions()

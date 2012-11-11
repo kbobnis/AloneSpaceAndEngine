@@ -17,7 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AloneSpaceAndEngineActivity" />
+        <activity android:name=".MinigameActivity" />
+        <activity android:name=".HangarActivity" />
+        <activity android:name=".ChooseSectorActivity" />
     </application>
 
 </manifest>
