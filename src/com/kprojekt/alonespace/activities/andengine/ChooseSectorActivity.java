@@ -1,6 +1,9 @@
-package com.kprojekt.alonespace;
+package com.kprojekt.alonespace.activities.andengine;
 
+import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
+import org.andengine.engine.options.ScreenOrientation;
+import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
@@ -16,13 +19,15 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 	protected void onCreate( Bundle pSavedInstanceState )
 	{
 		super.onCreate( pSavedInstanceState );
-		int playerName = this.getIntent().getExtras().getInt( "cityPos" );
+
 	}
 
 	@Override
 	public EngineOptions onCreateEngineOptions()
 	{
-		return null;
+		Camera camera = new Camera( 0, 0, MinigameActivity.CAMERA_WIDTH, MinigameActivity.CAMERA_HEIGHT );
+		return new EngineOptions( false, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(
+				MinigameActivity.CAMERA_WIDTH, MinigameActivity.CAMERA_HEIGHT ), camera );
 	}
 
 	@Override
@@ -34,7 +39,6 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 	@Override
 	protected Scene onCreateScene()
 	{
-		return null;
+		return new Scene();
 	}
-
 }

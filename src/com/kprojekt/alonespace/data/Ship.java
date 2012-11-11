@@ -1,4 +1,4 @@
-package com.kprojekt.alonespace;
+package com.kprojekt.alonespace.data;
 
 /**
  * 

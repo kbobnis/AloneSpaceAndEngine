@@ -3,6 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/hangar_textView_playerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
     
     <Button 
         android:id="@+id/hangar_button_gotospace"
@@ -16,11 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     
-    <Button 
-        android:id="@+id/hangar_button_highscores"
-        android:text="@+id/button_highscores"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
     
     
 </LinearLayout>

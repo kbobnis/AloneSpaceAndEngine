@@ -10,16 +10,18 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name=".MainMenuActivity"
+            android:name=".activities.android.MainMenuActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MinigameActivity" />
-        <activity android:name=".HangarActivity" />
-        <activity android:name=".ChooseSectorActivity" />
+        <activity android:name=".activities.andengine.ChooseSectorActivity" />
+        <activity android:name=".activities.andengine.MinigameActivity" />
+        <activity android:name=".activities.andengine.ShowShipActivity" />
+        <activity android:name=".activities.android.HighscoresActivity" />
+        <activity android:name=".activities.android.PlayerMainMenuActivity" />
     </application>
 
 </manifest>

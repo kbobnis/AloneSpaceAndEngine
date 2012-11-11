@@ -1,4 +1,4 @@
-package com.kprojekt.alonespace;
+package com.kprojekt.alonespace.activities.andengine;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,8 +32,8 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 		IPinchZoomDetectorListener, IOnSceneTouchListener
 
 {
-	private static final int CAMERA_WIDTH = 1280;
-	private static final int CAMERA_HEIGHT = 720;
+	public static final int CAMERA_WIDTH = 1280;
+	public static final int CAMERA_HEIGHT = 720;
 
 	private SurfaceScrollDetector surfaceScrollDetector;
 	private ZoomCamera camera;
@@ -57,7 +57,7 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 
 		this.camera = new ZoomCamera( 0, 0, CAMERA_WIDTH, CAMERA_HEIGHT );
 
-		return new EngineOptions( true, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy( CAMERA_WIDTH,
+		return new EngineOptions( false, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy( CAMERA_WIDTH,
 				CAMERA_HEIGHT ), camera );
 	}
 

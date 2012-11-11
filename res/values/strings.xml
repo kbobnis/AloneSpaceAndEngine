@@ -6,5 +6,6 @@
     <string name="newGame">New game</string>
     <string name="gotospace">Go to space</string>
     <string name="button_ship">Show ship</string>
+    <string name="button_highscores">Highscores</string>
 
 </resources>

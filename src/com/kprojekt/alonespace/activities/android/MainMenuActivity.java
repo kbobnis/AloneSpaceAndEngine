@@ -1,12 +1,13 @@
-package com.kprojekt.alonespace;
+package com.kprojekt.alonespace.activities.android;
 
 import android.app.Activity;
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import com.kprojekt.alonespace.R;
 
 /**
  * 
@@ -26,10 +27,8 @@ public class MainMenuActivity extends Activity
 			@Override
 			public void onClick( View v )
 			{
-				Intent minigame = new Intent( MainMenuActivity.this, HangarActivity.class );
-				minigame.putExtra( "playerName", "NewPlayer" );
-				minigame.putExtra( "ship", Ship.STARTING );
-				minigame.putExtra( "points", 0 );
+				Intent minigame = new Intent( MainMenuActivity.this, PlayerMainMenuActivity.class );
+				minigame.putExtra( "playerId", 0 );
 				MainMenuActivity.this.startActivityForResult( minigame, RESULT_OK );
 			}
 		} );
