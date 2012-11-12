@@ -2,24 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:padding="10dp"
+    style="@style/myStyle" >
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello" />
+        android:layout_width="wrap_content"
+        android:text="@string/hello" 
+        style="@style/myStyle"/>
     
     <Button 
         android:id="@+id/main_button_game"
         android:text="@string/newGame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        style="@style/myStyle"/>
     
     <Button 
         android:id="@+id/hangar_button_highscores"
         android:text="@string/button_highscores"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />    
+        style="@style/myStyle"/>
     
 
 </LinearLayout>

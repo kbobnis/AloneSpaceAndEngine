@@ -17,8 +17,7 @@ public class ShowShipActivity extends SimpleBaseGameActivity
 	public EngineOptions onCreateEngineOptions()
 	{
 		Camera camera = new Camera( 0, 0, MinigameActivity.CAMERA_WIDTH, MinigameActivity.CAMERA_HEIGHT );
-		return new EngineOptions( false, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(
-				MinigameActivity.CAMERA_WIDTH, MinigameActivity.CAMERA_HEIGHT ), camera );
+		return new EngineOptions( false, MinigameActivity.orientation, MinigameActivity.resPolicy, camera );
 	}
 
 	@Override

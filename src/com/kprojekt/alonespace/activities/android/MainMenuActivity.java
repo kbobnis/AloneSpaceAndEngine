@@ -32,5 +32,15 @@ public class MainMenuActivity extends Activity
 				MainMenuActivity.this.startActivityForResult( minigame, RESULT_OK );
 			}
 		} );
+		Button highScores = (Button)this.findViewById( R.id.hangar_button_highscores );
+		highScores.setOnClickListener( new OnClickListener()
+		{
+			@Override
+			public void onClick( View v )
+			{
+				Intent minigame = new Intent( MainMenuActivity.this, HighscoresActivity.class );
+				MainMenuActivity.this.startActivityForResult( minigame, RESULT_OK );
+			}
+		} );
 	}
 }

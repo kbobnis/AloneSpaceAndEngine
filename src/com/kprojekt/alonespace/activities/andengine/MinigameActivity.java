@@ -32,14 +32,15 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 		IPinchZoomDetectorListener, IOnSceneTouchListener
 
 {
-	public static final int CAMERA_WIDTH = 1280;
-	public static final int CAMERA_HEIGHT = 720;
+	public static final int CAMERA_WIDTH = 720;
+	public static final int CAMERA_HEIGHT = 1280;
+	public static ScreenOrientation orientation = ScreenOrientation.PORTRAIT_SENSOR;
+	public static RatioResolutionPolicy resPolicy = new RatioResolutionPolicy( CAMERA_WIDTH, CAMERA_HEIGHT );
 
 	private SurfaceScrollDetector surfaceScrollDetector;
 	private ZoomCamera camera;
 	private PinchZoomDetector pinchZoomDetector;
 	private float startingZoom;
-	private BitmapTexture shipTexture;
 	private TextureRegion shipTextureRegion;
 	private TextureRegion star1TR;
 	private TextureRegion star2TR;
@@ -54,11 +55,9 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 	@Override
 	public EngineOptions onCreateEngineOptions()
 	{
-
 		this.camera = new ZoomCamera( 0, 0, CAMERA_WIDTH, CAMERA_HEIGHT );
 
-		return new EngineOptions( false, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy( CAMERA_WIDTH,
-				CAMERA_HEIGHT ), camera );
+		return new EngineOptions( false, MinigameActivity.orientation, resPolicy, camera );
 	}
 
 	@Override
@@ -66,7 +65,7 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 	{
 		try
 		{
-			this.shipTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			BitmapTexture shipTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
 			{
 				@Override
 				public InputStream open() throws IOException
@@ -74,8 +73,8 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 					return getAssets().open( "gfx/ship.png" );
 				}
 			} );
-			this.shipTexture.load();
-			this.shipTextureRegion = TextureRegionFactory.extractFromTexture( this.shipTexture );
+			shipTexture.load();
+			this.shipTextureRegion = TextureRegionFactory.extractFromTexture( shipTexture );
 
 			BitmapTexture star1Text = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
 			{
@@ -171,8 +170,9 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 		int w = defaultDisplay.getWidth();
 		int h = defaultDisplay.getHeight();
 		this.camera.setCenter(
-				this.camera.getCenterX() - pDistanceX * this.CAMERA_WIDTH / w / this.camera.getZoomFactor(),
-				this.camera.getCenterY() - pDistanceY * this.CAMERA_HEIGHT / h / this.camera.getZoomFactor() );
+				this.camera.getCenterX() - pDistanceX * MinigameActivity.CAMERA_WIDTH / w / this.camera.getZoomFactor(),
+				this.camera.getCenterY() - pDistanceY * MinigameActivity.CAMERA_HEIGHT / h
+						/ this.camera.getZoomFactor() );
 	}
 
 	@Override
