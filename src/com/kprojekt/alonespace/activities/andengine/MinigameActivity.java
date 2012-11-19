@@ -50,7 +50,7 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 	{
 		this.camera = new ZoomCamera( 0, 0, Core.width, Core.height );
 
-		return new EngineOptions( false, MinigameActivity.orientation, resPolicy, camera );
+		return new EngineOptions( Core.fullScreen, Core.orientation, resPolicy, camera );
 	}
 
 	@Override
@@ -68,42 +68,6 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 			} );
 			shipTexture.load();
 			this.shipTextureRegion = TextureRegionFactory.extractFromTexture( shipTexture );
-
-			BitmapTexture star1Text = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
-			{
-
-				@Override
-				public InputStream open() throws IOException
-				{
-					return getAssets().open( "gdx/stars/star.png" );
-				}
-			} );
-			star1Text.load();
-			star1TR = TextureRegionFactory.extractFromTexture( star1Text );
-
-			BitmapTexture star2Text = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
-			{
-
-				@Override
-				public InputStream open() throws IOException
-				{
-					return getAssets().open( "gdx/stars/star2.png" );
-				}
-			} );
-			star2Text.load();
-			star2TR = TextureRegionFactory.extractFromTexture( star2Text );
-
-			BitmapTexture star3Text = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
-			{
-
-				@Override
-				public InputStream open() throws IOException
-				{
-					return getAssets().open( "gdx/stars/star3.png" );
-				}
-			} );
-			star3Text.load();
-			star3TR = TextureRegionFactory.extractFromTexture( star3Text );
 
 			BitmapTexture bonusOil = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
 			{

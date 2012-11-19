@@ -2,6 +2,8 @@ package com.kprojekt.alonespace.activities.andengine;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -22,12 +24,15 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 	private TextureRegion shipTextureRegion;
 	private ShipOnSector shipOnSector;
 	private Camera camera;
+	private TextureRegion star1TR;
+	private TextureRegion star2TR;
+	private TextureRegion star3TR;
 
 	@Override
 	public EngineOptions onCreateEngineOptions()
 	{
 		this.camera = new Camera( 0, 0, Core.width, Core.height );
-		return new EngineOptions( Core.fullScreen, MinigameActivity.orientation, MinigameActivity.resPolicy, camera );
+		return new EngineOptions( Core.fullScreen, Core.orientation, MinigameActivity.resPolicy, camera );
 	}
 
 	@Override
@@ -46,6 +51,42 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 			} );
 			shipTexture.load();
 			this.shipTextureRegion = TextureRegionFactory.extractFromTexture( shipTexture );
+
+			BitmapTexture star1Text = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			{
+
+				@Override
+				public InputStream open() throws IOException
+				{
+					return getAssets().open( "gfx/stars/star.png" );
+				}
+			} );
+			star1Text.load();
+			star1TR = TextureRegionFactory.extractFromTexture( star1Text );
+
+			BitmapTexture star2Text = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			{
+
+				@Override
+				public InputStream open() throws IOException
+				{
+					return getAssets().open( "gfx/stars/star2.png" );
+				}
+			} );
+			star2Text.load();
+			star2TR = TextureRegionFactory.extractFromTexture( star2Text );
+
+			BitmapTexture star3Text = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			{
+
+				@Override
+				public InputStream open() throws IOException
+				{
+					return getAssets().open( "gfx/stars/star3.png" );
+				}
+			} );
+			star3Text.load();
+			star3TR = TextureRegionFactory.extractFromTexture( star3Text );
 		}
 		catch( IOException e )
 		{
@@ -58,9 +99,13 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 	protected Scene onCreateScene()
 	{
 		Scene scene = new Scene();
+		List<TextureRegion> stars = new ArrayList<TextureRegion>();
+		stars.add( this.star1TR );
+		stars.add( this.star2TR );
+		stars.add( this.star3TR );
 
 		shipOnSector = new ShipOnSector( this.shipTextureRegion, Core.ship.sectorX, Core.ship.sectorY,
-				this.getVertexBufferObjectManager(), this.camera );
+				this.getVertexBufferObjectManager(), this.camera, stars );
 
 		this.getEngine().registerUpdateHandler( new IUpdateHandler()
 		{

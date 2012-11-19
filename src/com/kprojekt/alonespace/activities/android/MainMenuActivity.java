@@ -24,10 +24,8 @@ public class MainMenuActivity extends Activity
 		setContentView( R.layout.main );
 
 		Display display = getWindowManager().getDefaultDisplay();
-		int width = 720; //;
 		float prop = display.getHeight() / (float)display.getWidth();
-		int height = (int)(prop * width);
-		Core.width = width;
+		int height = (int)(prop * Core.width);
 		Core.height = height;
 
 		Button gameButton = (Button)this.findViewById( R.id.main_button_game );
