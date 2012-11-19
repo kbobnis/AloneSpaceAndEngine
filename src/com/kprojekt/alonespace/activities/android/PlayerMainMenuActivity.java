@@ -1,12 +1,5 @@
 package com.kprojekt.alonespace.activities.android;
 
-import com.kprojekt.alonespace.R;
-import com.kprojekt.alonespace.R.id;
-import com.kprojekt.alonespace.R.layout;
-import com.kprojekt.alonespace.activities.andengine.ChooseSectorActivity;
-import com.kprojekt.alonespace.activities.andengine.ShowShipActivity;
-import com.kprojekt.alonespace.data.Player;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +7,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.kprojekt.alonespace.R;
+import com.kprojekt.alonespace.activities.andengine.ChooseSectorActivity;
+import com.kprojekt.alonespace.activities.andengine.ShowShipActivity;
+import com.kprojekt.alonespace.data.Player;
 
 /**
  * 
@@ -55,4 +53,5 @@ public class PlayerMainMenuActivity extends Activity
 			}
 		} );
 	}
+
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
@@ -12,28 +13,21 @@ import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 
-import android.os.Bundle;
-
 import com.kprojekt.alonespace.data.Core;
+import com.kprojekt.alonespace.data.chooseSector.ShipOnSector;
 
 public class ChooseSectorActivity extends SimpleBaseGameActivity
 {
 
 	private TextureRegion shipTextureRegion;
 	private ShipOnSector shipOnSector;
-	private SectorBehindShip sectorBehindShip;
-
-	@Override
-	protected void onCreate( Bundle pSavedInstanceState )
-	{
-		super.onCreate( pSavedInstanceState );
-	}
+	private Camera camera;
 
 	@Override
 	public EngineOptions onCreateEngineOptions()
 	{
-		Camera camera = new Camera( 0, 0, MinigameActivity.CAMERA_WIDTH, MinigameActivity.CAMERA_HEIGHT );
-		return new EngineOptions( false, MinigameActivity.orientation, MinigameActivity.resPolicy, camera );
+		this.camera = new Camera( 0, 0, Core.width, Core.height );
+		return new EngineOptions( Core.fullScreen, MinigameActivity.orientation, MinigameActivity.resPolicy, camera );
 	}
 
 	@Override
@@ -56,6 +50,7 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 		catch( IOException e )
 		{
 			e.printStackTrace();
+			throw new RuntimeException( e );
 		}
 	}
 
@@ -64,8 +59,24 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 	{
 		Scene scene = new Scene();
 
-		shipOnSector = new ShipOnSector( this.shipTextureRegion, Core.ship.sectorX, Core.ship.sectorY );
-		sectorBehindShip = new SectorBehindShip( Core.ship.sectorX, Core.ship.sectorY );
+		shipOnSector = new ShipOnSector( this.shipTextureRegion, Core.ship.sectorX, Core.ship.sectorY,
+				this.getVertexBufferObjectManager(), this.camera );
+
+		this.getEngine().registerUpdateHandler( new IUpdateHandler()
+		{
+			@Override
+			public void reset()
+			{
+			}
+
+			@Override
+			public void onUpdate( float pSecondsElapsed )
+			{
+				shipOnSector.onUpdateHandle( pSecondsElapsed );
+			}
+		} );
+
+		scene.attachChild( shipOnSector );
 
 		return scene;
 	}

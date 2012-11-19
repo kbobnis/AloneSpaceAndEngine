@@ -3,11 +3,13 @@ package com.kprojekt.alonespace.activities.android;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.kprojekt.alonespace.R;
+import com.kprojekt.alonespace.data.Core;
 
 /**
  * 
@@ -20,6 +22,13 @@ public class MainMenuActivity extends Activity
 	{
 		super.onCreate( savedInstanceState );
 		setContentView( R.layout.main );
+
+		Display display = getWindowManager().getDefaultDisplay();
+		int width = 720; //;
+		float prop = display.getHeight() / (float)display.getWidth();
+		int height = (int)(prop * width);
+		Core.width = width;
+		Core.height = height;
 
 		Button gameButton = (Button)this.findViewById( R.id.main_button_game );
 		gameButton.setOnClickListener( new OnClickListener()

@@ -11,7 +11,6 @@ import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.input.touch.detector.PinchZoomDetector;
 import org.andengine.input.touch.detector.PinchZoomDetector.IPinchZoomDetectorListener;
@@ -25,17 +24,16 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.debug.Debug;
 
-import android.os.Bundle;
 import android.view.Display;
+
+import com.kprojekt.alonespace.data.Core;
 
 public class MinigameActivity extends SimpleBaseGameActivity implements IScrollDetectorListener,
 		IPinchZoomDetectorListener, IOnSceneTouchListener
 
 {
-	public static final int CAMERA_WIDTH = 720;
-	public static final int CAMERA_HEIGHT = 1280;
 	public static ScreenOrientation orientation = ScreenOrientation.PORTRAIT_SENSOR;
-	public static RatioResolutionPolicy resPolicy = new RatioResolutionPolicy( CAMERA_WIDTH, CAMERA_HEIGHT );
+	public static RatioResolutionPolicy resPolicy = new RatioResolutionPolicy( Core.width, Core.height );
 
 	private SurfaceScrollDetector surfaceScrollDetector;
 	private ZoomCamera camera;
@@ -48,14 +46,9 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 	private TextureRegion bonusOilTR;
 
 	@Override
-	protected void onCreate( Bundle savedInstanceState )
-	{
-	}
-
-	@Override
 	public EngineOptions onCreateEngineOptions()
 	{
-		this.camera = new ZoomCamera( 0, 0, CAMERA_WIDTH, CAMERA_HEIGHT );
+		this.camera = new ZoomCamera( 0, 0, Core.width, Core.height );
 
 		return new EngineOptions( false, MinigameActivity.orientation, resPolicy, camera );
 	}
@@ -134,7 +127,7 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 	@Override
 	public Scene onCreateScene()
 	{
-		this.mEngine.registerUpdateHandler( new FPSLogger() );
+		//this.mEngine.registerUpdateHandler( new FPSLogger() );
 
 		final Scene scene = new Scene();
 		scene.setBackground( new Background( 0, 0, 0 ) );
@@ -169,10 +162,8 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 		Display defaultDisplay = getWindowManager().getDefaultDisplay();
 		int w = defaultDisplay.getWidth();
 		int h = defaultDisplay.getHeight();
-		this.camera.setCenter(
-				this.camera.getCenterX() - pDistanceX * MinigameActivity.CAMERA_WIDTH / w / this.camera.getZoomFactor(),
-				this.camera.getCenterY() - pDistanceY * MinigameActivity.CAMERA_HEIGHT / h
-						/ this.camera.getZoomFactor() );
+		this.camera.setCenter( this.camera.getCenterX() - pDistanceX * Core.width / w / this.camera.getZoomFactor(),
+				this.camera.getCenterY() - pDistanceY * Core.height / h / this.camera.getZoomFactor() );
 	}
 
 	@Override
