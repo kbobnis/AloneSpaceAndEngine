@@ -15,7 +15,10 @@ import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 
+import android.os.Bundle;
+
 import com.kprojekt.alonespace.data.Core;
+import com.kprojekt.alonespace.data.Player;
 import com.kprojekt.alonespace.data.chooseSector.ShipOnSector;
 import com.kprojekt.alonespace.data.chooseSector.Star;
 
@@ -28,6 +31,16 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 	private TextureRegion star1TR;
 	private TextureRegion star2TR;
 	private TextureRegion star3TR;
+	private int sectorX;
+	private int sectorY;
+
+	@Override
+	protected void onCreate( Bundle savedInstanceState )
+	{
+		super.onCreate( savedInstanceState );
+		this.sectorX = this.getIntent().getExtras().getInt( "sectorX" );
+		this.sectorY = this.getIntent().getExtras().getInt( "sectorY" );
+	}
 
 	@Override
 	public EngineOptions onCreateEngineOptions()
@@ -105,7 +118,7 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 		stars.add( new Star( this.star2TR ) );
 		stars.add( new Star( this.star3TR ) );
 
-		shipOnSector = new ShipOnSector( this.shipTextureRegion, Core.ship.sectorX, Core.ship.sectorY,
+		shipOnSector = new ShipOnSector( this.shipTextureRegion, this.sectorX, this.sectorY,
 				this.getVertexBufferObjectManager(), this.camera, stars );
 
 		this.getEngine().registerUpdateHandler( new IUpdateHandler()

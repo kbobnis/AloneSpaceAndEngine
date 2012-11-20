@@ -18,7 +18,6 @@ import com.kprojekt.alonespace.data.Core;
 public class Sector extends Scene
 {
 
-	private Sprite ship;
 	private List<Line> lines = new ArrayList<Line>();
 	private List<StarInSector> stars = new ArrayList<StarInSector>();
 	private final int offsetX;
@@ -86,16 +85,6 @@ public class Sector extends Scene
 		this.lines.add( line );
 	}
 
-	public void addShip( Sprite face )
-	{
-		face.setX( this.offsetX - face.getWidth() / 2 + this.sectorW / 2 );
-		face.setY( this.offsetY - face.getHeight() / 2 + this.sectorH / 2 );
-		if( this.ship != null || face == null )
-			throw new RuntimeException( "Can not add another ship to the sector. Not yet" );
-		this.ship = face;
-		this.attachChild( this.ship );
-	}
-
 	public void onUpdateHandle( float pSecondsElapsed )
 	{
 		for( StarInSector star : this.stars )
@@ -107,6 +96,21 @@ public class Sector extends Scene
 	public float getHeight()
 	{
 		return this.sectorH;
+	}
+
+	public float getOffsetX()
+	{
+		return this.offsetX;
+	}
+
+	public float getOffsetY()
+	{
+		return this.offsetY;
+	}
+
+	public int getWidth()
+	{
+		return this.sectorW;
 	}
 
 }

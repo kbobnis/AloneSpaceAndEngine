@@ -11,7 +11,6 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 public class Core
 {
 
-	public static Ship ship = new Ship();
 	public static final int width = 1500;
 	public static int height;
 	public static boolean fullScreen = true;

@@ -20,7 +20,7 @@ public class ShipOnSector extends Scene
 {
 
 	private final TextureRegion shipTextureRegion;
-	private Sprite face;
+	private ShipWhenChoosingSector ship;
 	private List<Sector> sectors = new ArrayList<Sector>();
 
 	public ShipOnSector( TextureRegion shipTextureRegion, int sectorX, int sectorY, VertexBufferObjectManager manager,
@@ -44,12 +44,9 @@ public class ShipOnSector extends Scene
 			}
 		}
 
-		Sector sector = this.sectors.get( 4 );
-		face = new Sprite( 0, 0, this.shipTextureRegion, manager );
-
-		face.setScale( sector.getHeight() / face.getWidth() );
-		face.setRotation( 90f );
-		sector.addShip( face );
+		ship = new ShipWhenChoosingSector( 0, 0, this.shipTextureRegion, manager, 0.1f );
+		ship.placeInMiddleOf( this.sectors.get( 4 ) );
+		this.attachChild( ship );
 	}
 
 	public void onUpdateHandle( float pSecondsElapsed )

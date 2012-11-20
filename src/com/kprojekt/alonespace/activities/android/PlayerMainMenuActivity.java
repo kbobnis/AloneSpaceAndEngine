@@ -18,6 +18,12 @@ import com.kprojekt.alonespace.data.Player;
  */
 public class PlayerMainMenuActivity extends Activity
 {
+	protected static final int CHOOSE_SECTOR = 0;
+	protected static final int SHOW_SHIP = 1;
+
+	protected int sectorX = 0;
+	protected int sectorY = 0;
+
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
 	{
@@ -38,7 +44,9 @@ public class PlayerMainMenuActivity extends Activity
 			public void onClick( View v )
 			{
 				Intent intent = new Intent( PlayerMainMenuActivity.this, ChooseSectorActivity.class );
-				PlayerMainMenuActivity.this.startActivityForResult( intent, RESULT_OK );
+				intent.putExtra( "sectorX", PlayerMainMenuActivity.this.sectorX );
+				intent.putExtra( "sectorY", PlayerMainMenuActivity.this.sectorY );
+				PlayerMainMenuActivity.this.startActivityForResult( intent, CHOOSE_SECTOR );
 			}
 		} );
 
@@ -49,9 +57,27 @@ public class PlayerMainMenuActivity extends Activity
 			public void onClick( View v )
 			{
 				Intent intent = new Intent( PlayerMainMenuActivity.this, ShowShipActivity.class );
-				PlayerMainMenuActivity.this.startActivityForResult( intent, RESULT_OK );
+				PlayerMainMenuActivity.this.startActivityForResult( intent, SHOW_SHIP );
 			}
 		} );
+	}
+
+	@Override
+	protected void onActivityResult( int requestCode, int resultCode, Intent data )
+	{
+		super.onActivityResult( requestCode, resultCode, data );
+		switch( requestCode )
+		{
+			case CHOOSE_SECTOR:
+			{
+				break;
+			}
+			case SHOW_SHIP:
+			{
+				break;
+			}
+
+		}
 	}
 
 }
