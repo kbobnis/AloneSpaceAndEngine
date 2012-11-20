@@ -6,7 +6,6 @@ import java.io.InputStream;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
-import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -33,16 +32,12 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 
 {
 	public static ScreenOrientation orientation = ScreenOrientation.PORTRAIT_SENSOR;
-	public static RatioResolutionPolicy resPolicy = new RatioResolutionPolicy( Core.width, Core.height );
 
 	private SurfaceScrollDetector surfaceScrollDetector;
 	private ZoomCamera camera;
 	private PinchZoomDetector pinchZoomDetector;
 	private float startingZoom;
 	private TextureRegion shipTextureRegion;
-	private TextureRegion star1TR;
-	private TextureRegion star2TR;
-	private TextureRegion star3TR;
 	private TextureRegion bonusOilTR;
 
 	@Override
@@ -50,7 +45,7 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 	{
 		this.camera = new ZoomCamera( 0, 0, Core.width, Core.height );
 
-		return new EngineOptions( Core.fullScreen, Core.orientation, resPolicy, camera );
+		return new EngineOptions( Core.fullScreen, Core.orientation, Core.ratioResPolicy, camera );
 	}
 
 	@Override

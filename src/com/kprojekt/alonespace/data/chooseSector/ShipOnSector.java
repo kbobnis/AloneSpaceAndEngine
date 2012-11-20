@@ -1,5 +1,6 @@
 package com.kprojekt.alonespace.data.chooseSector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.andengine.engine.camera.Camera;
@@ -10,6 +11,8 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.color.Color;
 
+import com.kprojekt.alonespace.data.Core;
+
 /**
  * @author Philon
  */
@@ -18,31 +21,43 @@ public class ShipOnSector extends Scene
 
 	private final TextureRegion shipTextureRegion;
 	private Sprite face;
+	private List<Sector> sectors = new ArrayList<Sector>();
 
 	public ShipOnSector( TextureRegion shipTextureRegion, int sectorX, int sectorY, VertexBufferObjectManager manager,
-			Camera camera, List<TextureRegion> starsTextureRegions )
+			Camera camera, List<Star> starsTextureRegions )
 	{
 		this.setBackground( new Background( Color.BLACK ) );
 		this.shipTextureRegion = shipTextureRegion;
 
-		for( int i = 0; i < 3; i++ )
+		int sectorWCount = 3;
+		int sectorHCount = 3;
+		int sectorW = Core.width / sectorWCount;
+		int sectorH = Core.height / sectorHCount;
+
+		for( int i = 0; i < sectorWCount; i++ )
 		{
-			for( int j = 0; j < 3; j++ )
+			for( int j = 0; j < sectorHCount; j++ )
 			{
-				int sectorW = 100;
-				int sectorH = 100;
 				Sector sector = new Sector( i * sectorW, j * sectorH, sectorW, sectorH, manager, starsTextureRegions );
 				this.attachChild( sector );
+				this.sectors.add( sector );
 			}
 		}
 
-		face = new Sprite( 100, 100, this.shipTextureRegion, manager );
+		Sector sector = this.sectors.get( 4 );
+		face = new Sprite( 0, 0, this.shipTextureRegion, manager );
+
+		face.setScale( sector.getHeight() / face.getWidth() );
 		face.setRotation( 90f );
-		this.attachChild( face );
+		sector.addShip( face );
 	}
 
 	public void onUpdateHandle( float pSecondsElapsed )
 	{
-		this.face.setRotation( this.face.getRotation() + 1 );
+		for( Sector sector : this.sectors )
+		{
+			sector.onUpdateHandle( pSecondsElapsed );
+		}
+		//this.face.setRotation( this.face.getRotation() + 1 );
 	}
 }

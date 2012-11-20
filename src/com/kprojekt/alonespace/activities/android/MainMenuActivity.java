@@ -1,5 +1,7 @@
 package com.kprojekt.alonespace.activities.android;
 
+import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ public class MainMenuActivity extends Activity
 		float prop = display.getHeight() / (float)display.getWidth();
 		int height = (int)(prop * Core.width);
 		Core.height = height;
+		Core.ratioResPolicy = new RatioResolutionPolicy( Core.width, Core.height );
 
 		Button gameButton = (Button)this.findViewById( R.id.main_button_game );
 		gameButton.setOnClickListener( new OnClickListener()

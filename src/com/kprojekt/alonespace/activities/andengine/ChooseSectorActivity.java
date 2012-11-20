@@ -17,6 +17,7 @@ import org.andengine.util.adt.io.in.IInputStreamOpener;
 
 import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.chooseSector.ShipOnSector;
+import com.kprojekt.alonespace.data.chooseSector.Star;
 
 public class ChooseSectorActivity extends SimpleBaseGameActivity
 {
@@ -32,7 +33,7 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 	public EngineOptions onCreateEngineOptions()
 	{
 		this.camera = new Camera( 0, 0, Core.width, Core.height );
-		return new EngineOptions( Core.fullScreen, Core.orientation, MinigameActivity.resPolicy, camera );
+		return new EngineOptions( Core.fullScreen, Core.orientation, Core.ratioResPolicy, camera );
 	}
 
 	@Override
@@ -99,10 +100,10 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 	protected Scene onCreateScene()
 	{
 		Scene scene = new Scene();
-		List<TextureRegion> stars = new ArrayList<TextureRegion>();
-		stars.add( this.star1TR );
-		stars.add( this.star2TR );
-		stars.add( this.star3TR );
+		List<Star> stars = new ArrayList<Star>();
+		stars.add( new Star( this.star1TR ) );
+		stars.add( new Star( this.star2TR ) );
+		stars.add( new Star( this.star3TR ) );
 
 		shipOnSector = new ShipOnSector( this.shipTextureRegion, Core.ship.sectorX, Core.ship.sectorY,
 				this.getVertexBufferObjectManager(), this.camera, stars );
