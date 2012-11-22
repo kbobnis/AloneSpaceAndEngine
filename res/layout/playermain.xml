@@ -12,6 +12,12 @@
         />
     
     <Button 
+        android:id="@+id/hangar_button_showspace"
+        android:text="@string/showspace"
+        style="@style/myStyle"
+        />
+
+    <Button 
         android:id="@+id/hangar_button_gotospace"
         android:text="@string/gotospace"
         style="@style/myStyle"

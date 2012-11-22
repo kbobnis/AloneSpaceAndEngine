@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.activities.andengine.ChooseSectorActivity;
+import com.kprojekt.alonespace.activities.andengine.MinigameActivity;
 import com.kprojekt.alonespace.activities.andengine.ShowShipActivity;
 import com.kprojekt.alonespace.data.Player;
 
@@ -20,9 +21,12 @@ public class PlayerMainMenuActivity extends Activity
 {
 	protected static final int CHOOSE_SECTOR = 0;
 	protected static final int SHOW_SHIP = 1;
+	protected static final int MINIGAME = 2;
 
 	protected int sectorX = 0;
 	protected int sectorY = 0;
+	protected int shipXInSector = 0;
+	protected int shipYInSector = 0;
 
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
@@ -37,8 +41,8 @@ public class PlayerMainMenuActivity extends Activity
 		TextView textViewPlayerName = (TextView)this.findViewById( R.id.hangar_textView_playerName );
 		textViewPlayerName.setText( player.getName() );
 
-		Button gameButton = (Button)this.findViewById( R.id.hangar_button_gotospace );
-		gameButton.setOnClickListener( new OnClickListener()
+		Button showSpaceButton = (Button)this.findViewById( R.id.hangar_button_showspace );
+		showSpaceButton.setOnClickListener( new OnClickListener()
 		{
 			@Override
 			public void onClick( View v )
@@ -47,6 +51,21 @@ public class PlayerMainMenuActivity extends Activity
 				intent.putExtra( "sectorX", PlayerMainMenuActivity.this.sectorX );
 				intent.putExtra( "sectorY", PlayerMainMenuActivity.this.sectorY );
 				PlayerMainMenuActivity.this.startActivityForResult( intent, CHOOSE_SECTOR );
+			}
+		} );
+
+		Button gameButton = (Button)this.findViewById( R.id.hangar_button_gotospace );
+		gameButton.setOnClickListener( new OnClickListener()
+		{
+			@Override
+			public void onClick( View v )
+			{
+				Intent intent = new Intent( PlayerMainMenuActivity.this, MinigameActivity.class );
+				intent.putExtra( "shipXInSector", PlayerMainMenuActivity.this.shipXInSector );
+				intent.putExtra( "shipYInSector", PlayerMainMenuActivity.this.shipYInSector );
+				intent.putExtra( "sectorX", PlayerMainMenuActivity.this.sectorX );
+				intent.putExtra( "sectorY", PlayerMainMenuActivity.this.sectorY );
+				PlayerMainMenuActivity.this.startActivityForResult( intent, MINIGAME );
 			}
 		} );
 
@@ -76,8 +95,14 @@ public class PlayerMainMenuActivity extends Activity
 			{
 				break;
 			}
+			case MINIGAME:
+			{
+				data.
+				break;
+			}
+			default:
+				throw new RuntimeException( "There is no result with request code: " + requestCode );
 
 		}
 	}
-
 }

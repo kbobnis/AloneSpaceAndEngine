@@ -26,9 +26,12 @@ import org.andengine.util.debug.Debug;
 import android.view.Display;
 
 import com.kprojekt.alonespace.data.Core;
+import com.kprojekt.alonespace.data.minigame.Sector;
+import com.kprojekt.alonespace.data.minigame.Ship;
+import com.kprojekt.alonespace.data.minigame.ShipChangeListener;
 
 public class MinigameActivity extends SimpleBaseGameActivity implements IScrollDetectorListener,
-		IPinchZoomDetectorListener, IOnSceneTouchListener
+		IPinchZoomDetectorListener, IOnSceneTouchListener, ShipChangeListener
 
 {
 	public static ScreenOrientation orientation = ScreenOrientation.PORTRAIT_SENSOR;
@@ -40,10 +43,19 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 	private TextureRegion shipTextureRegion;
 	private TextureRegion bonusOilTR;
 
+	private double shipXInSector;
+	private double shipYInSector;
+	private int sectorX;
+	private int sectorY;
+
 	@Override
 	public EngineOptions onCreateEngineOptions()
 	{
 		this.camera = new ZoomCamera( 0, 0, Core.width, Core.height );
+		this.shipXInSector = this.getIntent().getExtras().getDouble( "shipXInSector" );
+		this.shipYInSector = this.getIntent().getExtras().getDouble( "shipYInSector" );
+		this.sectorX = this.getIntent().getExtras().getInt( "sectorX" );
+		this.sectorY = this.getIntent().getExtras().getInt( "sectorY" );
 
 		return new EngineOptions( Core.fullScreen, Core.orientation, Core.ratioResPolicy, camera );
 	}
@@ -86,26 +98,16 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 	@Override
 	public Scene onCreateScene()
 	{
-		//this.mEngine.registerUpdateHandler( new FPSLogger() );
-
 		final Scene scene = new Scene();
 		scene.setBackground( new Background( 0, 0, 0 ) );
 
-		float x = (this.camera.getWidth() - this.shipTextureRegion.getWidth()) / 2;
-		float y = (this.camera.getHeight() - this.shipTextureRegion.getHeight()) / 2;
+		Sector sector = new Sector( Core.getSectorData( this.sectorX, this.sectorY ) );
+		Ship ship = new Ship( this.shipXInSector, this.shipYInSector, this.shipTextureRegion,
+				this.getVertexBufferObjectManager() );
+		ship.addShipChangeListener( this );
 
-		Sprite face = new Sprite( x, y, this.shipTextureRegion, this.getVertexBufferObjectManager() );
-		face.setRotation( 90f );
-
-		//StarsManager stars = new StarsManager( new CelestialBody[] { new CelestialBody( this.star1TR, 0.01f, 0.2f, new Bonuses[] { new Bonus( Bonus.Oil, 100) ),
-		//new CelestialBody( this.star2TR, 0.02f, 0.2f ), new CelestialBody( this.star3TR, 0.02f, 0.02f ) } );
-
-		//scene.attachChild(stars);
-		scene.attachChild( face );
-
-		//surfaceScrollDetector = new SurfaceScrollDetector( stars );
-		//pinchZoomDetector = new PinchZoomDetector( stars );
-		//scene.setOnSceneTouchListener( stars );
+		scene.attachChild( sector );
+		scene.attachChild( ship );
 
 		return scene;
 	}
@@ -158,11 +160,16 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IScrollD
 		this.camera.setCenter( centerX - pTouchEvent.getX(), centerY - pTouchEvent.getY() );
 		this.camera.setZoomFactor( pZoomFactor * this.startingZoom );
 		this.camera.setCenter( centerX, centerY );
-
 	}
 
 	@Override
 	public void onPinchZoomFinished( PinchZoomDetector pPinchZoomDetector, TouchEvent pTouchEvent, float pZoomFactor )
 	{
+	}
+
+	@Override
+	public void positionChanged( double posX, double posY )
+	{
+
 	}
 }

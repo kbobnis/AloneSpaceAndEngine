@@ -7,5 +7,6 @@
     <string name="gotospace">Go to space</string>
     <string name="button_ship">Show ship</string>
     <string name="button_highscores">Highscores</string>
+    <string name="showspace">Show space</string>
 
 </resources>
