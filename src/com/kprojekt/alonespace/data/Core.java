@@ -1,7 +1,7 @@
 package com.kprojekt.alonespace.data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import org.andengine.engine.options.ScreenOrientation;
@@ -22,10 +22,13 @@ public class Core
 	public static Random random = new Random( System.currentTimeMillis() );
 	public static RatioResolutionPolicy ratioResPolicy;
 
-	private static List<List<SectorData>> sectorsData = new ArrayList<List<SectorData>>();
+	private static Map<Integer, HashMap<Integer, SectorData>> sectorsData = new HashMap<Integer, HashMap<Integer, SectorData>>();
 
 	public static SectorData getSectorData( int sectorX, int sectorY )
 	{
-		return Core.sectorsData.get( sectorX ).get( sectorY );
+		if( Core.sectorsData.containsKey( Integer.valueOf( sectorX ) )
+				&& Core.sectorsData.get( Integer.valueOf( sectorX ) ).containsKey( Integer.valueOf( sectorY ) ) )
+			return Core.sectorsData.get( sectorX ).get( sectorY );
+		return null;
 	}
 }

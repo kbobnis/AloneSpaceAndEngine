@@ -97,7 +97,6 @@ public class PlayerMainMenuActivity extends Activity
 			}
 			case MINIGAME:
 			{
-				data.
 				break;
 			}
 			default:

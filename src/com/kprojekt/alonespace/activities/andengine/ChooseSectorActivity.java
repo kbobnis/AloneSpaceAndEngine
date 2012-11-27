@@ -26,7 +26,6 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 {
 
 	private TextureRegion shipTextureRegion;
-	private ShipOnSector shipOnSector;
 	private Camera camera;
 	private TextureRegion star1TR;
 	private TextureRegion star2TR;
@@ -118,7 +117,7 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 		stars.add( new Star( this.star2TR ) );
 		stars.add( new Star( this.star3TR ) );
 
-		shipOnSector = new ShipOnSector( this.shipTextureRegion, this.sectorX, this.sectorY,
+		final ShipOnSector shipOnSector = new ShipOnSector( this.shipTextureRegion, this.sectorX, this.sectorY,
 				this.getVertexBufferObjectManager(), this.camera, stars );
 
 		this.getEngine().registerUpdateHandler( new IUpdateHandler()
