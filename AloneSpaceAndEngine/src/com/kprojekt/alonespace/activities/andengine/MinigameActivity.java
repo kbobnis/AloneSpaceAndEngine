@@ -13,6 +13,7 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
@@ -22,15 +23,15 @@ import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.color.Color;
 import org.andengine.util.debug.Debug;
 
-import android.hardware.SensorManager;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.kprojekt.alonespace.data.Core;
-import com.kprojekt.alonespace.data.minigame.StarsManager;
 import com.kprojekt.alonespace.data.minigame.Ship;
+import com.kprojekt.alonespace.data.minigame.StarsManager;
 
 public class MinigameActivity extends SimpleBaseGameActivity implements IUpdateHandler
 
@@ -119,10 +120,8 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IUpdateH
 		Scene scene = new Scene();
 		scene.setBackground( new Background( Color.BLACK ) );
 
-		int sectorW = Core.width * 5;
-		int sectorH = Core.height * 5;
-		int shipX = 0;
-		int shipY = 0;
+		int sectorW = Core.width;
+		int sectorH = Core.height;
 
 		starsManager = new StarsManager( Core.getSectorData( this.sectorX, this.sectorY ),
 				this.getVertexBufferObjectManager(), this.starTextureRegion, this.asterTextureRegion );
@@ -137,13 +136,14 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IUpdateH
 		PhysicsWorld mPhysicsWorld = this.physxWorld;
 
 		shipBody = PhysicsFactory.createBoxBody( mPhysicsWorld, ship, BodyType.DynamicBody,
-				PhysicsFactory.createFixtureDef( 0.3f, 0.0f, 0.5f ) );
+				PhysicsFactory.createFixtureDef( 1f, -0.1f, 0.9f ), PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT );
 		mPhysicsWorld.registerPhysicsConnector( new PhysicsConnector( ship, shipBody, true, true ) );
 		ship.setBody( shipBody );
+		ship.setPhysicWorld( mPhysicsWorld );
 
 		final VertexBufferObjectManager vertexBufferObjectManager = this.getVertexBufferObjectManager();
 
-		final Rectangle ground = new Rectangle( 0, sectorH, sectorW, 2, vertexBufferObjectManager );
+		final Rectangle ground = new Rectangle( 0, sectorH - 2, sectorW, 2, vertexBufferObjectManager );
 		final Rectangle roof = new Rectangle( 0, 0, sectorW, 2, vertexBufferObjectManager );
 		final Rectangle left = new Rectangle( 0, 0, 2, sectorH, vertexBufferObjectManager );
 		final Rectangle right = new Rectangle( sectorW - 2, 0, 2, sectorH, vertexBufferObjectManager );
@@ -173,10 +173,9 @@ public class MinigameActivity extends SimpleBaseGameActivity implements IUpdateH
 	@Override
 	public void onUpdate( float pSecondsElapsed )
 	{
-		this.camera.set( this.ship.getX() - Core.width / 2 + this.ship.getWidth() / 2, this.ship.getY() - Core.height
-				/ 2 + this.ship.getHeight() / 2, this.ship.getX() + Core.width / 2 + this.ship.getWidth() / 2,
-				this.ship.getY() + Core.height / 2 + this.ship.getHeight() / 2 );
-		this.ship.onUpdates( pSecondsElapsed );
+		//		this.camera.set( this.ship.getX() - Core.width / 2 + this.ship.getWidth() / 2, this.ship.getY() - Core.height
+		//				/ 2 + this.ship.getHeight() / 2, this.ship.getX() + Core.width / 2 + this.ship.getWidth() / 2,
+		//				this.ship.getY() + Core.height / 2 + this.ship.getHeight() / 2 );
 		this.starsManager.cameraBounds( this.camera.getCenterX(), this.camera.getCenterY(), this.camera.getWidth(),
 				this.camera.getHeight() );
 	}
