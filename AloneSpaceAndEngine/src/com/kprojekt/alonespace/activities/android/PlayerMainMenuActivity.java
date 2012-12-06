@@ -33,7 +33,7 @@ public class PlayerMainMenuActivity extends Activity
 	{
 		super.onCreate( savedInstanceState );
 
-		String playerId = this.getIntent().getExtras().getString( "playerId" );
+		int playerId = this.getIntent().getExtras().getInt( "playerId" );
 		Player player = Player.loadPlayer( playerId );
 
 		setContentView( R.layout.playermain );

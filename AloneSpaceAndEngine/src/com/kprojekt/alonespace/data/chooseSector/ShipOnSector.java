@@ -30,8 +30,8 @@ public class ShipOnSector extends Scene
 
 		int sectorWCount = 3;
 		int sectorHCount = 3;
-		int sectorW = Core.width / sectorWCount;
-		int sectorH = Core.height / sectorHCount;
+		int sectorW = Core.widthInMeters / sectorWCount;
+		int sectorH = Core.heightInMeters / sectorHCount;
 
 		for( int i = 0; i < sectorWCount; i++ )
 		{

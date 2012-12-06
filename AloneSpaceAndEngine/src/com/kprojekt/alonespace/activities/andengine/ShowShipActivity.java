@@ -16,7 +16,8 @@ public class ShowShipActivity extends SimpleBaseGameActivity
 	@Override
 	public EngineOptions onCreateEngineOptions()
 	{
-		Camera camera = new Camera( 0, 0, Core.width, Core.height );
+		Camera camera = new Camera( 0, 0, Core.metersToPixels( Core.widthInMeters ),
+				Core.metersToPixels( Core.heightInMeters ) );
 		return new EngineOptions( Core.fullScreen, Core.orientation, Core.ratioResPolicy, camera );
 	}
 

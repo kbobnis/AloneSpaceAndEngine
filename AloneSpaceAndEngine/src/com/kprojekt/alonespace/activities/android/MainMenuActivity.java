@@ -27,9 +27,9 @@ public class MainMenuActivity extends Activity
 
 		Display display = getWindowManager().getDefaultDisplay();
 		float prop = display.getHeight() / (float)display.getWidth();
-		int height = (int)(prop * Core.width);
-		Core.height = height;
-		Core.ratioResPolicy = new RatioResolutionPolicy( Core.width, Core.height );
+		int height = (int)(prop * Core.widthInMeters);
+		Core.heightInMeters = height;
+		Core.ratioResPolicy = new RatioResolutionPolicy( Core.widthInMeters, Core.heightInMeters );
 
 		Button gameButton = (Button)this.findViewById( R.id.main_button_game );
 		gameButton.setOnClickListener( new OnClickListener()

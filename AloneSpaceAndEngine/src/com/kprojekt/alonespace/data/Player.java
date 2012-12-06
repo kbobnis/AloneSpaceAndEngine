@@ -13,7 +13,7 @@ public class Player
 		this.name = name;
 	}
 
-	public static Player loadPlayer( String playerId )
+	public static Player loadPlayer( int playerId )
 	{
 		return new Player( "nowyGracz" );
 	}

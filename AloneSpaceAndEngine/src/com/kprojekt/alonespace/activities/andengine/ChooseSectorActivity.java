@@ -44,7 +44,8 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 	@Override
 	public EngineOptions onCreateEngineOptions()
 	{
-		this.camera = new Camera( 0, 0, Core.width, Core.height );
+		this.camera = new Camera( 0, 0, Core.metersToPixels( Core.widthInMeters ),
+				Core.metersToPixels( Core.heightInMeters ) );
 		return new EngineOptions( Core.fullScreen, Core.orientation, Core.ratioResPolicy, camera );
 	}
 
