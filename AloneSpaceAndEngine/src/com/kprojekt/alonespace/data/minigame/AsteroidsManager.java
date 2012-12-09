@@ -4,6 +4,7 @@ import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.entity.Entity;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
+import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.list.SmartList;
@@ -16,34 +17,33 @@ import com.kprojekt.alonespace.data.chooseSector.Star;
 /**
  * 
  */
-public class StarsManager extends Entity
+public class AsteroidsManager extends Entity
 {
-	private final ZoomCamera camera;
-	private final float scrollFactor;
 
-	public StarsManager( SmartList<TextureRegion> starRegions, VertexBufferObjectManager vertexBufferObjectManager,
-			ZoomCamera camera, float scrollFactor, float zoom, int count )
+	private ZoomCamera camera;
+
+	public AsteroidsManager( SmartList<TextureRegion> starRegions, VertexBufferObjectManager manager,
+			ZoomCamera camera, int count, PhysicsWorld mPhysicsWorld )
 	{
 		this.camera = camera;
-		this.scrollFactor = 1 - scrollFactor;
 		for( int i = 0; i < count; i++ )
 		{
 			int nextInt = Core.random.nextInt( starRegions.size() );
 			TextureRegion textureRegion = starRegions.get( nextInt );
-			Star star2 = new Star( textureRegion, vertexBufferObjectManager );
+			Star star2 = new Star( textureRegion, manager );
 			float x = camera.getXMin() + Core.random.nextInt( (int)(camera.getXMax() * 2 - camera.getXMin()) );
 			float y = camera.getYMin() + Core.random.nextInt( (int)(camera.getYMax() * 2 - camera.getYMin()) );
 			star2.setLocation( x, y );
-			star2.setScale( zoom );
 			this.attachChild( star2 );
+			if( mPhysicsWorld != null )
+			{
+				Body createBoxBody = PhysicsFactory.createBoxBody( mPhysicsWorld, star2, BodyType.DynamicBody,
+						PhysicsFactory.createFixtureDef( 150f, 0.01f, 0.9f ) );
+				mPhysicsWorld.registerPhysicsConnector( new PhysicsConnector( star2, createBoxBody, true, true ) );
+				createBoxBody.setBullet( true );
+			}
 		}
+
 	}
 
-	@Override
-	protected void onManagedUpdate( float pSecondsElapsed )
-	{
-		this.setX( this.camera.getXMin() * scrollFactor );
-		this.setY( this.camera.getYMin() * scrollFactor );
-		this.camera.onUpdate( pSecondsElapsed );
-	}
 }
