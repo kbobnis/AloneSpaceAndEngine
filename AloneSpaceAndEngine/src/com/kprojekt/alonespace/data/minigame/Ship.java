@@ -77,18 +77,18 @@ public class Ship extends Sprite implements IOnSceneTouchListener, IUpdateHandle
 	@Override
 	protected void onManagedUpdate( float pSecondsElapsed )
 	{
+		if( this.moveVector.len() > 0 )
+		{
+			Vector2 linearVelocity = this.shipBody.getLinearVelocity();
+			this.shipBody.setLinearVelocity( moveVector.add( linearVelocity ) );
+			Vector2 obtain = Vector2Pool.obtain();
+			Vector2Pool.recycle( obtain );
+			Vector2 vel = this.shipBody.getLinearVelocity();
+			float moveVectorAngle = (float)(180 - MathUtils.radToDeg( (float)Math.atan2( vel.x, vel.y ) ));
+			this.shipBody.setTransform( this.shipBody.getPosition().x, this.shipBody.getPosition().y,
+					MathUtils.degToRad( moveVectorAngle ) );
 
-		Vector2 linearVelocity = this.shipBody.getLinearVelocity();
-		this.shipBody.setLinearVelocity( moveVector.add( linearVelocity ) );
-		Vector2 obtain = Vector2Pool.obtain();
-		Vector2Pool.recycle( obtain );
-		Vector2 vel = this.shipBody.getLinearVelocity();
-		float moveVectorAngle = (float)(180 - MathUtils.radToDeg( (float)Math.atan2( vel.x, vel.y ) ));
-		this.shipBody.setTransform( this.shipBody.getPosition().x, this.shipBody.getPosition().y,
-				MathUtils.degToRad( moveVectorAngle ) );
-
-		this.moveVector.set( 0, 0 );
-
-		super.onManagedUpdate( pSecondsElapsed );
+			this.moveVector.set( 0, 0 );
+		}
 	}
 }
