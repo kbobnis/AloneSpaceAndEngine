@@ -18,7 +18,6 @@ public class Sector extends Scene
 {
 
 	private List<Line> lines = new ArrayList<Line>();
-	private List<StarInSector> stars = new ArrayList<StarInSector>();
 	private final int offsetX;
 	private final int offsetY;
 	private final int sectorW;
@@ -47,13 +46,6 @@ public class Sector extends Scene
 		{
 			if( Star.willBeBorn() )
 			{
-				TextureRegion textureRegion = star.getTextureRegion();
-				StarInSector face = new StarInSector( offsetX + Core.random.nextFloat() * sectorW
-						- textureRegion.getWidth() / 2, offsetY + Core.random.nextFloat() * sectorH
-						- textureRegion.getHeight() / 2, textureRegion, manager, star.getRotationSpeed(),
-						star.getBlinkSpeed() );
-				this.stars.add( face );
-				this.attachChild( face );
 			}
 		}
 	}
@@ -86,10 +78,6 @@ public class Sector extends Scene
 
 	public void onUpdateHandle( float pSecondsElapsed )
 	{
-		for( StarInSector star : this.stars )
-		{
-			star.animate( pSecondsElapsed );
-		}
 	}
 
 	public float getHeight()

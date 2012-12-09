@@ -1,25 +1,21 @@
 package com.kprojekt.alonespace.data.chooseSector;
 
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import com.kprojekt.alonespace.data.Core;
 
 /**
  * 
  */
-public class Star
+public class Star extends Sprite
 {
 	private static float chance = 0.1f;
-	private TextureRegion textureRegion;
 
-	public Star( TextureRegion textureRegion )
+	public Star( TextureRegion textureRegion, VertexBufferObjectManager manager )
 	{
-		this.textureRegion = textureRegion;
-	}
-
-	public TextureRegion getTextureRegion()
-	{
-		return this.textureRegion;
+		super( 0, 0, textureRegion, manager );
 	}
 
 	public static boolean willBeBorn()
@@ -35,6 +31,12 @@ public class Star
 	public float getBlinkSpeed()
 	{
 		return Core.random.nextFloat() * 0.5f;
+	}
+
+	public void setLocation( float x, float y )
+	{
+		this.setX( x );
+		this.setY( y );
 	}
 
 }

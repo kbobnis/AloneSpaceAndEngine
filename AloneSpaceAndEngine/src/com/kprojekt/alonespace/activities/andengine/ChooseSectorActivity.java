@@ -114,9 +114,6 @@ public class ChooseSectorActivity extends SimpleBaseGameActivity
 	{
 		Scene scene = new Scene();
 		List<Star> stars = new ArrayList<Star>();
-		stars.add( new Star( this.star1TR ) );
-		stars.add( new Star( this.star2TR ) );
-		stars.add( new Star( this.star3TR ) );
 
 		final ShipOnSector shipOnSector = new ShipOnSector( this.shipTextureRegion, this.sectorX, this.sectorY,
 				this.getVertexBufferObjectManager(), this.camera, stars );

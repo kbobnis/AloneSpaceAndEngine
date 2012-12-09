@@ -26,12 +26,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.kprojekt.alonespace.data.Core;
+import com.kprojekt.alonespace.data.minigame.BackgroundStarsManager;
 import com.kprojekt.alonespace.data.minigame.Ship;
-import com.kprojekt.alonespace.data.minigame.StarsManager;
-import com.kprojekt.alonespace.data.minigame.icons.Icon;
 
 public class MinigameActivity extends SimpleBaseGameActivity
-
 {
 	public static ScreenOrientation orientation = ScreenOrientation.PORTRAIT_SENSOR;
 
@@ -48,8 +46,6 @@ public class MinigameActivity extends SimpleBaseGameActivity
 	private Body shipBody;
 
 	private Ship ship;
-
-	private StarsManager starsManager;
 
 	private TextureRegion starTextureRegion;
 
@@ -129,36 +125,40 @@ public class MinigameActivity extends SimpleBaseGameActivity
 	{
 		Scene scene = new Scene();
 		scene.setBackground( new Background( Color.BLACK ) );
+		final VertexBufferObjectManager manager = this.getVertexBufferObjectManager();
 
-		starsManager = new StarsManager( Core.getSectorData( this.sectorX, this.sectorY ),
-				this.getVertexBufferObjectManager(), this.starTextureRegion, this.starTextureRegion );
-		scene.attachChild( starsManager );
+		BackgroundStarsManager background = new BackgroundStarsManager( starTextureRegion, manager, camera );
+		background.setScale( 0.5f );
+		scene.attachChild( background );
+
+		background = new BackgroundStarsManager( starTextureRegion, manager, camera );
+		scene.attachChild( background );
 
 		this.physxWorld = new PhysicsWorld( new Vector2( 0, 0 ), false ); //SensorManager.GRAVITY_EARTH 
 		PhysicsWorld mPhysicsWorld = this.physxWorld;
 
-		Icon lights = new Icon( 0, 0, this.engineIconTextureRegion, this.getVertexBufferObjectManager(), null );
-		ship = new Ship( 0, 0, this.shipTextureRegion, this.getVertexBufferObjectManager(), lights );
+		ship = new Ship( 0, 0, this.shipTextureRegion, this.getVertexBufferObjectManager(), this.camera );
 		shipBody = PhysicsFactory.createBoxBody( mPhysicsWorld, ship, BodyType.DynamicBody,
 				PhysicsFactory.createFixtureDef( 15f, 0.5f, 0.9f ) );
-		ship.setBody( shipBody );
-		//this.camera.setChaseEntity( ship );
+		this.shipBody.setFixedRotation( true );
+		ship.addBody( shipBody );
+
+		this.camera.setChaseEntity( ship );
 		scene.attachChild( ship );
 		mPhysicsWorld.registerPhysicsConnector( new PhysicsConnector( ship, shipBody, true, true ) );
 
-		Icon lights2 = new Icon( 0, 0, this.engineIconTextureRegion, this.getVertexBufferObjectManager(), null );
-		Ship ship2 = new Ship( 10, 0, this.shipTextureRegion, this.getVertexBufferObjectManager(), lights2 );
-		Body shipBody2 = PhysicsFactory.createBoxBody( mPhysicsWorld, ship2, BodyType.DynamicBody,
-				PhysicsFactory.createFixtureDef( 30f, 0.01f, 0.9f ) );
-		ship2.setBody( shipBody2 );
-		scene.attachChild( ship2 );
-		mPhysicsWorld.registerPhysicsConnector( new PhysicsConnector( ship2, shipBody2, true, true ) );
+		//		Ship ship2 = new Ship( 10, 0, this.shipTextureRegion, this.getVertexBufferObjectManager() );
+		//		Body shipBody2 = PhysicsFactory.createBoxBody( mPhysicsWorld, ship2, BodyType.DynamicBody,
+		//				PhysicsFactory.createFixtureDef( 30f, 0.01f, 0.9f ) );
+		//		ship2.addBody( shipBody2 );
+		//		scene.attachChild( ship2 );
+		//mPhysicsWorld.registerPhysicsConnector( new PhysicsConnector( ship2, shipBody2, true, true ) );
 
 		final VertexBufferObjectManager vertexBufferObjectManager = this.getVertexBufferObjectManager();
 
-		float border = Core.pixelsToMeters( 2 );
-		int sectorW = (int)Core.metersToPixels( Core.widthInMeters );
-		int sectorH = (int)Core.metersToPixels( Core.heightInMeters );
+		float border = Core.pixelsToMeters( 10 );
+		int sectorW = (int)Core.metersToPixels( Core.widthInMeters ) * 2;
+		int sectorH = (int)Core.metersToPixels( Core.heightInMeters ) * 2;
 		final Rectangle ground = new Rectangle( 0, sectorH - border, sectorW, border, vertexBufferObjectManager );
 		final Rectangle roof = new Rectangle( 0, 0, sectorW, border, vertexBufferObjectManager );
 		final Rectangle left = new Rectangle( 0, 0, border, sectorH, vertexBufferObjectManager );
@@ -176,11 +176,14 @@ public class MinigameActivity extends SimpleBaseGameActivity
 
 		scene.registerUpdateHandler( mPhysicsWorld );
 		scene.registerUpdateHandler( this.camera );
+		scene.registerUpdateHandler( ship );
 
 		scene.registerTouchArea( ship );
-		scene.registerTouchArea( ship2 );
-		scene.registerTouchArea( lights );
-		scene.registerTouchArea( lights2 );
+		//scene.registerTouchArea( ship2 );
+
+		//register touching on scene, because we want to accelerate ship if user moves finger over the screen on this scene
+		scene.setOnSceneTouchListener( ship );
+
 		return scene;
 	}
 }
