@@ -53,6 +53,8 @@ public class MinigameActivity extends SimpleBaseGameActivity
 
 	private SmartList<TextureRegion> starRegions = new SmartList<TextureRegion>();
 
+	private SmartList<TextureRegion> iconRegions = new SmartList<TextureRegion>();
+
 	@Override
 	public EngineOptions onCreateEngineOptions()
 	{
@@ -125,6 +127,36 @@ public class MinigameActivity extends SimpleBaseGameActivity
 			} );
 			asterTexture.load();
 			this.asterRegions.add( TextureRegionFactory.extractFromTexture( asterTexture ) );
+			asterTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			{
+				@Override
+				public InputStream open() throws IOException
+				{
+					return getAssets().open( "gfx/stars/asteroid2.png" );
+				}
+			} );
+			asterTexture.load();
+			this.asterRegions.add( TextureRegionFactory.extractFromTexture( asterTexture ) );
+			asterTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			{
+				@Override
+				public InputStream open() throws IOException
+				{
+					return getAssets().open( "gfx/stars/asteroid3.png" );
+				}
+			} );
+			asterTexture.load();
+			this.asterRegions.add( TextureRegionFactory.extractFromTexture( asterTexture ) );
+			BitmapTexture iconTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+			{
+				@Override
+				public InputStream open() throws IOException
+				{
+					return getAssets().open( "gfx/icons/oil.png" );
+				}
+			} );
+			iconTexture.load();
+			this.iconRegions.add( TextureRegionFactory.extractFromTexture( iconTexture ) );
 		}
 		catch( IOException e )
 		{
@@ -157,7 +189,8 @@ public class MinigameActivity extends SimpleBaseGameActivity
 				PhysicsFactory.createFixtureDef( 15f, 0.1f, 0.9f ) );
 		ship.addBody( shipBody );
 
-		AsteroidsManager asteroids = new AsteroidsManager( this.asterRegions, manager, camera, 10, mPhysicsWorld );
+		AsteroidsManager asteroids = new AsteroidsManager( this.asterRegions, manager, camera, 10, mPhysicsWorld,
+				this.iconRegions );
 		scene.attachChild( asteroids );
 
 		this.camera.setChaseEntity( ship );

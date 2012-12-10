@@ -25,7 +25,7 @@ public class StarsManager extends Entity
 			ZoomCamera camera, float scrollFactor, float zoom, int count )
 	{
 		this.camera = camera;
-		this.scrollFactor = 1 - scrollFactor;
+		this.scrollFactor = scrollFactor;
 		for( int i = 0; i < count; i++ )
 		{
 			int nextInt = Core.random.nextInt( starRegions.size() );
@@ -42,8 +42,8 @@ public class StarsManager extends Entity
 	@Override
 	protected void onManagedUpdate( float pSecondsElapsed )
 	{
-		this.setX( this.camera.getXMin() * scrollFactor );
-		this.setY( this.camera.getYMin() * scrollFactor );
+		this.setX( this.camera.getXMin() * (1 - scrollFactor) );
+		this.setY( this.camera.getYMin() * (1 - scrollFactor) );
 		this.camera.onUpdate( pSecondsElapsed );
 	}
 }

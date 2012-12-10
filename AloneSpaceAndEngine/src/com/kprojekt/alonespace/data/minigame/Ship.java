@@ -10,6 +10,8 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import android.util.Log;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -76,8 +78,8 @@ public class Ship extends Sprite implements IOnSceneTouchListener, IUpdateHandle
 		//		Vector2 linearVelocity = this.shipBody.getLinearVelocity();
 		//		this.shipBody.setLinearVelocity( moveVector.add( linearVelocity ) );
 		//		Log.d( "ship ", "ship x: " + this.shipBody.getPosition().x + ", y: " + this.shipBody.getPosition().y
-		//				+ ", vel x: " + this.shipBody.getLinearVelocity().x + ", vel y: " + this.shipBody.getLinearVelocity().y
-		//				+ ", camera.x " + this.camera.getXMin() );
+		//		+ ", vel x: " + this.shipBody.getLinearVelocity().x + ", vel y: " + this.shipBody.getLinearVelocity().y
+		//	+ ", camera.x " + this.camera.getXMin() );
 		//
 		//		Vector2 vel = this.shipBody.getLinearVelocity();
 		//		float moveVectorAngle = (float)(180 - MathUtils.radToDeg( (float)Math.atan2( vel.x, vel.y ) ));

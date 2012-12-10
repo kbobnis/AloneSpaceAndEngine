@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.chooseSector.Star;
+import com.kprojekt.alonespace.data.minigame.icons.Icon;
 
 /**
  * 
@@ -23,7 +24,7 @@ public class AsteroidsManager extends Entity
 	private ZoomCamera camera;
 
 	public AsteroidsManager( SmartList<TextureRegion> starRegions, VertexBufferObjectManager manager,
-			ZoomCamera camera, int count, PhysicsWorld mPhysicsWorld )
+			ZoomCamera camera, int count, PhysicsWorld mPhysicsWorld, SmartList<TextureRegion> iconRegions )
 	{
 		this.camera = camera;
 		for( int i = 0; i < count; i++ )
@@ -35,6 +36,13 @@ public class AsteroidsManager extends Entity
 			float y = camera.getYMin() + Core.random.nextInt( (int)(camera.getYMax() * 2 - camera.getYMin()) );
 			star2.setLocation( x, y );
 			this.attachChild( star2 );
+
+			nextInt = Core.random.nextInt( iconRegions.size() );
+			TextureRegion iconRegion = iconRegions.get( nextInt );
+			Icon icon = new Icon( star2.getWidth() / 2 - iconRegion.getWidth() / 2, star2.getHeight() / 2
+					- iconRegion.getHeight() / 2, iconRegion, manager );
+			star2.attachChild( icon );
+
 			if( mPhysicsWorld != null )
 			{
 				Body createBoxBody = PhysicsFactory.createBoxBody( mPhysicsWorld, star2, BodyType.DynamicBody,
@@ -45,5 +53,4 @@ public class AsteroidsManager extends Entity
 		}
 
 	}
-
 }
