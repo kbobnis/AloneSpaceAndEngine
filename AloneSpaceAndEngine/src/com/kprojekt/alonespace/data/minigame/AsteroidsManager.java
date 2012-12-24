@@ -48,7 +48,6 @@ public class AsteroidsManager extends Entity
 				Body createBoxBody = PhysicsFactory.createBoxBody( mPhysicsWorld, star2, BodyType.DynamicBody,
 						PhysicsFactory.createFixtureDef( 150f, 0.01f, 0.9f ) );
 				mPhysicsWorld.registerPhysicsConnector( new PhysicsConnector( star2, createBoxBody, true, true ) );
-				createBoxBody.setBullet( true );
 			}
 		}
 

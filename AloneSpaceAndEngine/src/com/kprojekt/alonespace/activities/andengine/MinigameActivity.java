@@ -6,12 +6,16 @@ import java.io.InputStream;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
-import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
@@ -19,13 +23,13 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.adt.list.SmartList;
-import org.andengine.util.color.Color;
 import org.andengine.util.debug.Debug;
+
+import android.graphics.Color;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.minigame.AsteroidsManager;
 import com.kprojekt.alonespace.data.minigame.Ship;
@@ -37,11 +41,6 @@ public class MinigameActivity extends SimpleBaseGameActivity
 
 	private ZoomCamera camera;
 	private TextureRegion shipTextureRegion;
-
-	private int shipXInSector;
-	private int shipYInSector;
-	private int sectorX;
-	private int sectorY;
 
 	private PhysicsWorld physxWorld;
 
@@ -60,10 +59,6 @@ public class MinigameActivity extends SimpleBaseGameActivity
 	{
 		this.camera = new ZoomCamera( 0, 0, Core.metersToPixels( Core.widthInMeters ),
 				Core.metersToPixels( Core.heightInMeters ) );
-		this.shipXInSector = this.getIntent().getExtras().getInt( "shipXInSector" );
-		this.shipYInSector = this.getIntent().getExtras().getInt( "shipYInSector" );
-		this.sectorX = this.getIntent().getExtras().getInt( "sectorX" );
-		this.sectorY = this.getIntent().getExtras().getInt( "sectorY" );
 
 		return new EngineOptions( Core.fullScreen, Core.orientation, Core.ratioResPolicy, camera );
 	}
@@ -157,6 +152,13 @@ public class MinigameActivity extends SimpleBaseGameActivity
 			} );
 			iconTexture.load();
 			this.iconRegions.add( TextureRegionFactory.extractFromTexture( iconTexture ) );
+
+			final ITexture droidFontTexture = new BitmapTextureAtlas( this.getTextureManager(), 256, 256,
+					TextureOptions.BILINEAR );
+			FontFactory.setAssetBasePath( "font/" );
+			Core.font = FontFactory.createFromAsset( this.getFontManager(), droidFontTexture, this.getAssets(),
+					"courier.ttf", 46f, true, Color.WHITE );
+			Core.font.load();
 		}
 		catch( IOException e )
 		{
@@ -168,17 +170,20 @@ public class MinigameActivity extends SimpleBaseGameActivity
 	public Scene onCreateScene()
 	{
 		Scene scene = new Scene();
-		scene.setBackground( new Background( Color.BLACK ) );
-		final VertexBufferObjectManager manager = this.getVertexBufferObjectManager();
+		scene.setBackground( new Background( org.andengine.util.color.Color.BLACK ) );
+		VertexBufferObjectManager manager = this.getVertexBufferObjectManager();
 
 		StarsManager back = null;
-		back = new StarsManager( this.starRegions, manager, camera, 0.5f, 1f, 10 );
+		back = new StarsManager( this.starRegions, manager, camera, 0.5f, 1f, 10, org.andengine.util.color.Color.RED );
 		scene.attachChild( back );
-		back = new StarsManager( this.starRegions, manager, camera, 0.3f, 0.5f, 50 );
+		back = new StarsManager( this.starRegions, manager, camera, 0.3f, 0.5f, 20,
+				org.andengine.util.color.Color.GREEN );
 		scene.attachChild( back );
-		back = new StarsManager( this.starRegions, manager, camera, 0.1f, 0.3f, 100 );
+		back = new StarsManager( this.starRegions, manager, camera, 0.1f, 0.3f, 50,
+				org.andengine.util.color.Color.YELLOW );
 		scene.attachChild( back );
-		back = new StarsManager( this.starRegions, manager, camera, 0.01f, 0.1f, 500 );
+		back = new StarsManager( this.starRegions, manager, camera, 0.01f, 0.1f, 100,
+				org.andengine.util.color.Color.BLUE );
 		scene.attachChild( back );
 
 		this.physxWorld = new PhysicsWorld( new Vector2( 0, 0 ), false ); //SensorManager.GRAVITY_EARTH 
@@ -196,26 +201,6 @@ public class MinigameActivity extends SimpleBaseGameActivity
 		this.camera.setChaseEntity( ship );
 		scene.attachChild( ship );
 		mPhysicsWorld.registerPhysicsConnector( new PhysicsConnector( ship, shipBody, true, true ) );
-
-		final VertexBufferObjectManager vertexBufferObjectManager = this.getVertexBufferObjectManager();
-
-		float border = Core.pixelsToMeters( 10 );
-		int sectorW = (int)Core.metersToPixels( Core.widthInMeters ) * 2;
-		int sectorH = (int)Core.metersToPixels( Core.heightInMeters ) * 2;
-		final Rectangle ground = new Rectangle( 0, sectorH - border, sectorW, border, vertexBufferObjectManager );
-		final Rectangle roof = new Rectangle( 0, 0, sectorW, border, vertexBufferObjectManager );
-		final Rectangle left = new Rectangle( 0, 0, border, sectorH, vertexBufferObjectManager );
-		final Rectangle right = new Rectangle( sectorW - border, 0, border, sectorH, vertexBufferObjectManager );
-
-		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef( 1f, 0.1f, 0.5f );
-		PhysicsFactory.createBoxBody( mPhysicsWorld, ground, BodyType.StaticBody, wallFixtureDef );
-		PhysicsFactory.createBoxBody( mPhysicsWorld, roof, BodyType.StaticBody, wallFixtureDef );
-		PhysicsFactory.createBoxBody( mPhysicsWorld, left, BodyType.StaticBody, wallFixtureDef );
-		PhysicsFactory.createBoxBody( mPhysicsWorld, right, BodyType.StaticBody, wallFixtureDef );
-		scene.attachChild( ground );
-		scene.attachChild( roof );
-		scene.attachChild( left );
-		scene.attachChild( right );
 
 		scene.registerUpdateHandler( mPhysicsWorld );
 		scene.registerUpdateHandler( ship );

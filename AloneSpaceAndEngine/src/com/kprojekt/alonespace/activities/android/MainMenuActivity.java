@@ -1,6 +1,8 @@
 package com.kprojekt.alonespace.activities.android;
 
+import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.entity.scene.Scene;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -53,4 +55,5 @@ public class MainMenuActivity extends Activity
 			}
 		} );
 	}
+
 }
