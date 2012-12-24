@@ -11,6 +11,7 @@ import org.andengine.util.adt.list.SmartList;
 import org.andengine.util.color.Color;
 
 import android.graphics.Point;
+import android.util.Log;
 
 import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.chooseSector.Star;
@@ -71,15 +72,26 @@ public class StarsManager extends Entity
 	@Override
 	protected void onManagedUpdate( float pSecondsElapsed )
 	{
+		float sectorX = this.getSectorX( this.camera.getXMin() + this.camera.getWidth() / 2 );
+		float sectorY = this.getSectorY( this.camera.getYMin() + this.camera.getWidth() / 2 );
+
 		for( StarsSector sector : this.starSectors )
 		{
-			sector.getEntity().setX(
-					sector.getPos().x * this.camera.getWidth() + this.camera.getXMin() * (1 - scrollFactor) );
-			sector.getEntity().setY(
-					sector.getPos().y * this.camera.getHeight() + this.camera.getYMin() * (1 - scrollFactor) );
+			sector.getEntity().setX( sector.getPos().x * this.camera.getWidth() + this.camera.getXMin() * scrollFactor );
+			sector.getEntity().setY( sector.getPos().y * this.camera.getHeight() + this.camera.getYMin() * scrollFactor );
 		}
 
 		this.camera.onUpdate( pSecondsElapsed );
+	}
+
+	private float getSectorY( float posY )
+	{
+		return (posY - camera.getYMin() * scrollFactor) / camera.getHeight();
+	}
+
+	private float getSectorX( float posX )
+	{
+		return (posX - camera.getXMin() * scrollFactor) / camera.getWidth();
 	}
 
 }
