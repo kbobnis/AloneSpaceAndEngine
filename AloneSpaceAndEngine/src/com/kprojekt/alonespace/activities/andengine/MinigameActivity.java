@@ -173,18 +173,19 @@ public class MinigameActivity extends SimpleBaseGameActivity
 		scene.setBackground( new Background( org.andengine.util.color.Color.BLACK ) );
 		VertexBufferObjectManager manager = this.getVertexBufferObjectManager();
 
+		int sectorW = (int)(this.camera.getWidth() * 2 / 3f);
+		int sectorH = (int)(this.camera.getHeight() * 2 / 3f);
 		StarsManager back = null;
-		back = new StarsManager( this.starRegions, manager, camera, 0.5f, 1f, 10, org.andengine.util.color.Color.RED );
+		back = new StarsManager( this.starRegions, manager, camera, 0.5f, 1f, 10, org.andengine.util.color.Color.RED,
+				sectorW, sectorH );
 		scene.attachChild( back );
-		back = new StarsManager( this.starRegions, manager, camera, 0.3f, 0.5f, 20,
-				org.andengine.util.color.Color.GREEN );
-		scene.attachChild( back );
-		back = new StarsManager( this.starRegions, manager, camera, 0.1f, 0.3f, 50,
-				org.andengine.util.color.Color.YELLOW );
-		scene.attachChild( back );
-		back = new StarsManager( this.starRegions, manager, camera, 0.01f, 0.1f, 100,
-				org.andengine.util.color.Color.BLUE );
-		scene.attachChild( back );
+		//back = new StarsManager( this.starRegions, manager, camera, 0.7f, 0.5f, 20,
+		//org.andengine.util.color.Color.GREEN, sectorW, sectorH );
+		//scene.attachChild( back );
+		//back = new StarsManager( this.starRegions, manager, camera, 0.9f, 0.3f, 50, org.andengine.util.color.Color.YELLOW );
+		//scene.attachChild( back );
+		//back = new StarsManager( this.starRegions, manager, camera, 0.99f, 0.1f, 100,org.andengine.util.color.Color.BLUE );
+		//scene.attachChild( back );
 
 		this.physxWorld = new PhysicsWorld( new Vector2( 0, 0 ), false ); //SensorManager.GRAVITY_EARTH 
 		PhysicsWorld mPhysicsWorld = this.physxWorld;
