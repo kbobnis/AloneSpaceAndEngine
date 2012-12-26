@@ -80,4 +80,9 @@ public class Maths
 
 		return null;
 	}
+
+	public static float dist( float x, float y )
+	{
+		return x > y ? Math.abs( x - y ) : Math.abs( y - x );
+	}
 }

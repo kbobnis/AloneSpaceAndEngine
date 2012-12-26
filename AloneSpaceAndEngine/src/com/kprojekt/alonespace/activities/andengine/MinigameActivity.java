@@ -33,7 +33,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.minigame.AsteroidsManager;
 import com.kprojekt.alonespace.data.minigame.Ship;
-import com.kprojekt.alonespace.data.minigame.StarsManager;
+import com.kprojekt.alonespace.data.minigame.StarsLayer;
 
 public class MinigameActivity extends SimpleBaseGameActivity
 {
@@ -175,17 +175,19 @@ public class MinigameActivity extends SimpleBaseGameActivity
 
 		int sectorW = (int)(this.camera.getWidth() * 2 / 3f);
 		int sectorH = (int)(this.camera.getHeight() * 2 / 3f);
-		StarsManager back = null;
-		back = new StarsManager( this.starRegions, manager, camera, 0.5f, 1f, 10, org.andengine.util.color.Color.RED,
+		StarsLayer back = null;
+		back = new StarsLayer( this.starRegions, manager, camera, 0.5f, 1f, 10, org.andengine.util.color.Color.RED,
 				sectorW, sectorH );
 		scene.attachChild( back );
-		//back = new StarsManager( this.starRegions, manager, camera, 0.7f, 0.5f, 20,
-		//org.andengine.util.color.Color.GREEN, sectorW, sectorH );
-		//scene.attachChild( back );
-		//back = new StarsManager( this.starRegions, manager, camera, 0.9f, 0.3f, 50, org.andengine.util.color.Color.YELLOW );
-		//scene.attachChild( back );
-		//back = new StarsManager( this.starRegions, manager, camera, 0.99f, 0.1f, 100,org.andengine.util.color.Color.BLUE );
-		//scene.attachChild( back );
+		back = new StarsLayer( this.starRegions, manager, camera, 0.7f, 0.5f, 20, org.andengine.util.color.Color.GREEN,
+				sectorW, sectorH );
+		scene.attachChild( back );
+		back = new StarsLayer( this.starRegions, manager, camera, 0.9f, 0.3f, 50,
+				org.andengine.util.color.Color.YELLOW, sectorW, sectorH );
+		scene.attachChild( back );
+		//		back = new StarsLayer( this.starRegions, manager, camera, 0.99f, 0.1f, 100,
+		//				org.andengine.util.color.Color.BLUE, sectorW, sectorH );
+		//		scene.attachChild( back );
 
 		this.physxWorld = new PhysicsWorld( new Vector2( 0, 0 ), false ); //SensorManager.GRAVITY_EARTH 
 		PhysicsWorld mPhysicsWorld = this.physxWorld;

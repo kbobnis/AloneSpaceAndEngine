@@ -53,7 +53,7 @@ public class Ship extends Sprite implements IOnSceneTouchListener, IUpdateHandle
 					float movedX = x - this.touchedDownX;
 					float movedY = y - this.touchedDownY;
 					Vector2 obtain = Vector2Pool.obtain( movedX, movedY );
-					obtain.mul( 0.05f );
+					obtain.mul( 0.5f );
 					this.moveVector.add( obtain );
 					Vector2Pool.recycle( obtain );
 					this.touchedDownX = x;

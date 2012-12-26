@@ -21,6 +21,7 @@ public class Core
 	public static RatioResolutionPolicy ratioResPolicy;
 
 	public static IFont font;
+	public static Settings settings = new Settings();
 
 	public static float pixelsToMeters( float pixels )
 	{
