@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.kprojekt.alonespace.R;
-import com.kprojekt.alonespace.activities.andengine.ChooseSectorActivity;
 import com.kprojekt.alonespace.activities.andengine.MinigameActivity;
 import com.kprojekt.alonespace.activities.andengine.ShowShipActivity;
 import com.kprojekt.alonespace.data.Player;
@@ -40,19 +39,6 @@ public class PlayerMainMenuActivity extends Activity
 
 		TextView textViewPlayerName = (TextView)this.findViewById( R.id.hangar_textView_playerName );
 		textViewPlayerName.setText( player.getName() );
-
-		Button showSpaceButton = (Button)this.findViewById( R.id.hangar_button_showspace );
-		showSpaceButton.setOnClickListener( new OnClickListener()
-		{
-			@Override
-			public void onClick( View v )
-			{
-				Intent intent = new Intent( PlayerMainMenuActivity.this, ChooseSectorActivity.class );
-				intent.putExtra( "sectorX", PlayerMainMenuActivity.this.sectorX );
-				intent.putExtra( "sectorY", PlayerMainMenuActivity.this.sectorY );
-				PlayerMainMenuActivity.this.startActivityForResult( intent, CHOOSE_SECTOR );
-			}
-		} );
 
 		Button gameButton = (Button)this.findViewById( R.id.hangar_button_gotospace );
 		gameButton.setOnClickListener( new OnClickListener()

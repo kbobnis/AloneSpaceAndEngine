@@ -176,16 +176,16 @@ public class MinigameActivity extends SimpleBaseGameActivity
 		int sectorW = (int)(this.camera.getWidth() * 2 / 3f);
 		int sectorH = (int)(this.camera.getHeight() * 2 / 3f);
 		StarsLayer back = null;
-		back = new StarsLayer( this.starRegions, manager, camera, 0.5f, 1f, 10, org.andengine.util.color.Color.RED,
+		back = new StarsLayer( this.starRegions, manager, camera, 0.3f, 10, org.andengine.util.color.Color.WHITE,
 				sectorW, sectorH );
 		scene.attachChild( back );
-		back = new StarsLayer( this.starRegions, manager, camera, 0.7f, 0.5f, 20, org.andengine.util.color.Color.GREEN,
+		back = new StarsLayer( this.starRegions, manager, camera, 0.5f, 20, org.andengine.util.color.Color.WHITE,
 				sectorW, sectorH );
 		scene.attachChild( back );
-		back = new StarsLayer( this.starRegions, manager, camera, 0.9f, 0.3f, 50,
-				org.andengine.util.color.Color.YELLOW, sectorW, sectorH );
+		back = new StarsLayer( this.starRegions, manager, camera, 0.6f, 50, org.andengine.util.color.Color.WHITE,
+				sectorW, sectorH );
 		scene.attachChild( back );
-		//		back = new StarsLayer( this.starRegions, manager, camera, 0.99f, 0.1f, 100,
+		//		back = new StarsLayer( this.starRegions, manager, camera, 0.99f, 100,
 		//				org.andengine.util.color.Color.BLUE, sectorW, sectorH );
 		//		scene.attachChild( back );
 

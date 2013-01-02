@@ -11,7 +11,6 @@ import org.andengine.util.adt.list.SmartList;
 import org.andengine.util.color.Color;
 
 import android.graphics.Point;
-import android.util.Log;
 
 import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.chooseSector.Star;
@@ -31,7 +30,7 @@ public class StarsLayer extends Entity
 	private int lastChangedSectorY;
 
 	public StarsLayer( SmartList<TextureRegion> starRegions, VertexBufferObjectManager vertexBufferObjectManager,
-			ZoomCamera camera, float scrollFactor, float zoom, int count, Color blue, int width, int height )
+			ZoomCamera camera, float scrollFactor, int count, Color blue, int width, int height )
 	{
 		this.camera = camera;
 		this.scrollFactor = scrollFactor;
@@ -42,8 +41,8 @@ public class StarsLayer extends Entity
 		{
 			for( int j = -1; j < 2; j++ )
 			{
-				StarsSector declareSector = declareSector( starRegions, vertexBufferObjectManager, camera, zoom, count,
-						blue, i, j, width, height );
+				StarsSector declareSector = declareSector( starRegions, vertexBufferObjectManager, camera, count, blue,
+						i, j, width, height );
 				starSectors.add( declareSector );
 				this.attachChild( declareSector.getEntity() );
 			}
@@ -51,7 +50,7 @@ public class StarsLayer extends Entity
 	}
 
 	private StarsSector declareSector( SmartList<TextureRegion> starRegions, VertexBufferObjectManager mgr,
-			ZoomCamera camera, float zoom, int count, Color blue, int x, int y, int width, int height )
+			ZoomCamera camera, int count, Color blue, int x, int y, int width, int height )
 	{
 		Entity sector = new Entity( x * width, y * height );
 		for( int i = 0; i < count; i++ )
@@ -62,7 +61,7 @@ public class StarsLayer extends Entity
 			float _x = camera.getXMin() + Core.random.nextInt( width );
 			float _y = camera.getYMin() + Core.random.nextInt( height );
 			star2.setLocation( _x, _y );
-			star2.setScale( zoom );
+			star2.setScale( 1 - this.scrollFactor );
 			star2.setColor( blue );
 			sector.attachChild( star2 );
 		}
@@ -164,7 +163,7 @@ class StarsSector
 	{
 		this.sector = sector;
 		this.pos = new Point( x, y );
-		text = new Text( 0, 0, Core.font, "x: " + x + ", y: " + y, mgr );
+		text = new Text( 0, 0, Core.font, "x: " + x + ", y: " + y, 500, mgr );
 		if( Core.settings.sectorText )
 		{
 			sector.attachChild( text );
