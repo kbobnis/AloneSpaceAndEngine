@@ -4,7 +4,9 @@ import java.util.Random;
 
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.font.IFont;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
  * 
@@ -22,6 +24,10 @@ public class Core
 
 	public static IFont font;
 	public static Settings settings = new Settings();
+
+	public static TextureRegions regions = new TextureRegions();
+	public static VertexBufferObjectManager manager;
+	public static PhysicsWorld mPhysicsWorld;
 
 	public static float pixelsToMeters( float pixels )
 	{

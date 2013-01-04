@@ -13,7 +13,6 @@ import org.andengine.util.color.Color;
 import android.graphics.Point;
 
 import com.kprojekt.alonespace.data.Core;
-import com.kprojekt.alonespace.data.chooseSector.Star;
 import com.kprojekt.alonespace.utils.Maths;
 
 /**
@@ -29,8 +28,7 @@ public class StarsLayer extends Entity
 	private int lastChangedSectorX;
 	private int lastChangedSectorY;
 
-	public StarsLayer( SmartList<TextureRegion> starRegions, VertexBufferObjectManager vertexBufferObjectManager,
-			ZoomCamera camera, float scrollFactor, int count, Color blue, int width, int height )
+	public StarsLayer( ZoomCamera camera, float scrollFactor, int count, Color blue, int width, int height )
 	{
 		this.camera = camera;
 		this.scrollFactor = scrollFactor;
@@ -41,23 +39,23 @@ public class StarsLayer extends Entity
 		{
 			for( int j = -1; j < 2; j++ )
 			{
-				StarsSector declareSector = declareSector( starRegions, vertexBufferObjectManager, camera, count, blue,
-						i, j, width, height );
+				StarsSector declareSector = declareSector( camera, count, blue, i, j, width, height );
 				starSectors.add( declareSector );
 				this.attachChild( declareSector.getEntity() );
 			}
 		}
 	}
 
-	private StarsSector declareSector( SmartList<TextureRegion> starRegions, VertexBufferObjectManager mgr,
-			ZoomCamera camera, int count, Color blue, int x, int y, int width, int height )
+	private StarsSector declareSector( ZoomCamera camera, int count, Color blue, int x, int y, int width, int height )
 	{
+		SmartList<TextureRegion> starRegions = Core.regions.starRegions;
+		VertexBufferObjectManager mgr = Core.manager;
 		Entity sector = new Entity( x * width, y * height );
 		for( int i = 0; i < count; i++ )
 		{
 			int nextInt = Core.random.nextInt( starRegions.size() );
 			TextureRegion textureRegion = starRegions.get( nextInt );
-			Star star2 = new Star( textureRegion, mgr );
+			Star star2 = new Star( textureRegion );
 			float _x = camera.getXMin() + Core.random.nextInt( width );
 			float _y = camera.getYMin() + Core.random.nextInt( height );
 			star2.setLocation( _x, _y );

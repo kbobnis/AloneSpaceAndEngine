@@ -10,7 +10,7 @@ import com.kprojekt.alonespace.data.Core;
 /**
  * 
  */
-public class ShowShipActivity extends SimpleBaseGameActivity
+public class ShipPartsActivity extends SimpleBaseGameActivity
 {
 
 	@Override

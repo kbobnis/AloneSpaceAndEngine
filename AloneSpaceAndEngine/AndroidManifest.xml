@@ -4,7 +4,6 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <!--  komentarz -->
     <uses-sdk android:minSdkVersion="8" />
 
     <application
@@ -20,9 +19,10 @@
         </activity>
         <activity android:name=".activities.andengine.ChooseSectorActivity" />
         <activity android:name=".activities.andengine.MinigameActivity" />
-        <activity android:name=".activities.andengine.ShowShipActivity" />
+        <activity android:name="com.kprojekt.alonespace.activities.andengine.ShipPartsActivity" />
         <activity android:name=".activities.android.HighscoresActivity" />
         <activity android:name=".activities.android.PlayerMainMenuActivity" />
+        <activity android:name=".activities.android.UpgradesActivity" />
     </application>
 
 </manifest>

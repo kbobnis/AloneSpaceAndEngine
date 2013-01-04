@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.activities.andengine.MinigameActivity;
-import com.kprojekt.alonespace.activities.andengine.ShowShipActivity;
+import com.kprojekt.alonespace.activities.andengine.ShipPartsActivity;
 import com.kprojekt.alonespace.data.Player;
 
 /**
@@ -18,8 +18,7 @@ import com.kprojekt.alonespace.data.Player;
  */
 public class PlayerMainMenuActivity extends Activity
 {
-	protected static final int CHOOSE_SECTOR = 0;
-	protected static final int SHOW_SHIP = 1;
+	protected static final int SHIP_PARTS = 1;
 	protected static final int MINIGAME = 2;
 
 	protected int sectorX = 0;
@@ -55,16 +54,17 @@ public class PlayerMainMenuActivity extends Activity
 			}
 		} );
 
-		Button showShipButton = (Button)this.findViewById( R.id.hangar_button_ship );
-		showShipButton.setOnClickListener( new OnClickListener()
+		Button shipParts = (Button)this.findViewById( R.id.hangar_button_ship );
+		shipParts.setOnClickListener( new OnClickListener()
 		{
 			@Override
 			public void onClick( View v )
 			{
-				Intent intent = new Intent( PlayerMainMenuActivity.this, ShowShipActivity.class );
-				PlayerMainMenuActivity.this.startActivityForResult( intent, SHOW_SHIP );
+				Intent intent = new Intent( PlayerMainMenuActivity.this, ShipPartsActivity.class );
+				PlayerMainMenuActivity.this.startActivityForResult( intent, SHIP_PARTS );
 			}
 		} );
+
 	}
 
 	@Override
@@ -73,11 +73,7 @@ public class PlayerMainMenuActivity extends Activity
 		super.onActivityResult( requestCode, resultCode, data );
 		switch( requestCode )
 		{
-			case CHOOSE_SECTOR:
-			{
-				break;
-			}
-			case SHOW_SHIP:
+			case SHIP_PARTS:
 			{
 				break;
 			}

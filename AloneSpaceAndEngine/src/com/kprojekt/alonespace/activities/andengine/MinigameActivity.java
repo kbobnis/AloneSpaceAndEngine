@@ -11,7 +11,6 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
-import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
@@ -38,28 +37,16 @@ import com.kprojekt.alonespace.data.minigame.StarsLayer;
 public class MinigameActivity extends SimpleBaseGameActivity
 {
 	public static ScreenOrientation orientation = ScreenOrientation.PORTRAIT_SENSOR;
-
 	private ZoomCamera camera;
 	private TextureRegion shipTextureRegion;
-
-	private PhysicsWorld physxWorld;
-
 	private Body shipBody;
-
 	private Ship ship;
-
-	private SmartList<TextureRegion> asterRegions = new SmartList<TextureRegion>();
-
-	private SmartList<TextureRegion> starRegions = new SmartList<TextureRegion>();
-
-	private SmartList<TextureRegion> iconRegions = new SmartList<TextureRegion>();
 
 	@Override
 	public EngineOptions onCreateEngineOptions()
 	{
 		this.camera = new ZoomCamera( 0, 0, Core.metersToPixels( Core.widthInMeters ),
 				Core.metersToPixels( Core.heightInMeters ) );
-
 		return new EngineOptions( Core.fullScreen, Core.orientation, Core.ratioResPolicy, camera );
 	}
 
@@ -88,7 +75,8 @@ public class MinigameActivity extends SimpleBaseGameActivity
 				}
 			} );
 			starTexture.load();
-			this.starRegions.add( TextureRegionFactory.extractFromTexture( starTexture ) );
+			SmartList<TextureRegion> starRegions = new SmartList<TextureRegion>();
+			starRegions.add( TextureRegionFactory.extractFromTexture( starTexture ) );
 
 			starTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
 			{
@@ -99,7 +87,7 @@ public class MinigameActivity extends SimpleBaseGameActivity
 				}
 			} );
 			starTexture.load();
-			this.starRegions.add( TextureRegionFactory.extractFromTexture( starTexture ) );
+			starRegions.add( TextureRegionFactory.extractFromTexture( starTexture ) );
 
 			starTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
 			{
@@ -110,7 +98,7 @@ public class MinigameActivity extends SimpleBaseGameActivity
 				}
 			} );
 			starTexture.load();
-			this.starRegions.add( TextureRegionFactory.extractFromTexture( starTexture ) );
+			starRegions.add( TextureRegionFactory.extractFromTexture( starTexture ) );
 
 			BitmapTexture asterTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
 			{
@@ -121,7 +109,8 @@ public class MinigameActivity extends SimpleBaseGameActivity
 				}
 			} );
 			asterTexture.load();
-			this.asterRegions.add( TextureRegionFactory.extractFromTexture( asterTexture ) );
+			SmartList<TextureRegion> asterRegions = new SmartList<TextureRegion>();
+			asterRegions.add( TextureRegionFactory.extractFromTexture( asterTexture ) );
 			asterTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
 			{
 				@Override
@@ -131,7 +120,7 @@ public class MinigameActivity extends SimpleBaseGameActivity
 				}
 			} );
 			asterTexture.load();
-			this.asterRegions.add( TextureRegionFactory.extractFromTexture( asterTexture ) );
+			asterRegions.add( TextureRegionFactory.extractFromTexture( asterTexture ) );
 			asterTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
 			{
 				@Override
@@ -141,7 +130,7 @@ public class MinigameActivity extends SimpleBaseGameActivity
 				}
 			} );
 			asterTexture.load();
-			this.asterRegions.add( TextureRegionFactory.extractFromTexture( asterTexture ) );
+			asterRegions.add( TextureRegionFactory.extractFromTexture( asterTexture ) );
 			BitmapTexture iconTexture = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
 			{
 				@Override
@@ -151,7 +140,8 @@ public class MinigameActivity extends SimpleBaseGameActivity
 				}
 			} );
 			iconTexture.load();
-			this.iconRegions.add( TextureRegionFactory.extractFromTexture( iconTexture ) );
+			SmartList<TextureRegion> iconRegions = new SmartList<TextureRegion>();
+			iconRegions.add( TextureRegionFactory.extractFromTexture( iconTexture ) );
 
 			final ITexture droidFontTexture = new BitmapTextureAtlas( this.getTextureManager(), 256, 256,
 					TextureOptions.BILINEAR );
@@ -159,6 +149,10 @@ public class MinigameActivity extends SimpleBaseGameActivity
 			Core.font = FontFactory.createFromAsset( this.getFontManager(), droidFontTexture, this.getAssets(),
 					"courier.ttf", 46f, true, Color.WHITE );
 			Core.font.load();
+			Core.regions.starRegions.addAll( starRegions );
+			Core.regions.iconRegions.addAll( iconRegions );
+			Core.regions.asterRegions.addAll( asterRegions );
+
 		}
 		catch( IOException e )
 		{
@@ -172,34 +166,23 @@ public class MinigameActivity extends SimpleBaseGameActivity
 		Scene scene = new Scene();
 		scene.setBackground( new Background( org.andengine.util.color.Color.BLACK ) );
 		VertexBufferObjectManager manager = this.getVertexBufferObjectManager();
+		Core.manager = manager;
 
 		int sectorW = (int)(this.camera.getWidth() * 2 / 3f);
 		int sectorH = (int)(this.camera.getHeight() * 2 / 3f);
-		StarsLayer back = null;
-		back = new StarsLayer( this.starRegions, manager, camera, 0.3f, 10, org.andengine.util.color.Color.WHITE,
-				sectorW, sectorH );
-		scene.attachChild( back );
-		back = new StarsLayer( this.starRegions, manager, camera, 0.5f, 20, org.andengine.util.color.Color.WHITE,
-				sectorW, sectorH );
-		scene.attachChild( back );
-		back = new StarsLayer( this.starRegions, manager, camera, 0.6f, 50, org.andengine.util.color.Color.WHITE,
-				sectorW, sectorH );
-		scene.attachChild( back );
-		//		back = new StarsLayer( this.starRegions, manager, camera, 0.99f, 100,
-		//				org.andengine.util.color.Color.BLUE, sectorW, sectorH );
-		//		scene.attachChild( back );
+		scene.attachChild( new StarsLayer( camera, 0.3f, 10, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
+		scene.attachChild( new StarsLayer( camera, 0.5f, 20, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
+		scene.attachChild( new StarsLayer( camera, 0.6f, 50, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
 
-		this.physxWorld = new PhysicsWorld( new Vector2( 0, 0 ), false ); //SensorManager.GRAVITY_EARTH 
-		PhysicsWorld mPhysicsWorld = this.physxWorld;
+		PhysicsWorld mPhysicsWorld = new PhysicsWorld( new Vector2( 0, 0 ), false );
+		Core.mPhysicsWorld = mPhysicsWorld;
 
 		ship = new Ship( 0, 0, this.shipTextureRegion, this.getVertexBufferObjectManager(), this.camera );
 		shipBody = PhysicsFactory.createBoxBody( mPhysicsWorld, ship, BodyType.DynamicBody,
 				PhysicsFactory.createFixtureDef( 15f, 0.1f, 0.9f ) );
 		ship.addBody( shipBody );
 
-		AsteroidsManager asteroids = new AsteroidsManager( this.asterRegions, manager, camera, 10, mPhysicsWorld,
-				this.iconRegions );
-		scene.attachChild( asteroids );
+		scene.attachChild( new AsteroidsManager( camera, 10 ) );
 
 		this.camera.setChaseEntity( ship );
 		scene.attachChild( ship );
@@ -207,7 +190,7 @@ public class MinigameActivity extends SimpleBaseGameActivity
 
 		scene.registerUpdateHandler( mPhysicsWorld );
 		scene.registerUpdateHandler( ship );
-		scene.registerUpdateHandler( back );
+		//scene.registerUpdateHandler( back );
 
 		scene.registerTouchArea( ship );
 		scene.setOnSceneTouchListener( ship );

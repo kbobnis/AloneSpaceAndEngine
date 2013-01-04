@@ -5,7 +5,8 @@
     <string name="app_name">Alone Space</string>
     <string name="newGame">New game</string>
     <string name="gotospace">Go to space</string>
-    <string name="button_ship">Show ship</string>
+    <string name="button_ship">Ship parts</string>
+    <string name="button_upgrades">Upgrades</string>
     <string name="button_highscores">Highscores</string>
     <string name="showspace">Show space</string>
 
