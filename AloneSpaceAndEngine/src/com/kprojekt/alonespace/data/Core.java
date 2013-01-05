@@ -1,5 +1,7 @@
 package com.kprojekt.alonespace.data;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Random;
 
 import org.andengine.engine.options.ScreenOrientation;
@@ -28,6 +30,7 @@ public class Core
 	public static TextureRegions regions = new TextureRegions();
 	public static VertexBufferObjectManager manager;
 	public static PhysicsWorld mPhysicsWorld;
+	public static Player player = new Player( "new gamer" );
 
 	public static float pixelsToMeters( float pixels )
 	{

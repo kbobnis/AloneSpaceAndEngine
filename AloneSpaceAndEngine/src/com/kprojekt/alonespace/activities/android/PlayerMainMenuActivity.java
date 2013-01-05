@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.activities.andengine.MinigameActivity;
-import com.kprojekt.alonespace.activities.andengine.ShipPartsActivity;
 import com.kprojekt.alonespace.data.Player;
 
 /**

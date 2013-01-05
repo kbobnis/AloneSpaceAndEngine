@@ -9,5 +9,6 @@
     <string name="button_upgrades">Upgrades</string>
     <string name="button_highscores">Highscores</string>
     <string name="showspace">Show space</string>
+    <string name="logoAloneSpace">Logo Alone Space</string>
 
 </resources>

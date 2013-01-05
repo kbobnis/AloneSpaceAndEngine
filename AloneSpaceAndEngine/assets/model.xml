@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<alonespace-model>
+	
+	<locale >
+		<group desc="ship-parts" >
+			<sentence name="ship-parts.base_engine.name">
+				<en value="Basic spaceship engine" />
+				<pl value="Podstawowy silnik odrzutowy" />
+			</sentence>
+			<sentence name="ship-parts.base_engine.desc">
+				<en value="This {ship-parts.base_engine.name} was invented by humans in year 2020" />
+				<pl value="Ten {ship-parts.base_engine.name} został stworzony przez ludzi w roku 2020" />
+			</sentence>
+		</group>
+	</locale>
+	
+	<!-- by convention action with value over zero is positive -->
+	<actions >
+		<default-action positive-img="{action-id}_plus.png" 
+			negative-img="{action-id}_minus.png" 
+			name="ship-parts.{ship-part-id}.{action-id}.name" 
+			desc="ship-parts.{ship-part-id}.{action-id}.desc" />
+		<action id="deal_dmg" />
+		<action id="rotate" />
+		<action id="decelerate" />
+		<action id="accelerate" />
+		<action id="resist_dmg" />
+		<action id="scan_radius" />
+		<action id="more_space" />
+	</actions>
+	
+	
+	<ship-parts >
+		<default-ship-part name="ship-parts.{ship-part-id}.name" desc="ship-parts.{ship-part-id}.desc" >
+			<action id="more_space" value="-1" />
+			<action id="accelerate" value="-1" />
+		</default-ship-part>
+		
+		<ship-part id="base_engine" >
+			<action id="accelerate" value="10" />
+		</ship-part>
+		<ship-part id="hangar" >
+			<action id="more_space" value="10" />
+		</ship-part>
+		<ship-part id="rotation_engine" >
+			<action id="rotate" value="1" />
+		</ship-part>
+		<ship-part id="base_canon" >
+			<action id="deal_dmg" value="1"/>
+		</ship-part>
+		<ship-part id="brakes" >
+			<action id="decelerate" value="1" />
+		</ship-part>
+		<ship-part id="force_field" >
+			<action id="resist_dmg" value="1"/>
+		</ship-part>
+		<ship-part id="scanner" >
+			<action id="scan_radius" value="1"/>
+		</ship-part>
+		
+	</ship-parts>
+	
+	
+</alonespace-model>
