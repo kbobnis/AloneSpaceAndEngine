@@ -3,54 +3,100 @@
 <alonespace-model>
 	
 	<!-- by convention action with value over zero is positive -->
-	<actions >
-		<default-action 
-			positive-img="{action-id}_plus.png" 
-			negative-img="{action-id}_minus.png" 
-			name="ship-parts.{ship-part-id}.{action-id}.name" 
-			desc="ship-parts.{ship-part-id}.{action-id}.desc" />
-		<action id="deal_dmg" />
-		<action id="rotate" />
-		<action id="decelerate" />
-		<action id="accelerate" />
-		<action id="resist_dmg" />
-		<action id="scan_radius" />
-		<action id="more_space" />
-	</actions>
+	<action-templates >
+		<default-action-template img-positive="{id}.positive.png" img-negative="{id}.negative.png" name-negative="action-templates.{id}.negative.name" name-positive="action-templates.{id}.positive.name" desc-positive="action-templates.{id}.positive.desc" desc-negative="action-tempaltes.{id}.negative.desc"/>
+		<action-template id="deal_dmg" />
+		<action-template id="rotate" />
+		<action-template id="decelerate" />
+		<action-template id="accelerate" />
+		<action-template id="resist_dmg" />
+		<action-template id="scan_radius" />
+		<action-template id="more_space" />
+		<action-template id="repair" />
+		<action-template id="hit_points" />
+	</action-templates>
 	
+	<ship-part-categories>
+		<default-ship-part-category name="ship-part-category.{id}.name" desc="ship-part-category.{id}.desc" img="ship-part-category.{id}.png" >
+			<default-ship-part name="ship-part.{id}.name" desc="ship-part.{id}.desc" img="ship_part.{id}.png">
+				<action id="more_space" value="-1" />
+				<action id="accelerate" value="-1" />
+				<action id="hit_points" value="5" />
+			</default-ship-part>
+		</default-ship-part-category>
+		
+		<ship-part-category id="engine" >
+			<ship-part id="basic" >
+				<action id="accelerate" value="10" />
+			</ship-part>
+			<ship-part id="medium" >
+				<action id="accelerate" value="12" />
+			</ship-part>
+		</ship-part-category>
+		<ship-part-category id="hangar">
+			<ship-part id="basic" >
+				<action id="more_space" value="10" />
+			</ship-part>
+		</ship-part-category>
+		
+		<ship-part-category id="rotation_engine">
+			<ship-part id="basic" >
+				<action id="rotate" value="1" />
+			</ship-part>
+		</ship-part-category>
+
+		<ship-part-category id="canon">
+			<ship-part id="basic" >
+				<action id="deal_dmg" value="1"/>
+			</ship-part>
+		</ship-part-category>
+
+		<ship-part-category id="brakes">
+			<ship-part id="basic" >
+				<action id="decelerate" value="1" />
+			</ship-part>
+		</ship-part-category>
+
+		<ship-part-category id="force_field">
+			<ship-part id="basic" >
+				<action id="resist_dmg" value="1"/>
+			</ship-part>
+		</ship-part-category>
+
+		<ship-part-category id="scanner">
+			<ship-part id="basic" >
+				<action id="scan_radius" value="1"/>
+			</ship-part>
+		</ship-part-category>
+
+		<ship-part-category id="repair_drones">
+			<ship-part id="basic" >
+				<action id="repair" value="1"/>
+			</ship-part>
+		</ship-part-category>
+		
+	</ship-part-categories>
 	
-	<ship-parts >
-		<default-ship-part 
-			name="ship-parts.{ship-part-id}.name"
-			desc="ship-parts.{ship-part-id}.desc" 
-			img="ship_part.{ship-part-id}.png">
-			<action id="more_space" value="-1" />
-			<action id="accelerate" value="-1" />
-		</default-ship-part>
-		
-		<ship-part id="base_engine" >
-			<action id="accelerate" value="10" />
-		</ship-part>
-		<ship-part id="hangar" >
-			<action id="more_space" value="10" />
-		</ship-part>
-		<ship-part id="rotation_engine" >
-			<action id="rotate" value="1" />
-		</ship-part>
-		<ship-part id="base_canon" >
-			<action id="deal_dmg" value="1"/>
-		</ship-part>
-		<ship-part id="brakes" >
-			<action id="decelerate" value="1" />
-		</ship-part>
-		<ship-part id="force_field" >
-			<action id="resist_dmg" value="1"/>
-		</ship-part>
-		<ship-part id="scanner" >
-			<action id="scan_radius" value="1"/>
-		</ship-part>
-		
-	</ship-parts>
+	<ships starting="basic">
+		<default-ship name="ship.{id}.name" desc="ship.{id}.desc" img="ship.{id}.png" />
+		<ship id="basic">
+			<part id="basic" category-id="engine" />
+			<part id="basic" category-id="brakes" />
+			<part id="basic" category-id="hangar" />
+			<part id="basic" category-id="rotation_engine" />
+			<part id="basic" category-id="repair_drones" />
+		</ship>
+		<ship id="basic_alien">
+			<part id="medium" category-id="engine" />
+			<part id="basic" category-id="brakes" />
+			<part id="basic" category-id="hangar" />
+			<part id="basic" category-id="rotation_engine" />
+			<part id="basic" category-id="repair_drones" />
+			<part id="basic" category-id="force_field" />  
+			<part id="basic" category-id="canon" />
+			<part id="basic" category-id="scanner" />
+		</ship>
+	</ships>
 	
 	
 </alonespace-model>

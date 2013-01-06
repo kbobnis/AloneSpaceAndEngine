@@ -10,7 +10,8 @@ public class Action extends ActionTemplate
 
 	public Action( ActionTemplate template, int value )
 	{
-		super( template.id, template.name, template.desc, template.positiveImage, template.negativeImage );
+		super( template.id, template.nameNeg, template.descNeg, template.imgPos, template.imgNeg,
+				template.namePos, template.descPos );
 		this.value = value;
 	}
 }

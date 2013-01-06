@@ -9,17 +9,22 @@ import android.graphics.drawable.Drawable;
 public class ActionTemplate
 {
 	protected final String id;
-	protected final String name;
-	protected final String desc;
-	protected final Drawable positiveImage;
-	protected final Drawable negativeImage;
+	protected final String nameNeg;
+	protected final String descNeg;
+	protected final Drawable imgPos;
+	protected final Drawable imgNeg;
+	protected final String namePos;
+	protected final String descPos;
 
-	public ActionTemplate( String id, String name, String desc, Drawable positiveImage, Drawable negativeImage )
+	public ActionTemplate( String id, String nameNeg, String descNeg, Drawable imgPos, Drawable imgNeg,
+			String namePos, String descPos )
 	{
 		this.id = id;
-		this.name = name;
-		this.desc = desc;
-		this.positiveImage = positiveImage;
-		this.negativeImage = negativeImage;
+		this.nameNeg = nameNeg;
+		this.descNeg = descNeg;
+		this.imgPos = imgPos;
+		this.imgNeg = imgNeg;
+		this.namePos = namePos;
+		this.descPos = descPos;
 	}
 }

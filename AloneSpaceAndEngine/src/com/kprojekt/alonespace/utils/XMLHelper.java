@@ -13,7 +13,7 @@ import org.w3c.dom.NodeList;
  */
 public class XMLHelper
 {
-	public static String getAttributeOfName( Node node, String string )
+	public static String getAttrOfName( Node node, String string )
 	{
 		NamedNodeMap attributes = node.getAttributes();
 		Node namedItem = attributes.getNamedItem( string );
@@ -40,4 +40,5 @@ public class XMLHelper
 		}
 		return res;
 	}
+
 }
