@@ -1,7 +1,5 @@
 package com.kprojekt.alonespace.data;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Random;
 
 import org.andengine.engine.options.ScreenOrientation;
@@ -9,6 +7,8 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.font.IFont;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+
+import com.kprojekt.locale.Locale;
 
 /**
  * 
@@ -31,6 +31,7 @@ public class Core
 	public static VertexBufferObjectManager manager;
 	public static PhysicsWorld mPhysicsWorld;
 	public static Player player = new Player( "new gamer" );
+	public static Locale locale;
 
 	public static float pixelsToMeters( float pixels )
 	{

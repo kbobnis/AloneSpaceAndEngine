@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<locale>
+
+	<versions>
+		<version value="pl" name="Polski"/>
+		<version value="en" name="English"/>
+	</versions>
+	
+	<sentences >
+		<sentence name="ship-parts.base_engine.name">
+			<en value="Basic spaceship engine" />
+			<pl value="Podstawowy silnik odrzutowy" />
+		</sentence>
+		<sentence name="ship-parts.base_engine.desc">
+			<en value="This {ship-parts.base_engine.name} was invented by humans in year 2020" />
+			<pl value="Ten {ship-parts.base_engine.name} został stworzony przez ludzi w roku 2020" />
+		</sentence>
+	</sentences>
+
+</locale>

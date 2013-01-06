@@ -1,15 +1,16 @@
 package com.kprojekt.alonespace.activities.android;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import android.app.Activity;
 import android.content.res.AssetManager;
@@ -18,6 +19,8 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 
 import com.kprojekt.alonespace.R;
+import com.kprojekt.alonespace.data.Core;
+import com.kprojekt.locale.Locale;
 
 /**
  * @author Krzysztof Bobnis 
@@ -33,7 +36,7 @@ public class LoadingScreenActivity extends Activity
 
 		ProgressBar progressBar = (ProgressBar)findViewById( R.id.loadProgressBar );
 
-		XmlLoader xmlLoader = new XmlLoader( "model.xml", progressBar, this );
+		XmlLoader xmlLoader = new XmlLoader( "xml/model.xml", progressBar, this, "xml/locale.xml" );
 		xmlLoader.execute();
 	}
 
@@ -45,13 +48,17 @@ class XmlLoader extends AsyncTask<Void, String, Void>
 	private final String modelPath;
 	private final ProgressBar progressBar;
 	private final Activity context;
-	private final int steps = 8;
+	private static final int steps = 2;
 	private int step = 0;
+	private final String localePath;
 
-	public XmlLoader( String modelPath, ProgressBar progressBar, Activity context )
+	public XmlLoader( String modelPath, ProgressBar progressBar, Activity context, String localePath )
 	{
 		this.modelPath = modelPath;
 		this.progressBar = progressBar;
+		this.localePath = localePath;
+		this.progressBar.setMax( XmlLoader.steps );
+		this.progressBar.setProgress( 0 );
 		this.context = context;
 	}
 
@@ -60,30 +67,21 @@ class XmlLoader extends AsyncTask<Void, String, Void>
 	{
 		long startTime = System.currentTimeMillis();
 
-		AssetManager assetManager = this.context.getAssets();
-		InputStream inStr;
 		try
 		{
-			inStr = assetManager.open( this.modelPath );
+			AssetManager assetManager = this.context.getAssets();
+			InputStream inStr = assetManager.open( this.modelPath );
 			DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = docBuilder.parse( inStr, null );
-			NodeList model = doc.getElementsByTagName( "alonespace-model" );
-			int k = 65;
+
+			Core.locale = new Locale( assetManager.open( this.localePath ) );
+			publishProgress( "" );
+
+			Node alonespaceModel = doc.getElementsByTagName( "alonespace-model" ).item( 0 );
 		}
-		catch( IOException e )
+		catch( Exception e )
 		{
-			// TODO @Krzysiek logger
-			e.printStackTrace();
-		}
-		catch( ParserConfigurationException e )
-		{
-			// TODO @Krzysiek logger
-			e.printStackTrace();
-		}
-		catch( SAXException e )
-		{
-			// TODO @Krzysiek logger
-			e.printStackTrace();
+			throw new RuntimeException( e );
 		}
 
 		publishProgress( "" );
@@ -93,6 +91,30 @@ class XmlLoader extends AsyncTask<Void, String, Void>
 		long endTime = System.currentTimeMillis();
 		publishProgress( "" + (endTime - startTime) / 1000f );
 		return null;
+	}
+
+	private String getAttributeOfName( Node node, String string )
+	{
+		NamedNodeMap attributes = node.getAttributes();
+		Node namedItem = attributes.getNamedItem( string );
+		return namedItem.getNodeValue();
+	}
+
+	private List<Node> getChildrenOfName( Node node, String name )
+	{
+		List<Node> res = new ArrayList<Node>();
+		NodeList childNodes = node.getChildNodes();
+		for( int i = 0; i < childNodes.getLength(); i++ )
+		{
+			Node item = childNodes.item( i );
+
+			String localName = item.getNodeName();
+			if( name.equals( localName ) )
+			{
+				res.add( item );
+			}
+		}
+		return res;
 	}
 
 	@Override
