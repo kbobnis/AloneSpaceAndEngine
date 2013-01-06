@@ -80,10 +80,21 @@ public class AloneSpaceModel
 					String partCategoryId = XMLHelper.getAttrOfName( tagPart, "category-id" );
 					parts.put( partCategoryId, shipParts.get( partCategoryId ).getShipParts().get( partId ) );
 				}
+				//check if all obligatory parts are in this ship
+				for( ShipPartCategory shipPartCategory : shipParts.values() )
+				{
+					if( shipPartCategory.isObligatory() )
+					{
+						if( parts.get( shipPartCategory.getId() ) == null )
+						{
+							throw new RuntimeException( "Ship " + id + " doesnt have obligatory part: "
+									+ shipPartCategory.getId() );
+						}
+					}
+				}
 				ships.put( id, new ShipTemplate( id, name.replace( "{id}", id ), desc.replace( "{id}", id ),
 						AssetHelper.loadImage( img, assetManager ), parts ) );
 			}
-
 			return ships;
 		}
 
@@ -108,6 +119,7 @@ public class AloneSpaceModel
 			String dCatName = XMLHelper.getAttrOfName( dShipPartCat, "name" );
 			String dCatDesc = XMLHelper.getAttrOfName( dShipPartCat, "desc" );
 			String dCatImg = XMLHelper.getAttrOfName( dShipPartCat, "img" );
+			Boolean dObligatory = Boolean.parseBoolean( XMLHelper.getAttrOfName( dShipPartCat, "obligatory" ) );
 
 			Node dShipPart = XMLHelper.getChildrenOfName( dShipPartCat, "default-ship-part" ).get( 0 );
 			String dName = XMLHelper.getAttrOfName( dShipPart, "name" );
@@ -125,12 +137,15 @@ public class AloneSpaceModel
 				String name = Utils.safeGet( XMLHelper.getAttrOfName( shipPartCategoryTmp, "name" ), dCatName );
 				String desc = Utils.safeGet( XMLHelper.getAttrOfName( shipPartCategoryTmp, "desc" ), dCatDesc );
 				String img = Utils.safeGet( XMLHelper.getAttrOfName( shipPartCategoryTmp, "img" ), dCatImg );
+				String tmp = XMLHelper.getAttrOfName( shipPartCategoryTmp, "obligatory" );
+				Boolean obligatory = tmp == null ? dObligatory : Utils.safeGet( Boolean.parseBoolean( tmp ),
+						dObligatory );
 
 				Map<String, ShipPart> shipParts = AloneSpaceModelParser.parseShipParts( XMLHelper.getChildrenOfName(
 						shipPartCategoryTmp, "ship-part" ), dName, dDesc, dImg, dActionList, actions, assetManager );
 
 				shipPartCategories.put( id, new ShipPartCategory( id, name.replace( "{id}", id ), desc.replace( "{id}",
-						id ), AssetHelper.loadImage( img, assetManager ), shipParts ) );
+						id ), AssetHelper.loadImage( img, assetManager ), shipParts, obligatory ) );
 			}
 
 			return shipPartCategories;

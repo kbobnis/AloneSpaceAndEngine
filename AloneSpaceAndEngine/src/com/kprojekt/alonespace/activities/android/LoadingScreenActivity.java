@@ -89,14 +89,11 @@ class XmlLoader extends AsyncTask<Void, String, Void>
 			publishProgress( "" );
 
 			Core.model = new AloneSpaceModel( assetManager.open( this.modelPath ), assetManager );
-			publishProgress( "" );
 		}
 		catch( Exception e )
 		{
 			throw new RuntimeException( e );
 		}
-
-		publishProgress( "" );
 
 		long endTime = System.currentTimeMillis();
 		publishProgress( "" + (endTime - startTime) / 1000f );

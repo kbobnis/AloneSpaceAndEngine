@@ -14,10 +14,11 @@
 		<action-template id="more_space" />
 		<action-template id="repair" />
 		<action-template id="hit_points" />
+		<action-template id="oil_tank" />
 	</action-templates>
 	
 	<ship-part-categories>
-		<default-ship-part-category name="ship-part-category.{id}.name" desc="ship-part-category.{id}.desc" img="ship-part-category.{id}.png" >
+		<default-ship-part-category name="ship-part-category.{id}.name" desc="ship-part-category.{id}.desc" img="ship-part-category.{id}.png" obligatory="true">
 			<default-ship-part name="ship-part.{id}.name" desc="ship-part.{id}.desc" img="ship_part.{id}.png">
 				<action id="more_space" value="-1" />
 				<action id="accelerate" value="-1" />
@@ -45,7 +46,7 @@
 			</ship-part>
 		</ship-part-category>
 
-		<ship-part-category id="canon">
+		<ship-part-category id="canon" obligatory="false">
 			<ship-part id="basic" >
 				<action id="deal_dmg" value="1"/>
 			</ship-part>
@@ -57,19 +58,25 @@
 			</ship-part>
 		</ship-part-category>
 
-		<ship-part-category id="force_field">
+		<ship-part-category id="force_field" obligatory="false">
 			<ship-part id="basic" >
 				<action id="resist_dmg" value="1"/>
 			</ship-part>
 		</ship-part-category>
 
-		<ship-part-category id="scanner">
+		<ship-part-category id="scanner" obligatory="false">
 			<ship-part id="basic" >
 				<action id="scan_radius" value="1"/>
 			</ship-part>
 		</ship-part-category>
 
-		<ship-part-category id="repair_drones">
+		<ship-part-category id="oil_tank" obligatory="true">
+			<ship-part id="basic" >
+				<action id="oil_tank" value="10"/>
+			</ship-part>
+		</ship-part-category>
+
+		<ship-part-category id="repair_drones" obligatory="true">
 			<ship-part id="basic" >
 				<action id="repair" value="1"/>
 			</ship-part>
@@ -85,6 +92,7 @@
 			<part id="basic" category-id="hangar" />
 			<part id="basic" category-id="rotation_engine" />
 			<part id="basic" category-id="repair_drones" />
+			<part id="basic" category-id="oil_tank" />
 		</ship>
 		<ship id="basic_alien">
 			<part id="medium" category-id="engine" />
