@@ -24,6 +24,7 @@ import com.kprojekt.locale.Locale;
 
 /**
  * @author Krzysztof Bobnis 
+ * 
  */
 public class LoadingScreenActivity extends Activity
 {
@@ -48,7 +49,7 @@ class XmlLoader extends AsyncTask<Void, String, Void>
 	private final String modelPath;
 	private final ProgressBar progressBar;
 	private final Activity context;
-	private static final int steps = 2;
+	private static final int steps = 3;
 	private int step = 0;
 	private final String localePath;
 
@@ -70,14 +71,12 @@ class XmlLoader extends AsyncTask<Void, String, Void>
 		try
 		{
 			AssetManager assetManager = this.context.getAssets();
-			InputStream inStr = assetManager.open( this.modelPath );
-			DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Document doc = docBuilder.parse( inStr, null );
 
 			Core.locale = new Locale( assetManager.open( this.localePath ) );
 			publishProgress( "" );
 
-			Node alonespaceModel = doc.getElementsByTagName( "alonespace-model" ).item( 0 );
+			Core.model = new AloneSpaceModel( assetManager.open( this.modelPath ), assetManager );
+			publishProgress( "" );
 		}
 		catch( Exception e )
 		{
@@ -85,36 +84,10 @@ class XmlLoader extends AsyncTask<Void, String, Void>
 		}
 
 		publishProgress( "" );
-		//Core.locale.load( this.modelPath );
-		//Core.templates.shipParts.load( this.modelPath );
 
 		long endTime = System.currentTimeMillis();
 		publishProgress( "" + (endTime - startTime) / 1000f );
 		return null;
-	}
-
-	private String getAttributeOfName( Node node, String string )
-	{
-		NamedNodeMap attributes = node.getAttributes();
-		Node namedItem = attributes.getNamedItem( string );
-		return namedItem.getNodeValue();
-	}
-
-	private List<Node> getChildrenOfName( Node node, String name )
-	{
-		List<Node> res = new ArrayList<Node>();
-		NodeList childNodes = node.getChildNodes();
-		for( int i = 0; i < childNodes.getLength(); i++ )
-		{
-			Node item = childNodes.item( i );
-
-			String localName = item.getNodeName();
-			if( name.equals( localName ) )
-			{
-				res.add( item );
-			}
-		}
-		return res;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.kprojekt.alonespace.activities.android;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,8 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kprojekt.alonespace.R;
-import com.kprojekt.alonespace.data.Core;
-import com.kprojekt.alonespace.data.shipParts.ShipPartItem;
 
 /**
  * 
@@ -33,7 +32,7 @@ public class ShipPartsActivity extends Activity
 
 		ExpandableListView mExpandableList = (ExpandableListView)findViewById( R.id.expandable_list );
 
-		mExpandableList.setAdapter( new ShipPartsAdapter( ShipPartsActivity.this, Core.player.ship.parts ) );
+		mExpandableList.setAdapter( new ShipPartsAdapter( ShipPartsActivity.this ) );
 
 	}
 }
@@ -42,11 +41,11 @@ class ShipPartsAdapter extends BaseExpandableListAdapter
 {
 
 	private LayoutInflater inflater;
-	private ArrayList<ShipPartItem> mParent;
+	private HashMap<String, ArrayList<String>> mParent;
 
-	public ShipPartsAdapter( Context context, ArrayList<ShipPartItem> parent )
+	public ShipPartsAdapter( Context context )
 	{
-		mParent = parent;
+		mParent = new HashMap<String, ArrayList<String>>();
 		inflater = LayoutInflater.from( context );
 	}
 
@@ -59,20 +58,20 @@ class ShipPartsAdapter extends BaseExpandableListAdapter
 	@Override
 	public int getChildrenCount( int i )
 	{
-		return mParent.get( i ).getModifiers().size();
+		return mParent.get( i ).size();
 	}
 
 	//gets the title of each parent/group
 	public Object getGroup( int i )
 	{
-		return mParent.get( i ).getName();
+		return mParent.get( i ).get( i );
 	}
 
 	@Override
 	//gets the name of each item
 	public Object getChild( int i, int i1 )
 	{
-		return mParent.get( i ).getModifiers().get( i1 );
+		return mParent.get( i ).get( i1 );
 	}
 
 	@Override
@@ -128,7 +127,7 @@ class ShipPartsAdapter extends BaseExpandableListAdapter
 		}
 
 		TextView textView = (TextView)view.findViewById( R.id.list_item_text_child );
-		textView.setText( mParent.get( i ).getModifiers().get( i1 ).getName() );
+		textView.setText( mParent.get( i ).get( i1 ) );
 
 		return view;
 	}

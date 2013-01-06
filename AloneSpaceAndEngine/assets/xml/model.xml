@@ -4,7 +4,8 @@
 	
 	<!-- by convention action with value over zero is positive -->
 	<actions >
-		<default-action positive-img="{action-id}_plus.png" 
+		<default-action 
+			positive-img="{action-id}_plus.png" 
 			negative-img="{action-id}_minus.png" 
 			name="ship-parts.{ship-part-id}.{action-id}.name" 
 			desc="ship-parts.{ship-part-id}.{action-id}.desc" />
@@ -19,7 +20,10 @@
 	
 	
 	<ship-parts >
-		<default-ship-part name="ship-parts.{ship-part-id}.name" desc="ship-parts.{ship-part-id}.desc" >
+		<default-ship-part 
+			name="ship-parts.{ship-part-id}.name"
+			desc="ship-parts.{ship-part-id}.desc" 
+			img="ship_part.{ship-part-id}.png">
 			<action id="more_space" value="-1" />
 			<action id="accelerate" value="-1" />
 		</default-ship-part>

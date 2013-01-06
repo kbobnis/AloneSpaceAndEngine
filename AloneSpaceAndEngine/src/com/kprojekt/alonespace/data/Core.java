@@ -8,6 +8,7 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.font.IFont;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import com.kprojekt.alonespace.activities.android.AloneSpaceModel;
 import com.kprojekt.locale.Locale;
 
 /**
@@ -30,8 +31,8 @@ public class Core
 	public static TextureRegions regions = new TextureRegions();
 	public static VertexBufferObjectManager manager;
 	public static PhysicsWorld mPhysicsWorld;
-	public static Player player = new Player( "new gamer" );
 	public static Locale locale;
+	public static AloneSpaceModel model;
 
 	public static float pixelsToMeters( float pixels )
 	{

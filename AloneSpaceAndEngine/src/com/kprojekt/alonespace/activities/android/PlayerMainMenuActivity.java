@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.activities.andengine.MinigameActivity;
-import com.kprojekt.alonespace.data.Player;
 
 /**
  * 
@@ -31,12 +30,11 @@ public class PlayerMainMenuActivity extends Activity
 		super.onCreate( savedInstanceState );
 
 		int playerId = this.getIntent().getExtras().getInt( "playerId" );
-		Player player = Player.loadPlayer( playerId );
 
 		setContentView( R.layout.playermain );
 
 		TextView textViewPlayerName = (TextView)this.findViewById( R.id.hangar_textView_playerName );
-		textViewPlayerName.setText( player.getName() );
+		textViewPlayerName.setText( "newPlayer" );
 
 		Button gameButton = (Button)this.findViewById( R.id.hangar_button_gotospace );
 		gameButton.setOnClickListener( new OnClickListener()
