@@ -1,17 +1,5 @@
 package com.kprojekt.alonespace.activities.android;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import android.app.Activity;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
@@ -20,6 +8,7 @@ import android.widget.ProgressBar;
 
 import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.data.Core;
+import com.kprojekt.alonespace.data.model.AloneSpaceModel;
 import com.kprojekt.locale.Locale;
 
 /**

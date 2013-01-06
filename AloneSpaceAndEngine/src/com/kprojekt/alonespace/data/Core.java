@@ -8,7 +8,7 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.font.IFont;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import com.kprojekt.alonespace.activities.android.AloneSpaceModel;
+import com.kprojekt.alonespace.data.model.AloneSpaceModel;
 import com.kprojekt.locale.Locale;
 
 /**

@@ -1,4 +1,4 @@
-package com.kprojekt.alonespace.activities.android;
+package com.kprojekt.alonespace.data.model;
 
 import java.util.Collection;
 
