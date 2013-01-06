@@ -6,7 +6,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
- * 
+ * @author Krzysiek Bobnis
  */
 public class Icon extends Sprite
 {
@@ -17,8 +17,7 @@ public class Icon extends Sprite
 	}
 
 	@Override
-	public boolean onAreaTouched( final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX,
-			final float pTouchAreaLocalY )
+	public boolean onAreaTouched( final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY )
 	{
 		switch( pSceneTouchEvent.getAction() )
 		{

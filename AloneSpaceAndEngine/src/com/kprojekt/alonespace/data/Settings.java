@@ -1,7 +1,7 @@
 package com.kprojekt.alonespace.data;
 
 /**
- * 
+ * @author Krzysiek Bobnis 
  */
 public class Settings
 {

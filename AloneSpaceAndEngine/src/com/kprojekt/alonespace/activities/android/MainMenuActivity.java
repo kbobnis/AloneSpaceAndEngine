@@ -16,7 +16,8 @@ import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.data.Core;
 
 /**
- * 
+ * @author Krzysztof Bobnis 
+
  */
 public class MainMenuActivity extends Activity
 {

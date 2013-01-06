@@ -16,7 +16,7 @@ import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.utils.Maths;
 
 /**
- * 
+ * @author Krzysiek Bobnis 
  */
 public class StarsLayer extends Entity
 {

@@ -12,7 +12,7 @@ import com.kprojekt.alonespace.data.model.AloneSpaceModel;
 import com.kprojekt.locale.Locale;
 
 /**
- * 
+ * @author Krzysiek Bobnis 
  */
 public class Core
 {

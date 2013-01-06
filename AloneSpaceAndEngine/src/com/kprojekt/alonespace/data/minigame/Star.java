@@ -10,7 +10,7 @@ import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.minigame.icons.Icon;
 
 /**
- * 
+ * @author Krzysiek Bobnis
  */
 public class Star extends Sprite
 {

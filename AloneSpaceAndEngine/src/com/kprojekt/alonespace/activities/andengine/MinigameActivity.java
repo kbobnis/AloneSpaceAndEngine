@@ -34,6 +34,9 @@ import com.kprojekt.alonespace.data.minigame.AsteroidsManager;
 import com.kprojekt.alonespace.data.minigame.Ship;
 import com.kprojekt.alonespace.data.minigame.StarsLayer;
 
+/**
+ * @author Krzysiek Bobnis
+ */
 public class MinigameActivity extends SimpleBaseGameActivity
 {
 	public static ScreenOrientation orientation = ScreenOrientation.PORTRAIT_SENSOR;

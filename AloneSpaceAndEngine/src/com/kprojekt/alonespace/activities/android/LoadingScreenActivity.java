@@ -12,8 +12,7 @@ import com.kprojekt.alonespace.data.model.AloneSpaceModel;
 import com.kprojekt.locale.Locale;
 
 /**
- * @author Krzysztof Bobnis 
- * 
+ * @author Krzysiek Bobnis
  */
 public class LoadingScreenActivity extends Activity
 {

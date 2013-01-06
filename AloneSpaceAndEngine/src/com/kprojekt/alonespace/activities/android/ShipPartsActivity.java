@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.kprojekt.alonespace.R;
 
 /**
- * 
+ * @author Krzysiek Bobnis
  */
 public class ShipPartsActivity extends Activity
 {

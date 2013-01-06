@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.kprojekt.alonespace.data.Core;
 
 /**
- * 
+ * @author Krzysiek Bobnis
  */
 public class AsteroidsManager extends Entity
 {

@@ -12,7 +12,7 @@ import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.activities.andengine.MinigameActivity;
 
 /**
- * 
+ * @author Krzysiek Bobnis
  */
 public class PlayerMainMenuActivity extends Activity
 {

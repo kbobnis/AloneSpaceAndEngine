@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.kprojekt.alonespace.R;
 
 /**
- * 
+ * @author Krzysztof Bobnis 
  */
 public class HighscoresActivity extends Activity
 {

@@ -4,7 +4,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.util.adt.list.SmartList;
 
 /**
- * 
+ * @author Krzysiek Bobnis 
  */
 public class TextureRegions
 {
