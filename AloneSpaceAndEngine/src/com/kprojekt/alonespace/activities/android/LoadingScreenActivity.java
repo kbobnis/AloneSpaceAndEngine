@@ -1,9 +1,11 @@
 package com.kprojekt.alonespace.activities.android;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.ProgressBar;
 
 import com.kprojekt.alonespace.R;
@@ -17,6 +19,8 @@ import com.kprojekt.locale.Locale;
 public class LoadingScreenActivity extends Activity
 {
 
+	private XmlLoader xmlLoader;
+
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
 	{
@@ -25,8 +29,29 @@ public class LoadingScreenActivity extends Activity
 
 		ProgressBar progressBar = (ProgressBar)findViewById( R.id.loadProgressBar );
 
-		XmlLoader xmlLoader = new XmlLoader( "xml/model.xml", progressBar, this, "xml/locale.xml" );
-		xmlLoader.execute();
+		this.xmlLoader = new XmlLoader( "xml/model.xml", progressBar, this, "xml/locale.xml" );
+		this.xmlLoader.execute();
+	}
+
+	@Override
+	public boolean onKeyDown( int keyCode, KeyEvent event )
+	{
+		if( keyCode == KeyEvent.KEYCODE_BACK )
+		{
+			setResult( RESULT_CANCELED, new Intent() );
+			if( this.xmlLoader != null )
+			{
+				this.xmlLoader.cancel( true );
+			}
+			finish();
+		}
+		return true;
+	}
+
+	@Override
+	protected void onActivityResult( int requestCode, int resultCode, Intent data )
+	{
+		finish();
 	}
 
 }
@@ -75,6 +100,13 @@ class XmlLoader extends AsyncTask<Void, String, Void>
 
 		long endTime = System.currentTimeMillis();
 		publishProgress( "" + (endTime - startTime) / 1000f );
+
+		if( !this.isCancelled() )
+		{
+			Intent intent = new Intent( this.context, MainMenuActivity.class );
+			this.context.startActivityForResult( intent, 1 );
+		}
+
 		return null;
 	}
 
