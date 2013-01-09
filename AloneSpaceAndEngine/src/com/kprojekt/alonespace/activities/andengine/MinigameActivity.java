@@ -173,9 +173,9 @@ public class MinigameActivity extends SimpleBaseGameActivity
 
 		int sectorW = (int)(this.camera.getWidth() * 2 / 3f);
 		int sectorH = (int)(this.camera.getHeight() * 2 / 3f);
-		scene.attachChild( new StarsLayer( camera, 0.3f, 10, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
-		scene.attachChild( new StarsLayer( camera, 0.5f, 20, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
-		scene.attachChild( new StarsLayer( camera, 0.6f, 50, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
+		scene.attachChild( new StarsLayer( camera, 0.5f, 15, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
+		scene.attachChild( new StarsLayer( camera, 0.65f, 20, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
+		scene.attachChild( new StarsLayer( camera, 0.7f, 50, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
 
 		PhysicsWorld mPhysicsWorld = new PhysicsWorld( new Vector2( 0, 0 ), false );
 		Core.mPhysicsWorld = mPhysicsWorld;

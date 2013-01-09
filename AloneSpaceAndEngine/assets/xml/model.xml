@@ -103,6 +103,7 @@
 			<part id="basic" category-id="force_field" />  
 			<part id="basic" category-id="canon" />
 			<part id="basic" category-id="scanner" />
+			<part id="basic" category-id="oil_tank" /> 
 		</ship>
 	</ships>
 	

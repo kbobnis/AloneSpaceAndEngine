@@ -8,13 +8,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kprojekt.alonespace.R;
 
@@ -101,19 +97,7 @@ class ShipPartsAdapter extends BaseExpandableListAdapter
 			view = inflater.inflate( R.layout.list_item_parent, viewGroup, false );
 		}
 
-		TextView textView = (TextView)view.findViewById( R.id.list_item_text_view );
-		Button button = (Button)view.findViewById( R.id.button );
-		final int n = i;
-		button.setOnClickListener( new OnClickListener()
-		{
-
-			@Override
-			public void onClick( View arg0 )
-			{
-				Toast.makeText( inflater.getContext(), getGroup( n ).toString(), Toast.LENGTH_SHORT ).show();
-			}
-		} );
-		textView.setText( getGroup( i ).toString() );
+		//TextView textView = (TextView)view.findViewById( R.id.list_item_text_view );
 
 		return view;
 	}
@@ -126,8 +110,8 @@ class ShipPartsAdapter extends BaseExpandableListAdapter
 			view = inflater.inflate( R.layout.list_item_child, viewGroup, false );
 		}
 
-		TextView textView = (TextView)view.findViewById( R.id.list_item_text_child );
-		textView.setText( mParent.get( i ).get( i1 ) );
+		//TextView textView = (TextView)view.findViewById( R.id.list_item_text_child );
+		//textView.setText( mParent.get( i ).get( i1 ) );
 
 		return view;
 	}

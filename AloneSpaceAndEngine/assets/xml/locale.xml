@@ -16,6 +16,23 @@
 			<en value="This {ship-parts.base_engine.name} was invented by humans in year 2020" />
 			<pl value="Ten {ship-parts.base_engine.name} został stworzony przez ludzi w roku 2020" />
 		</sentence>
+		<sentence name="str.created">
+			<en value="Created" />
+			<pl value="Stworzone" />
+		</sentence>
+		<sentence name="str.newgame.label">
+			<en value="New profile" />
+			<pl value="Nowy profil" />
+		</sentence>
+		<sentence name="str.title" >
+			<en value="Alone space" />
+			<pl value="Pusta przestrzeń" />
+		</sentence>
+		<sentence name="str.highscores.label">
+			<en value="Highscores" />
+			<pl value="Najwyższe wyniki" />
+		</sentence>
+		
 	</sentences>
 
 </locale>

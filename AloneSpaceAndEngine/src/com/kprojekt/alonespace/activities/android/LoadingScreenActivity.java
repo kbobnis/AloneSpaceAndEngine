@@ -1,15 +1,19 @@
 package com.kprojekt.alonespace.activities.android;
 
+import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.widget.ProgressBar;
 
 import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.data.Core;
+import com.kprojekt.alonespace.data.DataBase;
 import com.kprojekt.alonespace.data.model.AloneSpaceModel;
 import com.kprojekt.locale.Locale;
 
@@ -24,6 +28,13 @@ public class LoadingScreenActivity extends Activity
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
 	{
+		Display display = getWindowManager().getDefaultDisplay();
+		float prop = display.getHeight() / (float)display.getWidth();
+		int height = (int)(prop * Core.widthInMeters);
+		Core.heightInMeters = height;
+		Core.ratioResPolicy = new RatioResolutionPolicy( Core.widthInMeters, Core.heightInMeters );
+		Core.db = new DataBase( this );
+
 		super.onCreate( savedInstanceState );
 		setContentView( R.layout.loader );
 
