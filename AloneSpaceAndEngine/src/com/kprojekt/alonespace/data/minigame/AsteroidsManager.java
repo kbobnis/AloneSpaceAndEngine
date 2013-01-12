@@ -21,18 +21,18 @@ public class AsteroidsManager extends Entity
 	private ZoomCamera camera;
 	private SmartList<Star> stars = new SmartList<Star>();
 
-	public AsteroidsManager( ZoomCamera camera, int count )
+	public AsteroidsManager( ZoomCamera camera, int count, PhysicsWorld physicsWorld )
 	{
 		this.camera = camera;
 		for( int i = 0; i < count; i++ )
 		{
-			Star createStar = this.createStar();
+			Star createStar = this.createStar( physicsWorld );
 			stars.add( createStar );
 			this.attachChild( createStar );
 		}
 	}
 
-	private Star createStar()
+	private Star createStar( PhysicsWorld mPhysicsWorld )
 	{
 		SmartList<TextureRegion> starRegions = Core.regions.asterRegions;
 		Star star2 = new Star( starRegions.get( Core.random.nextInt( starRegions.size() ) ) );
@@ -41,7 +41,6 @@ public class AsteroidsManager extends Entity
 		star2.setLocation( x, y );
 		star2.addIcon();
 
-		PhysicsWorld mPhysicsWorld = Core.mPhysicsWorld;
 		if( mPhysicsWorld != null )
 		{
 			Body createBoxBody = PhysicsFactory.createBoxBody( mPhysicsWorld, star2, BodyType.DynamicBody,

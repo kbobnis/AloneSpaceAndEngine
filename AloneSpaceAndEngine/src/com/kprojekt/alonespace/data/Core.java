@@ -31,7 +31,6 @@ public class Core
 
 	public static TextureRegions regions = new TextureRegions();
 	public static VertexBufferObjectManager manager;
-	public static PhysicsWorld mPhysicsWorld;
 
 	public static Locale locale;
 	public static AloneSpaceModel model;

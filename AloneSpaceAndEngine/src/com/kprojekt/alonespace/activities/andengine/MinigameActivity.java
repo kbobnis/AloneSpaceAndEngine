@@ -8,6 +8,11 @@ import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.scene.menu.MenuScene;
+import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
+import org.andengine.entity.scene.menu.item.IMenuItem;
+import org.andengine.entity.scene.menu.item.TextMenuItem;
+import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -25,6 +30,9 @@ import org.andengine.util.adt.list.SmartList;
 import org.andengine.util.debug.Debug;
 
 import android.graphics.Color;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -44,6 +52,15 @@ public class MinigameActivity extends SimpleBaseGameActivity
 	private TextureRegion shipTextureRegion;
 	private Body shipBody;
 	private Ship ship;
+	private PhysicsWorld mPhysicsWorld;
+	private Scene scene;
+
+	@Override
+	protected void onCreate( final Bundle pSavedInstanceState )
+	{
+		super.onCreate( pSavedInstanceState );
+
+	}
 
 	@Override
 	public EngineOptions onCreateEngineOptions()
@@ -177,15 +194,14 @@ public class MinigameActivity extends SimpleBaseGameActivity
 		scene.attachChild( new StarsLayer( camera, 0.65f, 20, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
 		scene.attachChild( new StarsLayer( camera, 0.7f, 50, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
 
-		PhysicsWorld mPhysicsWorld = new PhysicsWorld( new Vector2( 0, 0 ), false );
-		Core.mPhysicsWorld = mPhysicsWorld;
+		this.mPhysicsWorld = new PhysicsWorld( new Vector2( 0, 0 ), false );
 
 		ship = new Ship( 0, 0, this.shipTextureRegion, this.getVertexBufferObjectManager(), this.camera );
 		shipBody = PhysicsFactory.createBoxBody( mPhysicsWorld, ship, BodyType.DynamicBody,
 				PhysicsFactory.createFixtureDef( 15f, 0.1f, 0.9f ) );
 		ship.addBody( shipBody );
 
-		scene.attachChild( new AsteroidsManager( camera, 10 ) );
+		scene.attachChild( new AsteroidsManager( camera, 10, this.mPhysicsWorld ) );
 
 		this.camera.setChaseEntity( ship );
 		scene.attachChild( ship );
@@ -198,6 +214,54 @@ public class MinigameActivity extends SimpleBaseGameActivity
 		scene.registerTouchArea( ship );
 		scene.setOnSceneTouchListener( ship );
 
+		this.scene = scene;
 		return scene;
+	}
+
+	@Override
+	public boolean onKeyDown( int keyCode, KeyEvent event )
+	{
+		System.out.println( keyCode );
+		switch( keyCode )
+		{
+			case KeyEvent.KEYCODE_MENU:
+			{
+				Toast.makeText( getBaseContext(), "menu button pressed", Toast.LENGTH_SHORT ).show();
+				//this.scene.setIgnoreUpdate( true );
+				MenuScene menuScene = new MenuScene( this.camera );
+				menuScene.setOnMenuItemClickListener( new IOnMenuItemClickListener()
+				{
+					@Override
+					public boolean onMenuItemClicked( MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY )
+					{
+						return true;
+					}
+				} );
+				IMenuItem textMenuItem = new TextMenuItem( 0, Core.font, "play", this.getVertexBufferObjectManager() );
+				textMenuItem.setX( this.camera.getWidth() / 2 );
+				final IMenuItem playMenuItem = new ScaleMenuItemDecorator( textMenuItem, 2, 1 );
+				IMenuItem textMenuItem2 = new TextMenuItem( 1, Core.font, "options",
+						this.getVertexBufferObjectManager() );
+				textMenuItem2.setX( this.camera.getWidth() / 2 );
+				textMenuItem2.setY( textMenuItem.getHeight() );
+				final IMenuItem playMenuItem2 = new ScaleMenuItemDecorator( textMenuItem2, 2, 1 );
+
+				menuScene.addMenuItem( playMenuItem );
+				menuScene.addMenuItem( playMenuItem2 );
+				menuScene.setBackgroundEnabled( false );
+				//this.scene.attachChild( menuScene );
+				//this.scene.setOnSceneTouchListener( menuScene );
+				//this.scene.setOnAreaTouchListener( menuScene );
+				//this.scene.registerUpdateHandler( menuScene );
+				this.scene.setChildScene( menuScene );
+				break;
+			}
+			case KeyEvent.KEYCODE_BACK:
+			{
+				finish();
+				break;
+			}
+		}
+		return true;
 	}
 }
