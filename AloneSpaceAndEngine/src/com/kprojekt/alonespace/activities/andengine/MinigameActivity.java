@@ -2,6 +2,7 @@ package com.kprojekt.alonespace.activities.andengine;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
@@ -29,6 +30,7 @@ import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.adt.list.SmartList;
 import org.andengine.util.debug.Debug;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -37,9 +39,11 @@ import android.widget.Toast;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.kprojekt.alonespace.activities.android.MainMenuActivity;
+import com.kprojekt.alonespace.activities.android.ShipPartsActivity;
 import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.minigame.AsteroidsManager;
-import com.kprojekt.alonespace.data.minigame.Ship;
+import com.kprojekt.alonespace.data.minigame.ShipSprite;
 import com.kprojekt.alonespace.data.minigame.StarsLayer;
 
 /**
@@ -51,9 +55,13 @@ public class MinigameActivity extends SimpleBaseGameActivity
 	private ZoomCamera camera;
 	private TextureRegion shipTextureRegion;
 	private Body shipBody;
-	private Ship ship;
+	private ShipSprite ship;
 	private PhysicsWorld mPhysicsWorld;
 	private Scene scene;
+	private boolean menuOn;
+	private ArrayList<TextureRegion> starRegions;
+	private SmartList<TextureRegion> asteroidRegions;
+	private SmartList<TextureRegion> iconsRegion;
 
 	@Override
 	protected void onCreate( final Bundle pSavedInstanceState )
@@ -163,15 +171,15 @@ public class MinigameActivity extends SimpleBaseGameActivity
 			SmartList<TextureRegion> iconRegions = new SmartList<TextureRegion>();
 			iconRegions.add( TextureRegionFactory.extractFromTexture( iconTexture ) );
 
-			final ITexture droidFontTexture = new BitmapTextureAtlas( this.getTextureManager(), 256, 256,
+			final ITexture droidFontTexture = new BitmapTextureAtlas( this.getTextureManager(), 512, 512,
 					TextureOptions.BILINEAR );
 			FontFactory.setAssetBasePath( "font/" );
 			Core.font = FontFactory.createFromAsset( this.getFontManager(), droidFontTexture, this.getAssets(),
-					"courier.ttf", 46f, true, Color.WHITE );
+					"courier.ttf", 80f, true, Color.WHITE );
 			Core.font.load();
-			Core.regions.starRegions.addAll( starRegions );
-			Core.regions.iconRegions.addAll( iconRegions );
-			Core.regions.asterRegions.addAll( asterRegions );
+			this.starRegions = starRegions;
+			this.iconsRegion = iconRegions;
+			this.asteroidRegions = asterRegions;
 
 		}
 		catch( IOException e )
@@ -186,22 +194,25 @@ public class MinigameActivity extends SimpleBaseGameActivity
 		Scene scene = new Scene();
 		scene.setBackground( new Background( org.andengine.util.color.Color.BLACK ) );
 		VertexBufferObjectManager manager = this.getVertexBufferObjectManager();
-		Core.manager = manager;
 
 		int sectorW = (int)(this.camera.getWidth() * 2 / 3f);
 		int sectorH = (int)(this.camera.getHeight() * 2 / 3f);
-		scene.attachChild( new StarsLayer( camera, 0.5f, 15, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
-		scene.attachChild( new StarsLayer( camera, 0.65f, 20, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
-		scene.attachChild( new StarsLayer( camera, 0.7f, 50, org.andengine.util.color.Color.WHITE, sectorW, sectorH ) );
+		scene.attachChild( new StarsLayer( camera, 0.5f, 15, org.andengine.util.color.Color.WHITE, sectorW, sectorH,
+				manager, this.starRegions ) );
+		scene.attachChild( new StarsLayer( camera, 0.65f, 20, org.andengine.util.color.Color.WHITE, sectorW, sectorH,
+				manager, this.starRegions ) );
+		scene.attachChild( new StarsLayer( camera, 0.7f, 50, org.andengine.util.color.Color.WHITE, sectorW, sectorH,
+				manager, this.starRegions ) );
 
 		this.mPhysicsWorld = new PhysicsWorld( new Vector2( 0, 0 ), false );
 
-		ship = new Ship( 0, 0, this.shipTextureRegion, this.getVertexBufferObjectManager(), this.camera );
+		ship = new ShipSprite( 0, 0, this.shipTextureRegion, this.getVertexBufferObjectManager(), this.camera );
 		shipBody = PhysicsFactory.createBoxBody( mPhysicsWorld, ship, BodyType.DynamicBody,
 				PhysicsFactory.createFixtureDef( 15f, 0.1f, 0.9f ) );
 		ship.addBody( shipBody );
 
-		scene.attachChild( new AsteroidsManager( camera, 10, this.mPhysicsWorld ) );
+		scene.attachChild( new AsteroidsManager( camera, 10, this.mPhysicsWorld, manager, this.asteroidRegions,
+				this.iconsRegion ) );
 
 		this.camera.setChaseEntity( ship );
 		scene.attachChild( ship );
@@ -209,7 +220,6 @@ public class MinigameActivity extends SimpleBaseGameActivity
 
 		scene.registerUpdateHandler( mPhysicsWorld );
 		scene.registerUpdateHandler( ship );
-		//scene.registerUpdateHandler( back );
 
 		scene.registerTouchArea( ship );
 		scene.setOnSceneTouchListener( ship );
@@ -226,34 +236,7 @@ public class MinigameActivity extends SimpleBaseGameActivity
 		{
 			case KeyEvent.KEYCODE_MENU:
 			{
-				Toast.makeText( getBaseContext(), "menu button pressed", Toast.LENGTH_SHORT ).show();
-				//this.scene.setIgnoreUpdate( true );
-				MenuScene menuScene = new MenuScene( this.camera );
-				menuScene.setOnMenuItemClickListener( new IOnMenuItemClickListener()
-				{
-					@Override
-					public boolean onMenuItemClicked( MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY )
-					{
-						return true;
-					}
-				} );
-				IMenuItem textMenuItem = new TextMenuItem( 0, Core.font, "play", this.getVertexBufferObjectManager() );
-				textMenuItem.setX( this.camera.getWidth() / 2 );
-				final IMenuItem playMenuItem = new ScaleMenuItemDecorator( textMenuItem, 2, 1 );
-				IMenuItem textMenuItem2 = new TextMenuItem( 1, Core.font, "options",
-						this.getVertexBufferObjectManager() );
-				textMenuItem2.setX( this.camera.getWidth() / 2 );
-				textMenuItem2.setY( textMenuItem.getHeight() );
-				final IMenuItem playMenuItem2 = new ScaleMenuItemDecorator( textMenuItem2, 2, 1 );
-
-				menuScene.addMenuItem( playMenuItem );
-				menuScene.addMenuItem( playMenuItem2 );
-				menuScene.setBackgroundEnabled( false );
-				//this.scene.attachChild( menuScene );
-				//this.scene.setOnSceneTouchListener( menuScene );
-				//this.scene.setOnAreaTouchListener( menuScene );
-				//this.scene.registerUpdateHandler( menuScene );
-				this.scene.setChildScene( menuScene );
+				this.toggleMenu();
 				break;
 			}
 			case KeyEvent.KEYCODE_BACK:
@@ -263,5 +246,70 @@ public class MinigameActivity extends SimpleBaseGameActivity
 			}
 		}
 		return true;
+	}
+
+	private void toggleMenu()
+	{
+		this.menuOn = !this.menuOn;
+		this.scene.setIgnoreUpdate( this.menuOn );
+		if( this.menuOn )
+		{
+			this.scene.setChildScene( buildMenu() );
+		}
+		else
+			this.scene.clearChildScene();
+	}
+
+	private MenuScene buildMenu()
+	{
+		final MenuScene menuScene = new MenuScene( this.camera );
+		int offset = 150;
+
+		IMenuItem textMenuItem = new TextMenuItem( 0, Core.font, Core.locale.get( "str.game.resume" ),
+				this.getVertexBufferObjectManager() );
+		int xOffset = 400;
+		textMenuItem.setX( xOffset );
+		textMenuItem.setY( offset );
+		final IMenuItem resumeMenuItem = new ScaleMenuItemDecorator( textMenuItem, 1.5f, 1 );
+		menuScene.addMenuItem( resumeMenuItem );
+
+		IMenuItem textMenuItem2 = new TextMenuItem( 1, Core.font, Core.locale.get( "str.game.shipParts" ),
+				this.getVertexBufferObjectManager() );
+		textMenuItem2.setX( xOffset );
+		textMenuItem2.setY( textMenuItem.getHeight() + offset );
+		final IMenuItem showShipMenuItem = new ScaleMenuItemDecorator( textMenuItem2, 1.5f, 1 );
+		menuScene.addMenuItem( showShipMenuItem );
+
+		IMenuItem playerMenuItem = new TextMenuItem( 2, Core.font, Core.locale.get( "str.game.returnToMenu" ),
+				this.getVertexBufferObjectManager() );
+		playerMenuItem.setX( xOffset );
+		playerMenuItem.setY( textMenuItem.getHeight() * 2 + offset );
+		final IMenuItem player2MenuItem = new ScaleMenuItemDecorator( playerMenuItem, 1.5f, 1 );
+		menuScene.addMenuItem( player2MenuItem );
+
+		menuScene.setBackgroundEnabled( false );
+
+		menuScene.setOnMenuItemClickListener( new IOnMenuItemClickListener()
+		{
+			@Override
+			public boolean onMenuItemClicked( MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY )
+			{
+				if( pMenuItem == resumeMenuItem )
+				{
+					MinigameActivity.this.toggleMenu();
+				}
+				if( pMenuItem == showShipMenuItem )
+				{
+					Intent shipPartsActivity = new Intent( MinigameActivity.this, ShipPartsActivity.class );
+					MinigameActivity.this.startActivityForResult( shipPartsActivity, RESULT_CANCELED );
+				}
+				if( pMenuItem == player2MenuItem )
+				{
+					MinigameActivity.this.finish();
+				}
+				return false;
+			}
+		} );
+		return menuScene;
 	}
 }

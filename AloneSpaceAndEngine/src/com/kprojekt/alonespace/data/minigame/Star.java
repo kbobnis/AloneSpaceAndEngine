@@ -17,9 +17,9 @@ public class Star extends Sprite
 	private static float chance = 0.1f;
 	private SmartList<Icon> icons = new SmartList<Icon>();
 
-	public Star( TextureRegion textureRegion )
+	public Star( TextureRegion textureRegion, VertexBufferObjectManager manager )
 	{
-		super( 0, 0, textureRegion, Core.manager );
+		super( 0, 0, textureRegion, manager );
 	}
 
 	public static boolean willBeBorn()
@@ -43,13 +43,12 @@ public class Star extends Sprite
 		this.setY( y );
 	}
 
-	public void addIcon()
+	public void addIcon( VertexBufferObjectManager manager, SmartList<TextureRegion> iconRegions )
 	{
-		SmartList<TextureRegion> iconRegions = Core.regions.iconRegions;
 		int nextInt = Core.random.nextInt( iconRegions.size() );
 		TextureRegion iconRegion = iconRegions.get( nextInt );
 		Icon icon = new Icon( getWidth() / 2 - iconRegion.getWidth() / 2, getHeight() / 2 - iconRegion.getHeight() / 2,
-				iconRegion, Core.manager );
+				iconRegion, manager );
 		this.attachChild( icon );
 		this.icons.add( icon );
 	}

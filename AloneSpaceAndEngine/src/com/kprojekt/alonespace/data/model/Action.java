@@ -1,5 +1,6 @@
 package com.kprojekt.alonespace.data.model;
 
+
 /**
  * @author Krzysiek Bobnis
  * @since 04:01:14 06-01-2013

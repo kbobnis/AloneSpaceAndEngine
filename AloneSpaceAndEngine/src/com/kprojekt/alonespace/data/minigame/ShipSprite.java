@@ -16,7 +16,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 /**
  * @author Krzysiek Bobnis
  */
-public class Ship extends Sprite implements IOnSceneTouchListener, IUpdateHandler
+public class ShipSprite extends Sprite implements IOnSceneTouchListener, IUpdateHandler
 {
 	private Body shipBody;
 	private boolean touchedDownOnFreeSpace;
@@ -25,7 +25,7 @@ public class Ship extends Sprite implements IOnSceneTouchListener, IUpdateHandle
 	private Vector2 moveVector = new Vector2();
 	private ZoomCamera camera;
 
-	public Ship( int posX, int posY, TextureRegion shipTextureRegion,
+	public ShipSprite( int posX, int posY, TextureRegion shipTextureRegion,
 			VertexBufferObjectManager vertexBufferObjectManager, ZoomCamera camera )
 	{
 		super( posX, posY, shipTextureRegion, vertexBufferObjectManager );

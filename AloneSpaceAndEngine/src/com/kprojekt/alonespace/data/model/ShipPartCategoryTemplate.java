@@ -2,22 +2,23 @@ package com.kprojekt.alonespace.data.model;
 
 import java.util.Map;
 
+
 import android.graphics.drawable.Drawable;
 
 /**
  * @author Krzysiek Bobnis
  * @since 15:31:55 06-01-2013
  */
-public class ShipPartCategory
+public class ShipPartCategoryTemplate
 {
 	private final String id;
 	private final String name;
 	private final String desc;
 	private final Drawable img;
-	private final Map<String, ShipPart> shipParts;
+	private final Map<String, ShipPartTemplate> shipParts;
 	private final boolean obligatory;
 
-	public ShipPartCategory( String id, String name, String desc, Drawable img, Map<String, ShipPart> shipParts,
+	public ShipPartCategoryTemplate( String id, String name, String desc, Drawable img, Map<String, ShipPartTemplate> shipParts,
 			boolean obligatory )
 	{
 		this.id = id;
@@ -28,7 +29,7 @@ public class ShipPartCategory
 		this.obligatory = obligatory;
 	}
 
-	public Map<String, ShipPart> getShipParts()
+	public Map<String, ShipPartTemplate> getShipParts()
 	{
 		return this.shipParts;
 	}

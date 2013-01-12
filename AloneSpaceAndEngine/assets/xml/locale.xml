@@ -13,8 +13,8 @@
 			<pl value="Podstawowy silnik odrzutowy" />
 		</sentence>
 		<sentence name="ship-parts.base_engine.desc">
-			<en value="This {ship-parts.base_engine.name} was invented by humans in year 2020" />
-			<pl value="Ten {ship-parts.base_engine.name} został stworzony przez ludzi w roku 2020" />
+			<en value="This {ship-parts.base_engine.name} was invented by humans in year 3030" />
+			<pl value="Ten {ship-parts.base_engine.name} został stworzony przez ludzi w roku 3030" />
 		</sentence>
 		<sentence name="str.created">
 			<en value="Created" />
@@ -35,6 +35,18 @@
 		<sentence name="str.delete.profile" >
 			<en value="Remove profile" />
 			<pl value="Usuń profil" />
+		</sentence>
+		<sentence name="str.game.resume" >
+			<en value="Resume" />
+			<pl value="Wznów grę" />
+		</sentence>
+		<sentence name="str.game.shipParts" >
+			<en value="Show ship" />
+			<pl value="Pokaż statek" />
+		</sentence>
+		<sentence name="str.game.returnToMenu" >
+			<en value="Main menu" />
+			<pl value="Menu główne" />
 		</sentence>
 		
 	</sentences>

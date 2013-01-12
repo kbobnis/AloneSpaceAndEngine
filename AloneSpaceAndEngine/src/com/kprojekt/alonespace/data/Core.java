@@ -29,9 +29,6 @@ public class Core
 	public static IFont font;
 	public static Settings settings = new Settings();
 
-	public static TextureRegions regions = new TextureRegions();
-	public static VertexBufferObjectManager manager;
-
 	public static Locale locale;
 	public static AloneSpaceModel model;
 	public static DataBase db;

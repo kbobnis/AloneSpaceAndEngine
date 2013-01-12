@@ -1,5 +1,7 @@
 package com.kprojekt.alonespace.data.minigame;
 
+import java.util.ArrayList;
+
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.entity.Entity;
 import org.andengine.entity.IEntity;
@@ -28,7 +30,8 @@ public class StarsLayer extends Entity
 	private int lastChangedSectorX;
 	private int lastChangedSectorY;
 
-	public StarsLayer( ZoomCamera camera, float scrollFactor, int count, Color blue, int width, int height )
+	public StarsLayer( ZoomCamera camera, float scrollFactor, int count, Color blue, int width, int height,
+			VertexBufferObjectManager manager, ArrayList<TextureRegion> starRegions )
 	{
 		this.camera = camera;
 		this.scrollFactor = scrollFactor;
@@ -39,23 +42,22 @@ public class StarsLayer extends Entity
 		{
 			for( int j = -1; j < 2; j++ )
 			{
-				StarsSector declareSector = declareSector( camera, count, blue, i, j, width, height );
+				StarsSector declareSector = declareSector( camera, count, blue, i, j, width, height, manager,
+						starRegions );
 				starSectors.add( declareSector );
 				this.attachChild( declareSector.getEntity() );
 			}
 		}
 	}
 
-	private StarsSector declareSector( ZoomCamera camera, int count, Color blue, int x, int y, int width, int height )
+	private StarsSector declareSector( ZoomCamera camera, int count, Color blue, int x, int y, int width, int height, VertexBufferObjectManager mgr, ArrayList<TextureRegion> starRegions )
 	{
-		SmartList<TextureRegion> starRegions = Core.regions.starRegions;
-		VertexBufferObjectManager mgr = Core.manager;
 		Entity sector = new Entity( x * width, y * height );
 		for( int i = 0; i < count; i++ )
 		{
 			int nextInt = Core.random.nextInt( starRegions.size() );
 			TextureRegion textureRegion = starRegions.get( nextInt );
-			Star star2 = new Star( textureRegion );
+			Star star2 = new Star( textureRegion, mgr );
 			float _x = camera.getXMin() + Core.random.nextInt( width );
 			float _y = camera.getYMin() + Core.random.nextInt( height );
 			star2.setLocation( _x, _y );

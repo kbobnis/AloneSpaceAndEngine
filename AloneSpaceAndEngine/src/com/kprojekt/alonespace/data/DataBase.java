@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.json.JSONArray;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import com.google.gson.Gson;
 import com.kprojekt.alonespace.activities.android.PlayerProfile;
+import com.kprojekt.alonespace.data.model.Ship;
 
 /**
  * @author Krzysiek Bobnis
@@ -51,7 +50,7 @@ public class DataBase
 	public PlayerProfile createProfile( long currentTimeMillis )
 	{
 		List<PlayerProfile> loadProfiles = this.loadProfiles();
-		PlayerProfile playerProfile = new PlayerProfile( currentTimeMillis );
+		PlayerProfile playerProfile = new PlayerProfile( currentTimeMillis, new Ship( Core.model.startingShip ) );
 		loadProfiles.add( playerProfile );
 		this.saveProfiles( loadProfiles );
 		return playerProfile;

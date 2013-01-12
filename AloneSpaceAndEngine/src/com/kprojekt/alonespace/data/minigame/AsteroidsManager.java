@@ -6,6 +6,7 @@ import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.list.SmartList;
 
 import com.badlogic.gdx.physics.box2d.Body;
@@ -21,25 +22,25 @@ public class AsteroidsManager extends Entity
 	private ZoomCamera camera;
 	private SmartList<Star> stars = new SmartList<Star>();
 
-	public AsteroidsManager( ZoomCamera camera, int count, PhysicsWorld physicsWorld )
+	public AsteroidsManager( ZoomCamera camera, int count, PhysicsWorld physicsWorld,
+			VertexBufferObjectManager manager, SmartList<TextureRegion> starRegions, SmartList<TextureRegion> iconRegion )
 	{
 		this.camera = camera;
 		for( int i = 0; i < count; i++ )
 		{
-			Star createStar = this.createStar( physicsWorld );
+			Star createStar = this.createStar( physicsWorld, manager, starRegions, iconRegion );
 			stars.add( createStar );
 			this.attachChild( createStar );
 		}
 	}
 
-	private Star createStar( PhysicsWorld mPhysicsWorld )
+	private Star createStar( PhysicsWorld mPhysicsWorld, VertexBufferObjectManager manager, SmartList<TextureRegion> starRegions, SmartList<TextureRegion> iconsRegion )
 	{
-		SmartList<TextureRegion> starRegions = Core.regions.asterRegions;
-		Star star2 = new Star( starRegions.get( Core.random.nextInt( starRegions.size() ) ) );
+		Star star2 = new Star( starRegions.get( Core.random.nextInt( starRegions.size() ) ), manager );
 		float x = camera.getXMin() + Core.random.nextInt( (int)(camera.getXMax() * 2 - camera.getXMin()) );
 		float y = camera.getYMin() + Core.random.nextInt( (int)(camera.getYMax() * 2 - camera.getYMin()) );
 		star2.setLocation( x, y );
-		star2.addIcon();
+		star2.addIcon( manager, iconsRegion );
 
 		if( mPhysicsWorld != null )
 		{

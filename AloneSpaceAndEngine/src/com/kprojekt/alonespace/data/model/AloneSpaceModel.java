@@ -24,9 +24,9 @@ import com.kprojekt.alonespace.utils.XMLHelper;
  */
 public class AloneSpaceModel
 {
-	private Map<String, ShipPartCategory> shipParts;
+	private Map<String, ShipPartCategoryTemplate> shipParts;
 	private Map<String, ShipTemplate> ships;
-	private ShipTemplate startingShip;
+	public ShipTemplate startingShip;
 
 	public AloneSpaceModel( InputStream open, AssetManager assetManager )
 	{
@@ -58,7 +58,7 @@ public class AloneSpaceModel
 			return doc.getElementsByTagName( nodeName ).item( 0 );
 		}
 
-		public static HashMap<String, ShipTemplate> parseShips( Node tagShips, Map<String, ShipPartCategory> shipParts, AssetManager assetManager )
+		public static HashMap<String, ShipTemplate> parseShips( Node tagShips, Map<String, ShipPartCategoryTemplate> shipParts, AssetManager assetManager )
 		{
 			Node dShip = XMLHelper.getChildrenOfName( tagShips, "default-ship" ).get( 0 );
 			String dName = XMLHelper.getAttrOfName( dShip, "name" );
@@ -73,7 +73,7 @@ public class AloneSpaceModel
 				String desc = Utils.safeGet( XMLHelper.getAttrOfName( tmp, "desc" ), dDesc );
 				String img = Utils.safeGet( XMLHelper.getAttrOfName( tmp, "img" ), dImg );
 
-				HashMap<String, ShipPart> parts = new HashMap<String, ShipPart>();
+				HashMap<String, ShipPartTemplate> parts = new HashMap<String, ShipPartTemplate>();
 				for( Node tagPart : XMLHelper.getChildrenOfName( tmp, "part" ) )
 				{
 					String partId = XMLHelper.getAttrOfName( tagPart, "id" );
@@ -81,7 +81,7 @@ public class AloneSpaceModel
 					parts.put( partCategoryId, shipParts.get( partCategoryId ).getShipParts().get( partId ) );
 				}
 				//check if all obligatory parts are in this ship
-				for( ShipPartCategory shipPartCategory : shipParts.values() )
+				for( ShipPartCategoryTemplate shipPartCategory : shipParts.values() )
 				{
 					if( shipPartCategory.isObligatory() )
 					{
@@ -98,7 +98,7 @@ public class AloneSpaceModel
 			return ships;
 		}
 
-		public static Map<String, ShipPartCategory> parseShipCategories( Node model, AssetManager assetManager )
+		public static Map<String, ShipPartCategoryTemplate> parseShipCategories( Node model, AssetManager assetManager )
 		{
 
 			Node tagActions = XMLHelper.getChildrenOfName( model, "action-templates" ).get( 0 );
@@ -106,14 +106,14 @@ public class AloneSpaceModel
 					assetManager );
 
 			Node tagShipPart = XMLHelper.getChildrenOfName( model, "ship-part-categories" ).get( 0 );
-			Map<String, ShipPartCategory> shipPartCategories = AloneSpaceModelParser.parseShipPartCategories(
+			Map<String, ShipPartCategoryTemplate> shipPartCategories = AloneSpaceModelParser.parseShipPartCategories(
 					tagShipPart, assetManager, actions );
 
 			return shipPartCategories;
 
 		}
 
-		private static Map<String, ShipPartCategory> parseShipPartCategories( Node tagShipPartCategory, AssetManager assetManager, HashMap<String, ActionTemplate> actions )
+		private static Map<String, ShipPartCategoryTemplate> parseShipPartCategories( Node tagShipPartCategory, AssetManager assetManager, HashMap<String, ActionTemplate> actions )
 		{
 			Node dShipPartCat = XMLHelper.getChildrenOfName( tagShipPartCategory, "default-ship-part-category" ).get( 0 );
 			String dCatName = XMLHelper.getAttrOfName( dShipPartCat, "name" );
@@ -130,7 +130,7 @@ public class AloneSpaceModel
 			dActionList.putAll( AloneSpaceModelParser.parseActions( XMLHelper.getChildrenOfName( dShipPart, "action" ),
 					actions ) );
 
-			Map<String, ShipPartCategory> shipPartCategories = new HashMap<String, ShipPartCategory>();
+			Map<String, ShipPartCategoryTemplate> shipPartCategories = new HashMap<String, ShipPartCategoryTemplate>();
 			for( Node shipPartCategoryTmp : XMLHelper.getChildrenOfName( tagShipPartCategory, "ship-part-category" ) )
 			{
 				String id = XMLHelper.getAttrOfName( shipPartCategoryTmp, "id" );
@@ -141,19 +141,20 @@ public class AloneSpaceModel
 				Boolean obligatory = tmp == null ? dObligatory : Utils.safeGet( Boolean.parseBoolean( tmp ),
 						dObligatory );
 
-				Map<String, ShipPart> shipParts = AloneSpaceModelParser.parseShipParts( XMLHelper.getChildrenOfName(
-						shipPartCategoryTmp, "ship-part" ), dName, dDesc, dImg, dActionList, actions, assetManager );
+				Map<String, ShipPartTemplate> shipParts = AloneSpaceModelParser.parseShipParts(
+						XMLHelper.getChildrenOfName( shipPartCategoryTmp, "ship-part" ), dName, dDesc, dImg,
+						dActionList, actions, assetManager );
 
-				shipPartCategories.put( id, new ShipPartCategory( id, name.replace( "{id}", id ), desc.replace( "{id}",
-						id ), AssetHelper.loadImage( img, assetManager ), shipParts, obligatory ) );
+				shipPartCategories.put( id, new ShipPartCategoryTemplate( id, name.replace( "{id}", id ), desc.replace(
+						"{id}", id ), AssetHelper.loadImage( img, assetManager ), shipParts, obligatory ) );
 			}
 
 			return shipPartCategories;
 		}
 
-		private static Map<String, ShipPart> parseShipParts( List<Node> tagShipParts, String dName, String dDesc, String dImg, HashMap<String, Action> dActionList, HashMap<String, ActionTemplate> actions, AssetManager assetManager )
+		private static Map<String, ShipPartTemplate> parseShipParts( List<Node> tagShipParts, String dName, String dDesc, String dImg, HashMap<String, Action> dActionList, HashMap<String, ActionTemplate> actions, AssetManager assetManager )
 		{
-			Map<String, ShipPart> shipParts = new HashMap<String, ShipPart>();
+			Map<String, ShipPartTemplate> shipParts = new HashMap<String, ShipPartTemplate>();
 			for( Node tmp : tagShipParts )
 			{
 				String id = XMLHelper.getAttrOfName( tmp, "id" );
@@ -187,7 +188,7 @@ public class AloneSpaceModel
 					img = dImg;
 				}
 
-				shipParts.put( id, new ShipPart( id, name.replace( "{id}", id ), desc.replace( "{id}", id ),
+				shipParts.put( id, new ShipPartTemplate( id, name.replace( "{id}", id ), desc.replace( "{id}", id ),
 						AssetHelper.loadImage( img.replace( "{id}", id ), assetManager ), shipPartActions.values() ) );
 
 			}
