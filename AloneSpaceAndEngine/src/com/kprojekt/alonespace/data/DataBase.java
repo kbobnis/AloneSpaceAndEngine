@@ -1,15 +1,16 @@
 package com.kprojekt.alonespace.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.google.gson.Gson;
 import com.kprojekt.alonespace.activities.android.PlayerProfile;
 
 /**
@@ -34,8 +35,13 @@ public class DataBase
 		{
 			SharedPreferences prefs = context.getSharedPreferences( DataBase.FILE_NAME, Context.MODE_PRIVATE );
 			String tmpStrProfiles = prefs.getString( DataBase.PROFILES_KEY, null );
+
+			Gson gson = new Gson();
+			PlayerProfile[] profiles = gson.fromJson( tmpStrProfiles, PlayerProfile[].class );
+
 			this.profiles = new ArrayList<PlayerProfile>();
-			this.profiles.add( new PlayerProfile( System.currentTimeMillis() ) );
+			//this.profiles.addAll( Arrays.asList( profiles ) );
+			//this.profiles.add( new PlayerProfile( 8765 ) );
 		}
 
 		return this.profiles;
@@ -54,13 +60,9 @@ public class DataBase
 	{
 		SharedPreferences prefs = context.getSharedPreferences( DataBase.FILE_NAME, Context.MODE_PRIVATE );
 		Editor edit = prefs.edit();
-		JSONArray jsonArray = new JSONArray();
-		for( PlayerProfile profile : profiles )
-		{
-			jsonArray.put( profile.toFile() );
-		}
-
-		edit.putString( DataBase.PROFILES_KEY, jsonArray.toString() );
+		Gson gson = new Gson();
+		String json = gson.toJson( profiles );
+		edit.putString( DataBase.PROFILES_KEY, json );
 		edit.commit();
 
 		this.profiles = profiles;
