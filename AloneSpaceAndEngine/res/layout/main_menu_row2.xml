@@ -20,5 +20,13 @@
         android:textColor="@color/blue_color"
         android:textSize="20sp"
         android:textStyle="bold" />
+    
+        <Button
+            android:id="@+id/main_menu_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
 
 </LinearLayout>

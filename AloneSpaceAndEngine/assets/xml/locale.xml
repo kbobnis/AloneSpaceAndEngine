@@ -32,6 +32,10 @@
 			<en value="Highscores" />
 			<pl value="Najwyższe wyniki" />
 		</sentence>
+		<sentence name="str.delete.profile" >
+			<en value="Remove profile" />
+			<pl value="Usuń profil" />
+		</sentence>
 		
 	</sentences>
 

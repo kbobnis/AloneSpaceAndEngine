@@ -35,13 +35,14 @@ public class DataBase
 		{
 			SharedPreferences prefs = context.getSharedPreferences( DataBase.FILE_NAME, Context.MODE_PRIVATE );
 			String tmpStrProfiles = prefs.getString( DataBase.PROFILES_KEY, null );
-
 			Gson gson = new Gson();
-			PlayerProfile[] profiles = gson.fromJson( tmpStrProfiles, PlayerProfile[].class );
-
 			this.profiles = new ArrayList<PlayerProfile>();
-			//this.profiles.addAll( Arrays.asList( profiles ) );
-			//this.profiles.add( new PlayerProfile( 8765 ) );
+
+			PlayerProfile[] profiles = gson.fromJson( tmpStrProfiles, PlayerProfile[].class );
+			if( profiles != null )
+			{
+				this.profiles.addAll( Arrays.asList( profiles ) );
+			}
 		}
 
 		return this.profiles;
@@ -66,5 +67,11 @@ public class DataBase
 		edit.commit();
 
 		this.profiles = profiles;
+	}
+
+	public void deleteProfile( PlayerProfile item )
+	{
+		this.profiles.remove( item );
+		this.saveProfiles( this.profiles );
 	}
 }

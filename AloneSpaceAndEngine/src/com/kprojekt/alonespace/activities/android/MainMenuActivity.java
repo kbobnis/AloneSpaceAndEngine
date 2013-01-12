@@ -27,6 +27,8 @@ import com.kprojekt.alonespace.data.Core;
 public class MainMenuActivity extends ListActivity
 {
 
+	private ProfilesAdapter profilesAdapter;
+
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
 	{
@@ -64,14 +66,16 @@ public class MainMenuActivity extends ListActivity
 			public void onClick( View arg0 )
 			{
 				Core.loggedProfile = Core.db.createProfile( System.currentTimeMillis() );
+				MainMenuActivity.this.profilesAdapter.notifyDataSetChanged();
+
 				Intent cityCamerasIntent = new Intent( MainMenuActivity.this, MinigameActivity.class );
 				MainMenuActivity.this.startActivityForResult( cityCamerasIntent, RESULT_CANCELED );
 			}
 		} );
 
 		List<PlayerProfile> profiles = Core.db.loadProfiles();
-		ProfilesAdapter cityArrayAdapter = new ProfilesAdapter( this, R.layout.main_menu_row2, profiles, this );
-		setListAdapter( cityArrayAdapter );
+		this.profilesAdapter = new ProfilesAdapter( this, R.layout.main_menu_row2, profiles, this );
+		setListAdapter( profilesAdapter );
 	}
 
 	@Override
@@ -96,24 +100,24 @@ public class MainMenuActivity extends ListActivity
 class ProfilesAdapter extends ArrayAdapter<PlayerProfile>
 {
 
-	private final List<PlayerProfile> cities;
+	private final List<PlayerProfile> profiles;
 	private TextView profileName;
 
-	public ProfilesAdapter( Context context, int textViewResourceId, List<PlayerProfile> cities,
+	public ProfilesAdapter( Context context, int textViewResourceId, List<PlayerProfile> profiles,
 			ListActivity oneCityActivity )
 	{
-		super( context, textViewResourceId, cities );
-		this.cities = cities;
+		super( context, textViewResourceId, profiles );
+		this.profiles = profiles;
 	}
 
 	public int getCount()
 	{
-		return this.cities.size();
+		return this.profiles.size();
 	}
 
 	public PlayerProfile getItem( int index )
 	{
-		return this.cities.get( index );
+		return this.profiles.get( index );
 	}
 
 	public View getView( int position, View convertView, ViewGroup parent )
@@ -129,6 +133,21 @@ class ProfilesAdapter extends ArrayAdapter<PlayerProfile>
 
 		profileName = (TextView)row.findViewById( R.id.main_menu_row2_textView );
 		profileName.setText( Core.locale.get( "str.created" ) + ": " + el.getCreated() );
+
+		Button deleteButton = (Button)row.findViewById( R.id.main_menu_delete );
+		deleteButton.setText( Core.locale.get( "str.delete.profile" ) );
+		final int pos = position;
+		deleteButton.setOnClickListener( new OnClickListener()
+		{
+			@Override
+			public void onClick( View arg0 )
+			{
+				PlayerProfile tmp = ProfilesAdapter.this.getItem( pos );
+				Core.db.deleteProfile( tmp );
+				ProfilesAdapter.this.remove( tmp );
+
+			}
+		} );
 
 		return row;
 	}
