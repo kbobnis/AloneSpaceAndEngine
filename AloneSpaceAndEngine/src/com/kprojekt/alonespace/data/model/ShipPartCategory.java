@@ -1,36 +1,39 @@
 package com.kprojekt.alonespace.data.model;
 
 import java.util.List;
+import java.util.Map;
 
 import android.graphics.drawable.Drawable;
 
 /**
  * @author Krzysiek Bobnis
- * @since 16:13:13 06-01-2013
+ * @since 15:31:55 06-01-2013
  */
-public class Ship
+public class ShipPartCategory
 {
 	private final String id;
 	private final transient String name;
 	private final transient String desc;
 	private final transient Drawable img;
-	private final List<ShipPart> parts;
+	private final transient boolean obligatory;
 
-	public Ship( String id, String name, String desc, Drawable img, List<ShipPart> collection )
+	public ShipPartCategory( String id, String name, String desc, Drawable img, boolean obligatory )
 	{
 		this.id = id;
 		this.name = name;
 		this.desc = desc;
 		this.img = img;
-		this.parts = collection;
+		this.obligatory = obligatory;
 	}
 
-	public Ship( Ship copy )
+	public boolean isObligatory()
 	{
-		this.id = copy.id;
-		this.name = copy.name;
-		this.desc = copy.desc;
-		this.img = copy.img;
-		this.parts = copy.parts;
+		return this.obligatory;
 	}
+
+	public String getId()
+	{
+		return this.id;
+	}
+
 }

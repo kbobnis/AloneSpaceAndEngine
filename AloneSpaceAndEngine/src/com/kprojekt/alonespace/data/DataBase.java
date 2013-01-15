@@ -9,8 +9,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.kprojekt.alonespace.activities.android.PlayerProfile;
 import com.kprojekt.alonespace.data.model.Ship;
+import com.kprojekt.alonespace.data.model.ShipPart;
 
 /**
  * @author Krzysiek Bobnis
@@ -50,7 +52,7 @@ public class DataBase
 	public PlayerProfile createProfile( long currentTimeMillis )
 	{
 		List<PlayerProfile> loadProfiles = this.loadProfiles();
-		PlayerProfile playerProfile = new PlayerProfile( currentTimeMillis, new Ship( Core.model.startingShip ) );
+		PlayerProfile playerProfile = new PlayerProfile( currentTimeMillis, new Ship( Core.model.getStartingShip() ) );
 		loadProfiles.add( playerProfile );
 		this.saveProfiles( loadProfiles );
 		return playerProfile;
@@ -60,7 +62,9 @@ public class DataBase
 	{
 		SharedPreferences prefs = context.getSharedPreferences( DataBase.FILE_NAME, Context.MODE_PRIVATE );
 		Editor edit = prefs.edit();
+
 		Gson gson = new Gson();
+
 		String json = gson.toJson( profiles );
 		edit.putString( DataBase.PROFILES_KEY, json );
 		edit.commit();

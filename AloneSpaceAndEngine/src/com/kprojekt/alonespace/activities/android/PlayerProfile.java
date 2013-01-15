@@ -22,4 +22,9 @@ public class PlayerProfile
 		return this.created;
 	}
 
+	public Ship getShip()
+	{
+		return this.ship;
+	}
+
 }

@@ -4,7 +4,7 @@
 	
 	<!-- by convention action with value over zero is positive -->
 	<action-templates >
-		<default-action-template img-positive="{id}.positive.png" img-negative="{id}.negative.png" name-negative="action-templates.{id}.negative.name" name-positive="action-templates.{id}.positive.name" desc-positive="action-templates.{id}.positive.desc" desc-negative="action-tempaltes.{id}.negative.desc"/>
+		<default-action-template img="action-template.{id}.png" name="action-template.{id}.name" desc="action-template.{id}.desc" />
 		<action-template id="deal_dmg" />
 		<action-template id="rotate" />
 		<action-template id="decelerate" />
@@ -88,22 +88,20 @@
 		<default-ship name="ship.{id}.name" desc="ship.{id}.desc" img="ship.{id}.png" />
 		<ship id="basic">
 			<part id="basic" category-id="engine" />
-			<part id="basic" category-id="brakes" />
-			<part id="basic" category-id="hangar" />
+			<part id="basic" category-id="hangar"/>
 			<part id="basic" category-id="rotation_engine" />
 			<part id="basic" category-id="repair_drones" />
 			<part id="basic" category-id="oil_tank" />
+			<part id="basic" category-id="brakes" />
 		</ship>
 		<ship id="basic_alien">
-			<part id="medium" category-id="engine" />
-			<part id="basic" category-id="brakes" />
-			<part id="basic" category-id="hangar" />
-			<part id="basic" category-id="rotation_engine" />
-			<part id="basic" category-id="repair_drones" />
-			<part id="basic" category-id="force_field" />  
+			<part id="medium" category-id="engine"/>
+			<part id="basic" category-id="hangar"/>
+			<part id="basic" category-id="rotation_engine"/>
 			<part id="basic" category-id="canon" />
-			<part id="basic" category-id="scanner" />
-			<part id="basic" category-id="oil_tank" /> 
+			<part id="basic" category-id="repair_drones" />
+			<part id="basic" category-id="oil_tank" />
+			<part id="basic" category-id="brakes" />
 		</ship>
 	</ships>
 	

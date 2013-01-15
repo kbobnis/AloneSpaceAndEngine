@@ -34,12 +34,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.kprojekt.alonespace.activities.android.MainMenuActivity;
 import com.kprojekt.alonespace.activities.android.ShipPartsActivity;
 import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.minigame.AsteroidsManager;
@@ -235,13 +233,9 @@ public class MinigameActivity extends SimpleBaseGameActivity
 		switch( keyCode )
 		{
 			case KeyEvent.KEYCODE_MENU:
-			{
-				this.toggleMenu();
-				break;
-			}
 			case KeyEvent.KEYCODE_BACK:
 			{
-				finish();
+				this.toggleMenu();
 				break;
 			}
 		}

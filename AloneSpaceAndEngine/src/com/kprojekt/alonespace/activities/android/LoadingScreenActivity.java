@@ -1,6 +1,13 @@
 package com.kprojekt.alonespace.activities.android;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.util.adt.list.SmartList;
+import org.w3c.dom.Node;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,7 +21,13 @@ import android.widget.ProgressBar;
 import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.DataBase;
+import com.kprojekt.alonespace.data.model.ActionTemplate;
 import com.kprojekt.alonespace.data.model.AloneSpaceModel;
+import com.kprojekt.alonespace.data.model.AloneSpaceParser;
+import com.kprojekt.alonespace.data.model.Ship;
+import com.kprojekt.alonespace.data.model.ShipPart;
+import com.kprojekt.alonespace.data.model.ShipPartCategory;
+import com.kprojekt.alonespace.utils.XMLHelper;
 import com.kprojekt.locale.Locale;
 
 /**
@@ -97,9 +110,46 @@ class XmlLoader extends AsyncTask<Void, String, Void>
 			AssetManager assetManager = this.context.getAssets();
 
 			Core.locale = new Locale( assetManager.open( this.localePath ) );
-			publishProgress( "" );
+			publishProgress( "loading model. parsing actions" );
 
-			Core.model = new AloneSpaceModel( assetManager.open( this.modelPath ), assetManager );
+			InputStream open = assetManager.open( this.modelPath );
+
+			Node model = AloneSpaceParser.getNodeFromInputStream( open, "alonespace-model" );
+
+			Node tagActions = XMLHelper.getChildrenOfName( model, "action-templates" ).get( 0 );
+			HashMap<String, ActionTemplate> actions = AloneSpaceParser.parseActionTemplates( tagActions, assetManager );
+
+			publishProgress( "parsing ship categories" );
+
+			Node tagShipPartCategories = XMLHelper.getChildrenOfName( model, "ship-part-categories" ).get( 0 );
+			HashMap<String, ShipPartCategory> shipPartCat = AloneSpaceParser.parseShipCategories(
+					tagShipPartCategories, assetManager, actions );
+
+			publishProgress( "parsing ship parts" );
+
+			HashMap<String, HashMap<String, ShipPart>> shipParts = AloneSpaceParser.parseShipPart2(
+					tagShipPartCategories, assetManager, actions, shipPartCat );
+
+			publishProgress( "parsing ships" );
+
+			Node tagShips = XMLHelper.getChildrenOfName( model, "ships" ).get( 0 );
+			HashMap<String, Ship> parseShips = AloneSpaceParser.parseShips( tagShips, shipParts, assetManager,
+					shipPartCat );
+
+			publishProgress( "parsing default ship" );
+			Ship startingShip = AloneSpaceParser.parseDefaultShip( tagShips, parseShips );
+
+			ArrayList<ShipPart> shipPartsFinal = new SmartList<ShipPart>();
+			for( HashMap<String, ShipPart> tmp : shipParts.values() )
+			{
+				for( ShipPart tmp2 : tmp.values() )
+				{
+					shipPartsFinal.add( tmp2 );
+				}
+			}
+
+			Core.model = new AloneSpaceModel( new ArrayList<ShipPartCategory>( shipPartCat.values() ), shipPartsFinal,
+					new ArrayList<Ship>( parseShips.values() ), startingShip );
 		}
 		catch( Exception e )
 		{

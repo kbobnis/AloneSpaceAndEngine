@@ -13,6 +13,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 import com.kprojekt.alonespace.R;
+import com.kprojekt.alonespace.data.Core;
+import com.kprojekt.alonespace.data.model.Ship;
 
 /**
  * @author Krzysiek Bobnis
@@ -28,7 +30,7 @@ public class ShipPartsActivity extends Activity
 
 		ExpandableListView mExpandableList = (ExpandableListView)findViewById( R.id.expandable_list );
 
-		mExpandableList.setAdapter( new ShipPartsAdapter( ShipPartsActivity.this ) );
+		mExpandableList.setAdapter( new ShipPartsAdapter( ShipPartsActivity.this, Core.loggedProfile.getShip() ) );
 
 	}
 }
@@ -37,37 +39,37 @@ class ShipPartsAdapter extends BaseExpandableListAdapter
 {
 
 	private LayoutInflater inflater;
-	private HashMap<String, ArrayList<String>> mParent;
+	private final Ship ship;
 
-	public ShipPartsAdapter( Context context )
+	public ShipPartsAdapter( Context context, Ship ship )
 	{
-		mParent = new HashMap<String, ArrayList<String>>();
+		this.ship = ship;
 		inflater = LayoutInflater.from( context );
 	}
 
 	@Override
 	public int getGroupCount()
 	{
-		return mParent.size();
+		return 0; //return this.ship.getCategories().size();
 	}
 
 	@Override
 	public int getChildrenCount( int i )
 	{
-		return mParent.get( i ).size();
+		return 0; //return this.ship.getCategories().get( i ).getParts().size();
 	}
 
 	//gets the title of each parent/group
 	public Object getGroup( int i )
 	{
-		return mParent.get( i ).get( i );
+		return new Object(); //return mParent.get( i ).get( i );
 	}
 
 	@Override
 	//gets the name of each item
 	public Object getChild( int i, int i1 )
 	{
-		return mParent.get( i ).get( i1 );
+		return new Object(); //return mParent.get( i ).get( i1 );
 	}
 
 	@Override
