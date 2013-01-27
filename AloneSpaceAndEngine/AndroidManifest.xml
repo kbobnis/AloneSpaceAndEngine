@@ -23,10 +23,9 @@
         <activity android:name="com.kprojekt.alonespace.activities.andengine.ShipPartsActivity" />
         <activity android:name="com.kprojekt.alonespace.activities.android.HighscoresActivity" />
         <activity android:name="com.kprojekt.alonespace.activities.android.PlayerMainMenuActivity" />
-        <activity android:name="com.kprojekt.alonespace.activities.android.ShipPartsActivity" />
         <activity android:name="com.kprojekt.alonespace.activities.android.MainMenuActivity" />
         <activity
-            android:name="com.kprojekt.alonespace.MyExpandableListActivity"
+            android:name="com.kprojekt.alonespace.activities.android.ShipPartsActivity"
             android:label="@string/title_activity_my_expandable_list" >
         </activity>
     </application>

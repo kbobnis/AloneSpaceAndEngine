@@ -38,7 +38,6 @@ import android.view.KeyEvent;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.kprojekt.alonespace.MyExpandableListActivity;
 import com.kprojekt.alonespace.activities.android.ShipPartsActivity;
 import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.minigame.AsteroidsManager;
@@ -236,7 +235,14 @@ public class MinigameActivity extends SimpleBaseGameActivity
 			case KeyEvent.KEYCODE_MENU:
 			case KeyEvent.KEYCODE_BACK:
 			{
-				this.toggleMenu();
+				if( this.menuOn )
+				{
+					finish();
+				}
+				else
+				{
+					this.toggleMenu();
+				}
 				break;
 			}
 		}
@@ -295,7 +301,7 @@ public class MinigameActivity extends SimpleBaseGameActivity
 				}
 				if( pMenuItem == showShipMenuItem )
 				{
-					Intent shipPartsActivity = new Intent( MinigameActivity.this, MyExpandableListActivity.class );
+					Intent shipPartsActivity = new Intent( MinigameActivity.this, ShipPartsActivity.class );
 					MinigameActivity.this.startActivityForResult( shipPartsActivity, RESULT_CANCELED );
 				}
 				if( pMenuItem == player2MenuItem )

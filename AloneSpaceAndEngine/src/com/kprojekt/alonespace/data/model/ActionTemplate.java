@@ -25,10 +25,16 @@ public class ActionTemplate
 		this.descPos = descPos;
 	}
 
-	public void fillBlanks( ActionTemplate action )
+	public void fillBlanks( AloneSpaceModel model )
 	{
-		this.imgPos = action.imgPos;
-		this.namePos = action.namePos;
-		this.descPos = action.descPos;
+		ActionTemplate actionTemplate = model.getActionTemplate( this.id );
+		this.imgPos = actionTemplate.imgPos;
+		this.namePos = actionTemplate.namePos;
+		this.descPos = actionTemplate.descPos;
+	}
+
+	public String getId()
+	{
+		return this.id;
 	}
 }

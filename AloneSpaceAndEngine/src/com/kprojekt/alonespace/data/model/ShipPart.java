@@ -2,8 +2,6 @@ package com.kprojekt.alonespace.data.model;
 
 import java.util.Collection;
 
-import com.kprojekt.alonespace.data.FillBlanksException;
-
 import android.graphics.drawable.Drawable;
 
 /**
@@ -30,19 +28,20 @@ public class ShipPart
 		this.category = category;
 	}
 
-	public void fillBlanks( ShipPart part ) throws FillBlanksException
+	public void fillBlanks( AloneSpaceModel model )
 	{
+		ShipPart part = model.getPart( this.getId(), this.getCategory().getId() );
 		this.name = part.name;
 		this.desc = part.desc;
 		this.img = part.img;
 		for( Action action : this.actions )
 		{
-			action.fillBlanks( part.getAction( action.getId() ) );
+			action.fillBlanks( model );
 		}
-		this.category.fillBlanks( part.category );
+		this.category.fillBlanks( model );
 	}
 
-	private Action getAction( String id2 ) throws FillBlanksException
+	private Action getAction( String id2 )
 	{
 		for( Action action : this.actions )
 		{
@@ -51,7 +50,7 @@ public class ShipPart
 				return action;
 			}
 		}
-		throw new FillBlanksException( "There is no action " + id2 + " in " + this.category.getId() + "/" + this.id );
+		throw new RuntimeException( "There is no action " + id2 + " in " + this.category.getId() + "/" + this.id );
 	}
 
 	public String getId()

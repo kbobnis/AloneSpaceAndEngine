@@ -18,8 +18,8 @@
 	</action-templates>
 	
 	<ship-part-categories>
-		<default-ship-part-category name="ship-part-category.{id}.name" desc="ship-part-category.{id}.desc" img="ship-part-category.{id}.png" obligatory="true">
-			<default-ship-part name="ship-part.{id}.name" desc="ship-part.{id}.desc" img="ship_part.{id}.png">
+		<default-ship-part-category name="ship-part.{catId}.name" desc="ship-part.{catId}.desc" img="ship-part.{catId}.png" obligatory="true">
+			<default-ship-part name="ship-part.{catId}.{id}.name" desc="ship-part.{catId}.{id}.desc" img="ship_part.{catId}.{id}.png">
 				<action id="more_space" value="-1" />
 				<action id="accelerate" value="-1" />
 				<action id="hit_points" value="5" />
@@ -91,6 +91,7 @@
 		<default-ship name="ship.{id}.name" desc="ship.{id}.desc" img="ship.{id}.png" />
 		<ship id="basic">
 			<part id="basic" category-id="engine" />
+			<part id="medium" category-id="engine" />
 			<part id="basic" category-id="hangar"/>
 			<part id="basic" category-id="rotation_engine" />
 			<part id="basic" category-id="repair_drones" />

@@ -149,7 +149,8 @@ class XmlLoader extends AsyncTask<Void, String, Void>
 			}
 
 			Core.model = new AloneSpaceModel( new ArrayList<ShipPartCategory>( shipPartCat.values() ), shipPartsFinal,
-					new ArrayList<Ship>( parseShips.values() ), startingShip );
+					new ArrayList<Ship>( parseShips.values() ), startingShip, new ArrayList<ActionTemplate>(
+							actions.values() ) );
 		}
 		catch( Exception e )
 		{

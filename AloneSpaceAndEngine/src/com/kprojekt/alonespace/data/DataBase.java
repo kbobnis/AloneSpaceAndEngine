@@ -45,7 +45,7 @@ public class DataBase
 				for( PlayerProfile playerProfile : profiles )
 				{
 					Ship ship = playerProfile.getShip();
-					ship.fillBlanks( Core.model.getShip( ship.getId() ) );
+					ship.fillBlanks( Core.model );
 				}
 				this.profiles.addAll( Arrays.asList( profiles ) );
 			}

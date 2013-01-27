@@ -1,10 +1,11 @@
 package com.kprojekt.alonespace.data.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.andengine.util.adt.list.SmartList;
-
-import com.kprojekt.alonespace.data.FillBlanksException;
 
 import android.graphics.drawable.Drawable;
 
@@ -38,46 +39,26 @@ public class Ship
 		this.parts = copy.parts;
 	}
 
-	public void fillBlanks( Ship ship )
+	public void fillBlanks( AloneSpaceModel model )
 	{
+		Ship ship = model.getShip( this.id );
 		this.name = ship.name;
 		this.desc = ship.desc;
 		this.img = ship.img;
 		for( ShipPart shipPart : this.parts )
 		{
-			try
-			{
-				String shipPartId = shipPart.getId();
-				ShipPart part = ship.getPart( shipPartId, shipPart.getCategory().getId() );
-				shipPart.fillBlanks( part );
-			}
-			catch( FillBlanksException e )
-			{
-				throw new RuntimeException( e + ": " + shipPart + ", " + this );
-			}
+			shipPart.fillBlanks( model );
 		}
-	}
-
-	private ShipPart getPart( String partId, String catId )
-	{
-		for( ShipPart shipPart : this.parts )
-		{
-			if( shipPart.getId().equals( id ) && shipPart.getCategory().getId().equals( catId ) )
-			{
-				return shipPart;
-			}
-		}
-		throw new RuntimeException( "There is no ship part " + catId + "/" + id + " in ship " + this );
 	}
 
 	public List<ShipPartCategory> getCategories()
 	{
-		List<ShipPartCategory> categories = new SmartList<ShipPartCategory>();
+		TreeMap<String, ShipPartCategory> categories = new TreeMap<String, ShipPartCategory>();
 		for( ShipPart part : this.parts )
 		{
-			categories.add( part.getCategory() );
+			categories.put( part.getCategory().getId(), part.getCategory() );
 		}
-		return categories;
+		return new ArrayList<ShipPartCategory>( categories.values() );
 	}
 
 	public List<ShipPart> getPartsOfCategory( String catId )

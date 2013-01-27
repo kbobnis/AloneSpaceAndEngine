@@ -38,8 +38,9 @@ public class ShipPartCategory
 		return this.name;
 	}
 
-	public void fillBlanks( ShipPartCategory category )
+	public void fillBlanks( AloneSpaceModel model )
 	{
+		ShipPartCategory category = model.getCategory( this.id );
 		this.name = category.name;
 		this.desc = category.desc;
 		this.img = category.img;

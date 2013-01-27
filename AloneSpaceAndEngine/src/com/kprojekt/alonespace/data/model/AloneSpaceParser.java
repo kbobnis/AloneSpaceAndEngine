@@ -70,7 +70,10 @@ public class AloneSpaceParser
 				tmpActions.putAll( AloneSpaceParser.parseActions( XMLHelper.getChildrenOfName( tagShipPart, "action" ),
 						actions ) );
 
-				ShipPart tmp = new ShipPart( id, dName, dDesc, AssetHelper.loadImage( dImg, assetManager ),
+				ShipPart tmp = new ShipPart( id, dName.replace( "{catId}", catId ).replace( "{id}", id ),
+						dDesc.replace( "{catId}", catId ).replace( "{id}", id ), AssetHelper.loadImage( dImg,
+								assetManager ),
+
 						tmpActions.values(), shipPartCats.get( catId ) );
 
 				HashMap<String, ShipPart> hashMap = shipParts.get( catId );
@@ -168,8 +171,8 @@ public class AloneSpaceParser
 			String tmp = XMLHelper.getAttrOfName( shipPartCategoryTmp, "obligatory" );
 			boolean obligatory = tmp == null ? dObligatory : Utils.safeGet( Boolean.parseBoolean( tmp ), dObligatory );
 
-			ShipPartCategory shipPartCategory = new ShipPartCategory( id, name.replace( "{id}", id ), desc.replace(
-					"{id}", id ), AssetHelper.loadImage( img, assetManager ), obligatory );
+			ShipPartCategory shipPartCategory = new ShipPartCategory( id, name.replace( "{catId}", id ), desc.replace(
+					"{catId}", id ), AssetHelper.loadImage( img, assetManager ), obligatory );
 
 			shipPartCategories.put( id, shipPartCategory );
 		}
