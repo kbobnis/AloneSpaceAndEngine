@@ -10,5 +10,8 @@
     <string name="button_highscores">Highscores</string>
     <string name="showspace">Show space</string>
     <string name="logoAloneSpace">Logo Alone Space</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_my_expandable_list">MyExpandableListActivity</string>
 
 </resources>

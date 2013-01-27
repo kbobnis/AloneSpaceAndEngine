@@ -1,14 +1,19 @@
 package com.kprojekt.alonespace.activities.android;
 
 import android.app.Activity;
+import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.data.Core;
@@ -18,7 +23,7 @@ import com.kprojekt.alonespace.data.model.ShipPartCategory;
 /**
  * @author Krzysiek Bobnis
  */
-public class ShipPartsActivity extends Activity
+public class ShipPartsActivity extends Activity implements OnChildClickListener, OnItemClickListener
 {
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
@@ -30,7 +35,24 @@ public class ShipPartsActivity extends Activity
 		ExpandableListView mExpandableList = (ExpandableListView)findViewById( R.id.expandable_list );
 
 		mExpandableList.setAdapter( new ShipPartsAdapter( ShipPartsActivity.this, Core.loggedProfile.getShip() ) );
+		mExpandableList.setClickable( true );
+		mExpandableList.setOnChildClickListener( this );
+		mExpandableList.setOnItemClickListener( this );
 	}
+
+	@Override
+	public boolean onChildClick( ExpandableListView parent, View v, int groupPosition, int childPosition, long id )
+	{
+		Toast.makeText( ShipPartsActivity.this, "dotknales " + groupPosition, Toast.LENGTH_SHORT ).show();
+		return false;
+	}
+
+	@Override
+	public void onItemClick( AdapterView<?> arg0, View arg1, int arg2, long arg3 )
+	{
+		Toast.makeText( this, "kliknales: " + arg2, Toast.LENGTH_SHORT ).show();
+	}
+
 }
 
 class ShipPartsAdapter extends BaseExpandableListAdapter

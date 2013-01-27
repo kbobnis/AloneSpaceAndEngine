@@ -10,21 +10,25 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name=".activities.android.LoadingScreenActivity"
+            android:name="com.kprojekt.alonespace.activities.android.LoadingScreenActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.andengine.ChooseSectorActivity" />
-        <activity android:name=".activities.andengine.MinigameActivity" />
+        <activity android:name="com.kprojekt.alonespace.activities.andengine.ChooseSectorActivity" />
+        <activity android:name="com.kprojekt.alonespace.activities.andengine.MinigameActivity" />
         <activity android:name="com.kprojekt.alonespace.activities.andengine.ShipPartsActivity" />
-        <activity android:name=".activities.android.HighscoresActivity" />
-        <activity android:name=".activities.android.PlayerMainMenuActivity" />
-        <activity android:name=".activities.android.ShipPartsActivity" />
-        <activity android:name=".activities.android.MainMenuActivity" />
-        
+        <activity android:name="com.kprojekt.alonespace.activities.android.HighscoresActivity" />
+        <activity android:name="com.kprojekt.alonespace.activities.android.PlayerMainMenuActivity" />
+        <activity android:name="com.kprojekt.alonespace.activities.android.ShipPartsActivity" />
+        <activity android:name="com.kprojekt.alonespace.activities.android.MainMenuActivity" />
+        <activity
+            android:name="com.kprojekt.alonespace.MyExpandableListActivity"
+            android:label="@string/title_activity_my_expandable_list" >
+        </activity>
     </application>
 
 </manifest>
