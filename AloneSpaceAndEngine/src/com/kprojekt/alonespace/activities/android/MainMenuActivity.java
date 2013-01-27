@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.activities.andengine.MinigameActivity;
 import com.kprojekt.alonespace.data.Core;
+import com.kprojekt.alonespace.data.PlayerProfile;
 
 /**
  * @author Krzysztof Bobnis 
@@ -92,6 +93,7 @@ public class MainMenuActivity extends ListActivity
 	@Override
 	protected void onListItemClick( ListView l, View v, int position, long id )
 	{
+		Core.loggedProfile = profilesAdapter.getItem( position - 1 );
 		Intent cityCamerasIntent = new Intent( this, MinigameActivity.class );
 		this.startActivityForResult( cityCamerasIntent, RESULT_CANCELED );
 	}

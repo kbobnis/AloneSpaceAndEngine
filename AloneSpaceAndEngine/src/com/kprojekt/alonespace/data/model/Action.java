@@ -13,4 +13,16 @@ public class Action extends ActionTemplate
 		super( template.id, template.imgPos, template.namePos, template.descPos );
 		this.value = value;
 	}
+
+	public String getId()
+	{
+		return this.id;
+	}
+
+	@Override
+	public String toString()
+	{
+		return this.id + ": " + this.value;
+	}
+
 }

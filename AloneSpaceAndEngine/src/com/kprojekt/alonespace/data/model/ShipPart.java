@@ -2,6 +2,8 @@ package com.kprojekt.alonespace.data.model;
 
 import java.util.Collection;
 
+import com.kprojekt.alonespace.data.FillBlanksException;
+
 import android.graphics.drawable.Drawable;
 
 /**
@@ -11,9 +13,9 @@ import android.graphics.drawable.Drawable;
 public class ShipPart
 {
 	private final String id;
-	private final transient String name;
-	private final transient String desc;
-	private final transient Drawable img;
+	private transient String name;
+	private transient String desc;
+	private transient Drawable img;
 	private final Collection<Action> actions;
 	private final ShipPartCategory category;
 
@@ -28,6 +30,30 @@ public class ShipPart
 		this.category = category;
 	}
 
+	public void fillBlanks( ShipPart part ) throws FillBlanksException
+	{
+		this.name = part.name;
+		this.desc = part.desc;
+		this.img = part.img;
+		for( Action action : this.actions )
+		{
+			action.fillBlanks( part.getAction( action.getId() ) );
+		}
+		this.category.fillBlanks( part.category );
+	}
+
+	private Action getAction( String id2 ) throws FillBlanksException
+	{
+		for( Action action : this.actions )
+		{
+			if( action.getId().equals( id2 ) )
+			{
+				return action;
+			}
+		}
+		throw new FillBlanksException( "There is no action " + id2 + " in " + this.category.getId() + "/" + this.id );
+	}
+
 	public String getId()
 	{
 		return this.id;
@@ -38,4 +64,19 @@ public class ShipPart
 		return this.category;
 	}
 
+	public String getName()
+	{
+		return this.name;
+	}
+
+	@Override
+	public String toString()
+	{
+		String actions = "";
+		for( Action action : this.actions )
+		{
+			actions += action + ", ";
+		}
+		return this.category.getId() + "/" + this.getId() + "(" + actions + ")";
+	}
 }

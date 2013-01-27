@@ -1,8 +1,5 @@
 package com.kprojekt.alonespace.activities.android;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -11,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.model.Ship;
+import com.kprojekt.alonespace.data.model.ShipPartCategory;
 
 /**
  * @author Krzysiek Bobnis
@@ -31,7 +30,6 @@ public class ShipPartsActivity extends Activity
 		ExpandableListView mExpandableList = (ExpandableListView)findViewById( R.id.expandable_list );
 
 		mExpandableList.setAdapter( new ShipPartsAdapter( ShipPartsActivity.this, Core.loggedProfile.getShip() ) );
-
 	}
 }
 
@@ -50,26 +48,26 @@ class ShipPartsAdapter extends BaseExpandableListAdapter
 	@Override
 	public int getGroupCount()
 	{
-		return 0; //return this.ship.getCategories().size();
+		return this.ship.getCategories().size();
 	}
 
 	@Override
 	public int getChildrenCount( int i )
 	{
-		return 0; //return this.ship.getCategories().get( i ).getParts().size();
+		return this.ship.getPartsOfCategory( this.ship.getCategories().get( i ).getId() ).size();
 	}
 
 	//gets the title of each parent/group
 	public Object getGroup( int i )
 	{
-		return new Object(); //return mParent.get( i ).get( i );
+		return this.ship.getCategories().get( i ).getName();
 	}
 
 	@Override
 	//gets the name of each item
-	public Object getChild( int i, int i1 )
+	public String getChild( int i, int i1 )
 	{
-		return new Object(); //return mParent.get( i ).get( i1 );
+		return this.ship.getPartsOfCategory( this.ship.getCategories().get( i ).getId() ).get( i1 ).getName();//return mParent.get( i ).get( i1 );
 	}
 
 	@Override
@@ -99,8 +97,10 @@ class ShipPartsAdapter extends BaseExpandableListAdapter
 			view = inflater.inflate( R.layout.list_item_parent, viewGroup, false );
 		}
 
-		//TextView textView = (TextView)view.findViewById( R.id.list_item_text_view );
-
+		TextView textView = (TextView)view.findViewById( R.id.parent_1_partName );
+		ShipPartCategory shipPartCategory = this.ship.getCategories().get( i );
+		String name = shipPartCategory.getName();
+		textView.setText( Core.locale.get( name ) );
 		return view;
 	}
 
@@ -110,10 +110,12 @@ class ShipPartsAdapter extends BaseExpandableListAdapter
 		if( view == null )
 		{
 			view = inflater.inflate( R.layout.list_item_child, viewGroup, false );
+
 		}
 
-		//TextView textView = (TextView)view.findViewById( R.id.list_item_text_child );
-		//textView.setText( mParent.get( i ).get( i1 ) );
+		//@+id/child_partName
+		TextView textView = (TextView)view.findViewById( R.id.child_partName );
+		textView.setText( this.ship.getPartsOfCategory( this.ship.getCategories().get( i ).getId() ).get( i1 ).getName() );
 
 		return view;
 	}
@@ -123,4 +125,5 @@ class ShipPartsAdapter extends BaseExpandableListAdapter
 	{
 		return true;
 	}
+
 }

@@ -4,11 +4,8 @@ import java.util.Random;
 
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
-import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.font.IFont;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import com.kprojekt.alonespace.activities.android.PlayerProfile;
 import com.kprojekt.alonespace.data.model.AloneSpaceModel;
 import com.kprojekt.locale.Locale;
 

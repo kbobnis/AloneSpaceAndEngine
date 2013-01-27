@@ -50,6 +50,9 @@
 			<ship-part id="basic" >
 				<action id="deal_dmg" value="1"/>
 			</ship-part>
+			<ship-part id="alien" >
+				<action id="deal_dmg" value="4"/>
+			</ship-part>			
 		</ship-part-category>
 
 		<ship-part-category id="brakes">
@@ -93,6 +96,7 @@
 			<part id="basic" category-id="repair_drones" />
 			<part id="basic" category-id="oil_tank" />
 			<part id="basic" category-id="brakes" />
+			<part id="alien" category-id="canon" />
 		</ship>
 		<ship id="basic_alien">
 			<part id="medium" category-id="engine"/>

@@ -1,8 +1,5 @@
 package com.kprojekt.alonespace.data.model;
 
-import java.util.List;
-import java.util.Map;
-
 import android.graphics.drawable.Drawable;
 
 /**
@@ -12,10 +9,10 @@ import android.graphics.drawable.Drawable;
 public class ShipPartCategory
 {
 	private final String id;
-	private final transient String name;
-	private final transient String desc;
-	private final transient Drawable img;
-	private final transient boolean obligatory;
+	private transient String name;
+	private transient String desc;
+	private transient Drawable img;
+	private transient boolean obligatory;
 
 	public ShipPartCategory( String id, String name, String desc, Drawable img, boolean obligatory )
 	{
@@ -34,6 +31,19 @@ public class ShipPartCategory
 	public String getId()
 	{
 		return this.id;
+	}
+
+	public String getName()
+	{
+		return this.name;
+	}
+
+	public void fillBlanks( ShipPartCategory category )
+	{
+		this.name = category.name;
+		this.desc = category.desc;
+		this.img = category.img;
+		this.obligatory = category.obligatory;
 	}
 
 }

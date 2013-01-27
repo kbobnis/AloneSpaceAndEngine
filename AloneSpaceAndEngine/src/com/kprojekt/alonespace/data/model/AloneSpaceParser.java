@@ -104,7 +104,17 @@ public class AloneSpaceParser
 			{
 				String partId = XMLHelper.getAttrOfName( tagPart, "id" );
 				String categoryId = XMLHelper.getAttrOfName( tagPart, "category-id" );
-				parts.add( shipParts.get( categoryId ).get( partId ) );
+				HashMap<String, ShipPart> category = shipParts.get( categoryId );
+				if( category == null )
+				{
+					throw new RuntimeException( "THere is no ship part of category " + categoryId );
+				}
+				ShipPart shipPart = category.get( partId );
+				if( shipPart == null )
+				{
+					throw new RuntimeException( "There is no ship part " + shipPart + " in category " + categoryId );
+				}
+				parts.add( shipPart );
 			}
 
 			//checking if ship contains all the obligatory categories

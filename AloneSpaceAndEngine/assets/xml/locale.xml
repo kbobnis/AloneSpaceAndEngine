@@ -48,6 +48,10 @@
 			<en value="Main menu" />
 			<pl value="Menu główne" />
 		</sentence>
+		<sentence name="ship-part-category.engine.name" >
+			<en value="Engine" />
+			<pl value="Silnik" />
+		</sentence>
 		
 	</sentences>
 

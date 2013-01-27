@@ -10,7 +10,6 @@ import android.content.SharedPreferences.Editor;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.kprojekt.alonespace.activities.android.PlayerProfile;
 import com.kprojekt.alonespace.data.model.Ship;
 import com.kprojekt.alonespace.data.model.ShipPart;
 
@@ -40,8 +39,14 @@ public class DataBase
 			this.profiles = new ArrayList<PlayerProfile>();
 
 			PlayerProfile[] profiles = gson.fromJson( tmpStrProfiles, PlayerProfile[].class );
+
 			if( profiles != null )
 			{
+				for( PlayerProfile playerProfile : profiles )
+				{
+					Ship ship = playerProfile.getShip();
+					ship.fillBlanks( Core.model.getShip( ship.getId() ) );
+				}
 				this.profiles.addAll( Arrays.asList( profiles ) );
 			}
 		}

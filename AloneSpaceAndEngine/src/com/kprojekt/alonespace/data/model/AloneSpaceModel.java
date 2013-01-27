@@ -1,6 +1,7 @@
 package com.kprojekt.alonespace.data.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Krzysiek Bobnis
@@ -27,4 +28,20 @@ public class AloneSpaceModel
 		return this.startingShip;
 	}
 
+	public List<ShipPartCategory> getCategories()
+	{
+		return this.allShipPartCategories;
+	}
+
+	public Ship getShip( String id )
+	{
+		for( Ship ship : this.ships )
+		{
+			if( ship.getId().equals( id ) )
+			{
+				return ship;
+			}
+		}
+		throw new RuntimeException( "There is no ship with id " + id );
+	}
 }
