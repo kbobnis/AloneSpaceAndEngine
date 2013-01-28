@@ -2,6 +2,7 @@ package com.kprojekt.alonespace.data.model;
 
 import java.util.Collection;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 /**
@@ -78,4 +79,10 @@ public class ShipPart
 		}
 		return this.category.getId() + "/" + this.getId() + "(" + actions + ")";
 	}
+
+	public Drawable getBitmap()
+	{
+		return this.img;
+	}
+
 }

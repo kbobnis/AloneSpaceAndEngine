@@ -56,6 +56,10 @@
 			<en value="Basic engine" />
 			<pl value="Podstawowy silnik" />
 		</sentence>
+		<sentence name="no.shipPart.equipped" >
+			<en value="Empty spot" />
+			<pl value="Wolne miejsce" />
+		</sentence>
 		
 	</sentences>
 

@@ -17,7 +17,7 @@ public class AssetHelper
 	{
 		try
 		{
-			InputStream ims = assetManager.open( "avatar.jpg" );
+			InputStream ims = assetManager.open( name );
 			return Drawable.createFromStream( ims, null );
 		}
 		catch( IOException ex )

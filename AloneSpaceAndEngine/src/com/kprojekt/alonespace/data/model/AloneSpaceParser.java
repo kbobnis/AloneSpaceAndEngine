@@ -14,6 +14,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 
 import com.kprojekt.alonespace.utils.AssetHelper;
 import com.kprojekt.alonespace.utils.Utils;
@@ -70,11 +71,12 @@ public class AloneSpaceParser
 				tmpActions.putAll( AloneSpaceParser.parseActions( XMLHelper.getChildrenOfName( tagShipPart, "action" ),
 						actions ) );
 
-				ShipPart tmp = new ShipPart( id, dName.replace( "{catId}", catId ).replace( "{id}", id ),
-						dDesc.replace( "{catId}", catId ).replace( "{id}", id ), AssetHelper.loadImage( dImg,
-								assetManager ),
+				String imgPath = dImg.replace( "{catId}", catId ).replace( "{id}", id );
+				Drawable loadImage = AssetHelper.loadImage( imgPath, assetManager );
 
-						tmpActions.values(), shipPartCats.get( catId ) );
+				ShipPart tmp = new ShipPart( id, dName.replace( "{catId}", catId ).replace( "{id}", id ),
+						dDesc.replace( "{catId}", catId ).replace( "{id}", id ), loadImage, tmpActions.values(),
+						shipPartCats.get( catId ) );
 
 				HashMap<String, ShipPart> hashMap = shipParts.get( catId );
 				hashMap.put( id, tmp );

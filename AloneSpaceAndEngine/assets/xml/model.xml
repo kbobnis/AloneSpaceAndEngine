@@ -18,8 +18,8 @@
 	</action-templates>
 	
 	<ship-part-categories>
-		<default-ship-part-category name="ship-part.{catId}.name" desc="ship-part.{catId}.desc" img="ship-part.{catId}.png" obligatory="true">
-			<default-ship-part name="ship-part.{catId}.{id}.name" desc="ship-part.{catId}.{id}.desc" img="ship_part.{catId}.{id}.png">
+		<default-ship-part-category name="ship-part.{catId}.name" desc="ship-part.{catId}.desc" img="gfx/ship-part.{catId}.png" obligatory="true">
+			<default-ship-part name="ship-part.{catId}.{id}.name" desc="ship-part.{catId}.{id}.desc" img="gfx/ship-part.{catId}.{id}.png">
 				<action id="more_space" value="-1" />
 				<action id="accelerate" value="-1" />
 				<action id="hit_points" value="5" />

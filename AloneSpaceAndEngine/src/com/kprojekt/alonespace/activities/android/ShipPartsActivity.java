@@ -1,10 +1,16 @@
 package com.kprojekt.alonespace.activities.android;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.ExpandableListActivity;
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,13 +18,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kprojekt.alonespace.R;
 import com.kprojekt.alonespace.data.Core;
+import com.kprojekt.alonespace.data.model.Ship;
 import com.kprojekt.alonespace.data.model.ShipPart;
 import com.kprojekt.alonespace.data.model.ShipPartCategory;
 
@@ -34,20 +41,31 @@ public class ShipPartsActivity extends ExpandableListActivity
 		expandableListView.setGroupIndicator( null );
 		expandableListView.setClickable( true );
 
-		ArrayList<String> groupItems = new ArrayList<String>();
-		ArrayList<ArrayList<String>> childItems = new ArrayList<ArrayList<String>>();
-		for( ShipPartCategory cat : Core.loggedProfile.getShip().getCategories() )
+		List<ShipPartCategory> groupItems = Core.loggedProfile.getShip().getCategories();
+		ArrayList<ArrayList<ShipPart>> childItems = new ArrayList<ArrayList<ShipPart>>();
+		for( ShipPartCategory cat : groupItems )
 		{
-			groupItems.add( cat.getName() );
-			ArrayList<String> rzecz = new ArrayList<String>();
+			ArrayList<ShipPart> rzecz = new ArrayList<ShipPart>();
 			for( ShipPart shipPart : Core.loggedProfile.getShip().getPartsOfCategory( cat.getId() ) )
 			{
-				rzecz.add( shipPart.getName() );
+				rzecz.add( shipPart );
 			}
 			childItems.add( rzecz );
 		}
+		AssetManager assets = getAssets();
+		Bitmap categoryEmptyBmp = null;
+		try
+		{
+			InputStream open = assets.open( "gfx/category_empty.png" );
+			categoryEmptyBmp = BitmapFactory.decodeStream( open );
+		}
+		catch( IOException e )
+		{
+			// TODO @Krzysiek logger
+			e.printStackTrace();
+		}
 
-		NewAdapter newAdapter = new NewAdapter( groupItems, childItems );
+		NewAdapter newAdapter = new NewAdapter( groupItems, childItems, Core.loggedProfile.getShip(), categoryEmptyBmp );
 		newAdapter.setInflater( (LayoutInflater)getSystemService( Context.LAYOUT_INFLATER_SERVICE ), this );
 		expandableListView.setAdapter( newAdapter );
 		expandableListView.setOnChildClickListener( this );
@@ -74,15 +92,21 @@ public class ShipPartsActivity extends ExpandableListActivity
 class NewAdapter extends BaseExpandableListAdapter
 {
 
-	public ArrayList<String> groupItem, tempChild;
-	public ArrayList<ArrayList<String>> Childtem;
+	public List<ShipPartCategory> groupItem;
+	public ArrayList<ShipPart> tempChild;
+	public ArrayList<ArrayList<ShipPart>> Childtem;
 	public LayoutInflater minflater;
 	public Activity activity;
+	private final Ship ship;
+	private final Bitmap categoryEmptyBmp;
 
-	public NewAdapter( ArrayList<String> grList, ArrayList<ArrayList<String>> childItem )
+	public NewAdapter( List<ShipPartCategory> grList, ArrayList<ArrayList<ShipPart>> childItem, Ship ship,
+			Bitmap categoryEmptyBmp )
 	{
 		groupItem = grList;
 		this.Childtem = childItem;
+		this.ship = ship;
+		this.categoryEmptyBmp = categoryEmptyBmp;
 	}
 
 	public void setInflater( LayoutInflater mInflater, Activity act )
@@ -106,20 +130,26 @@ class NewAdapter extends BaseExpandableListAdapter
 	@Override
 	public View getChildView( int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent )
 	{
-		tempChild = (ArrayList<String>)Childtem.get( groupPosition );
+		tempChild = Childtem.get( groupPosition );
 		TextView text = null;
 		if( convertView == null )
 		{
 			convertView = minflater.inflate( R.layout.mychildgrouprow, null );
 		}
 		text = (TextView)convertView.findViewById( R.id.textView1 );
-		text.setText( Core.locale.get( tempChild.get( childPosition ) ) );
+		final ShipPart shipPart = tempChild.get( childPosition );
+		text.setText( Core.locale.get( shipPart.getName() ) );
+
+		ImageView imageView = (ImageView)convertView.findViewById( R.id.childImage );
+		imageView.setImageDrawable( shipPart.getBitmap() );
+
 		convertView.setOnClickListener( new OnClickListener()
 		{
 			@Override
 			public void onClick( View v )
 			{
-				Toast.makeText( activity, tempChild.get( childPosition ), Toast.LENGTH_SHORT ).show();
+				ship.equipPart( shipPart );
+				notifyDataSetChanged();
 			}
 		} );
 		return convertView;
@@ -128,7 +158,7 @@ class NewAdapter extends BaseExpandableListAdapter
 	@Override
 	public int getChildrenCount( int groupPosition )
 	{
-		return ((ArrayList<String>)Childtem.get( groupPosition )).size();
+		return Childtem.get( groupPosition ).size();
 	}
 
 	@Override
@@ -168,8 +198,27 @@ class NewAdapter extends BaseExpandableListAdapter
 		{
 			convertView = minflater.inflate( R.layout.mygrouprow, null );
 		}
-		((CheckedTextView)convertView).setText( Core.locale.get( groupItem.get( groupPosition ) ) );
-		((CheckedTextView)convertView).setChecked( isExpanded );
+		TextView v = (TextView)convertView.findViewById( R.id.checkedTextView );
+
+		ShipPartCategory shipPartCategory = groupItem.get( groupPosition );
+
+		v.setText( Core.locale.get( shipPartCategory.getName() ) );
+
+		TextView tv = (TextView)(convertView.findViewById( R.id.textView12 ));
+		ImageView emptyPart = (ImageView)(convertView.findViewById( R.id.childImage ));
+
+		ShipPart eq = this.ship.getEquippedPartOfCategory( shipPartCategory );
+		if( eq != null )
+		{
+			tv.setText( Core.locale.get( eq.getName() ) );
+			emptyPart.setImageDrawable( eq.getBitmap() );
+		}
+		else
+		{
+			tv.setText( Core.locale.get( "no.shipPart.equipped" ) );
+			emptyPart.setImageBitmap( categoryEmptyBmp );
+		}
+
 		return convertView;
 	}
 

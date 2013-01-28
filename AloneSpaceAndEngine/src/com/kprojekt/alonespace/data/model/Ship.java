@@ -3,7 +3,6 @@ package com.kprojekt.alonespace.data.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import org.andengine.util.adt.list.SmartList;
 
@@ -20,6 +19,7 @@ public class Ship
 	private transient String desc;
 	private transient Drawable img;
 	private List<ShipPart> parts;
+	private TreeMap<String, ShipPart> equippedParts = new TreeMap<String, ShipPart>();
 
 	public Ship( String id, String name, String desc, Drawable img, List<ShipPart> collection )
 	{
@@ -89,4 +89,24 @@ public class Ship
 		}
 		return this.id + "(ship), " + parts;
 	}
+
+	public ShipPart getEquippedPartOfCategory( ShipPartCategory cat )
+	{
+		if( this.equippedParts == null )
+		{
+			this.equippedParts = new TreeMap<String, ShipPart>();
+		}
+		return this.equippedParts.get( cat.getId() );
+	}
+
+	public void equipPart( ShipPart shipPart )
+	{
+		ShipPart shipPart2 = this.equippedParts.get( shipPart.getCategory().getId() );
+		if( shipPart2 != null )
+		{
+			this.equippedParts.remove( shipPart.getCategory().getId() );
+		}
+		this.equippedParts.put( shipPart.getCategory().getId(), shipPart );
+	}
+
 }
