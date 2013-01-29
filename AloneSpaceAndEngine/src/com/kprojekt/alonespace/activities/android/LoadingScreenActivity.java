@@ -3,7 +3,6 @@ package com.kprojekt.alonespace.activities.android;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.util.adt.list.SmartList;

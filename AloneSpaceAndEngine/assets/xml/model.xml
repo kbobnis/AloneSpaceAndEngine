@@ -91,7 +91,6 @@
 		<default-ship name="ship.{id}.name" desc="ship.{id}.desc" img="ship.{id}.png" />
 		<ship id="basic">
 			<part id="basic" category-id="engine" />
-			<part id="medium" category-id="engine" />
 			<part id="basic" category-id="hangar"/>
 			<part id="basic" category-id="rotation_engine" />
 			<part id="basic" category-id="repair_drones" />

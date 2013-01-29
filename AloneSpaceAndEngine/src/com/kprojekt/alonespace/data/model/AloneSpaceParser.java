@@ -105,10 +105,18 @@ public class AloneSpaceParser
 			}
 
 			List<ShipPart> parts = new ArrayList<ShipPart>();
+			TreeSet<String> partCategories = new TreeSet<String>();
+
 			for( Node tagPart : XMLHelper.getChildrenOfName( tmp, "part" ) )
 			{
 				String partId = XMLHelper.getAttrOfName( tagPart, "id" );
 				String categoryId = XMLHelper.getAttrOfName( tagPart, "category-id" );
+				if( !partCategories.add( categoryId ) )
+				{
+					throw new XMLLoadException(
+							"Ship from model can have only one part of each category. Duplicate category: "
+									+ categoryId + " in ship " + id );
+				}
 				HashMap<String, ShipPart> category = shipParts.get( categoryId );
 				if( category == null )
 				{
