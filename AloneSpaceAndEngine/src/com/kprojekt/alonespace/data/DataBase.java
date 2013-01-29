@@ -9,9 +9,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.kprojekt.alonespace.data.model.Ship;
-import com.kprojekt.alonespace.data.model.ShipPart;
 
 /**
  * @author Krzysiek Bobnis

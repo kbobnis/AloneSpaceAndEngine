@@ -28,6 +28,11 @@ public class Ship
 		this.desc = desc;
 		this.img = img;
 		this.allParts = collection;
+		for( ShipPartCategory shipPartCategory : this.getCategories() )
+		{
+			ShipPart shipPart = this.getPartsOfCategory( shipPartCategory ).get( 0 );
+			this.equipPart( shipPart );
+		}
 	}
 
 	public Ship( Ship copy )
@@ -37,6 +42,7 @@ public class Ship
 		this.desc = copy.desc;
 		this.img = copy.img;
 		this.allParts = copy.allParts;
+		this.equippedParts = copy.equippedParts;
 	}
 
 	public void fillBlanks( AloneSpaceModel model )
@@ -65,12 +71,12 @@ public class Ship
 		return new ArrayList<ShipPartCategory>( categories.values() );
 	}
 
-	public List<ShipPart> getPartsOfCategory( String catId )
+	public List<ShipPart> getPartsOfCategory( ShipPartCategory cat )
 	{
 		List<ShipPart> tmp = new SmartList<ShipPart>();
 		for( ShipPart part : this.allParts )
 		{
-			if( part.getCategory().getId() == catId )
+			if( part.getCategory() == cat )
 			{
 				tmp.add( part );
 			}

@@ -1,7 +1,5 @@
 package com.kprojekt.alonespace.data.model;
 
-import java.util.Comparator;
-
 import android.graphics.drawable.Drawable;
 
 /**
@@ -53,6 +51,16 @@ public class ShipPartCategory implements Comparable<ShipPartCategory>
 	public int compareTo( ShipPartCategory two )
 	{
 		return id.equals( two.id ) ? 0 : 1;
+	}
+
+	@Override
+	public boolean equals( Object o )
+	{
+		if( o instanceof ShipPartCategory )
+		{
+			return this.compareTo( (ShipPartCategory)o ) == 0;
+		}
+		return super.equals( o );
 	}
 
 	@Override

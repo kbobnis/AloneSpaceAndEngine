@@ -46,7 +46,7 @@ public class ShipPartsActivity extends ExpandableListActivity
 		for( ShipPartCategory cat : groupItems )
 		{
 			ArrayList<ShipPart> rzecz = new ArrayList<ShipPart>();
-			for( ShipPart shipPart : Core.loggedProfile.getShip().getPartsOfCategory( cat.getId() ) )
+			for( ShipPart shipPart : Core.loggedProfile.getShip().getPartsOfCategory( cat ) )
 			{
 				rzecz.add( shipPart );
 			}

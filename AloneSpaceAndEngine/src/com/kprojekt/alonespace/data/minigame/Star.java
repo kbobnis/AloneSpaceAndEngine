@@ -5,7 +5,6 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.list.SmartList;
 
-import com.badlogic.gdx.physics.box2d.Body;
 import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.minigame.icons.Icon;
 

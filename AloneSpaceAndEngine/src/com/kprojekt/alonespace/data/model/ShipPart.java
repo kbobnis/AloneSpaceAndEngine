@@ -41,18 +41,6 @@ public class ShipPart
 		this.category.fillBlanks( model );
 	}
 
-	private Action getAction( String id2 )
-	{
-		for( Action action : this.actions )
-		{
-			if( action.getId().equals( id2 ) )
-			{
-				return action;
-			}
-		}
-		throw new RuntimeException( "There is no action " + id2 + " in " + this.category.getId() + "/" + this.id );
-	}
-
 	public String getId()
 	{
 		return this.id;
