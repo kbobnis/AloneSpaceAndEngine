@@ -18,8 +18,8 @@ public class Ship
 	private transient String name;
 	private transient String desc;
 	private transient Drawable img;
-	private List<ShipPart> parts;
-	private TreeMap<String, ShipPart> equippedParts = new TreeMap<String, ShipPart>();
+	private List<ShipPart> allParts;
+	private List<ShipPart> equippedParts = new ArrayList<ShipPart>();
 
 	public Ship( String id, String name, String desc, Drawable img, List<ShipPart> collection )
 	{
@@ -27,7 +27,7 @@ public class Ship
 		this.name = name;
 		this.desc = desc;
 		this.img = img;
-		this.parts = collection;
+		this.allParts = collection;
 	}
 
 	public Ship( Ship copy )
@@ -36,7 +36,7 @@ public class Ship
 		this.name = copy.name;
 		this.desc = copy.desc;
 		this.img = copy.img;
-		this.parts = copy.parts;
+		this.allParts = copy.allParts;
 	}
 
 	public void fillBlanks( AloneSpaceModel model )
@@ -45,7 +45,11 @@ public class Ship
 		this.name = ship.name;
 		this.desc = ship.desc;
 		this.img = ship.img;
-		for( ShipPart shipPart : this.parts )
+		for( ShipPart shipPart : this.allParts )
+		{
+			shipPart.fillBlanks( model );
+		}
+		for( ShipPart shipPart : this.equippedParts )
 		{
 			shipPart.fillBlanks( model );
 		}
@@ -54,7 +58,7 @@ public class Ship
 	public List<ShipPartCategory> getCategories()
 	{
 		TreeMap<String, ShipPartCategory> categories = new TreeMap<String, ShipPartCategory>();
-		for( ShipPart part : this.parts )
+		for( ShipPart part : this.allParts )
 		{
 			categories.put( part.getCategory().getId(), part.getCategory() );
 		}
@@ -64,7 +68,7 @@ public class Ship
 	public List<ShipPart> getPartsOfCategory( String catId )
 	{
 		List<ShipPart> tmp = new SmartList<ShipPart>();
-		for( ShipPart part : this.parts )
+		for( ShipPart part : this.allParts )
 		{
 			if( part.getCategory().getId() == catId )
 			{
@@ -83,7 +87,7 @@ public class Ship
 	public String toString()
 	{
 		String parts = "";
-		for( ShipPart shipPart : this.parts )
+		for( ShipPart shipPart : this.allParts )
 		{
 			parts += shipPart + ", ";
 		}
@@ -94,19 +98,27 @@ public class Ship
 	{
 		if( this.equippedParts == null )
 		{
-			this.equippedParts = new TreeMap<String, ShipPart>();
+			this.equippedParts = new ArrayList<ShipPart>();
 		}
-		return this.equippedParts.get( cat.getId() );
+		for( ShipPart part : this.equippedParts )
+		{
+			if( part.getCategory().compareTo( cat ) == 0 )
+			{
+				return part;
+			}
+		}
+		return null;
 	}
 
 	public void equipPart( ShipPart shipPart )
 	{
-		ShipPart shipPart2 = this.equippedParts.get( shipPart.getCategory().getId() );
-		if( shipPart2 != null )
+		ShipPart equippedPartOfCategory = this.getEquippedPartOfCategory( shipPart.getCategory() );
+		if( equippedPartOfCategory != null )
 		{
-			this.equippedParts.remove( shipPart.getCategory().getId() );
+			this.equippedParts.remove( equippedPartOfCategory );
 		}
-		this.equippedParts.put( shipPart.getCategory().getId(), shipPart );
+
+		this.equippedParts.add( shipPart );
 	}
 
 }

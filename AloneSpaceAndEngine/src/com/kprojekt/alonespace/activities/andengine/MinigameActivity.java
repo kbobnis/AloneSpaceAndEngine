@@ -229,14 +229,18 @@ public class MinigameActivity extends SimpleBaseGameActivity
 	@Override
 	public boolean onKeyDown( int keyCode, KeyEvent event )
 	{
-		System.out.println( keyCode );
 		switch( keyCode )
 		{
 			case KeyEvent.KEYCODE_MENU:
+			{
+				this.toggleMenu();
+				break;
+			}
 			case KeyEvent.KEYCODE_BACK:
 			{
 				if( this.menuOn )
 				{
+					Core.db.saveProfiles();
 					finish();
 				}
 				else

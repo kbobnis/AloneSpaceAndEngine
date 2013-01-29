@@ -82,4 +82,9 @@ public class DataBase
 		this.profiles.remove( item );
 		this.saveProfiles( this.profiles );
 	}
+
+	public void saveProfiles()
+	{
+		this.saveProfiles( this.profiles );
+	}
 }
