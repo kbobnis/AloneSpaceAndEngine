@@ -5,21 +5,21 @@
 	<!-- by convention action with value over zero is positive -->
 	<action-templates >
 		<default-action-template img="action-template.{id}.png" name="action-template.{id}.name" desc="action-template.{id}.desc" />
-		<action-template id="deal_dmg" />
 		<action-template id="rotate" />
 		<action-template id="decelerate" />
 		<action-template id="accelerate" />
-		<action-template id="resist_dmg" />
+		<action-template id="oil_tank" />
 		<action-template id="scan_radius" />
 		<action-template id="more_space" />
+		<action-template id="resist_dmg" />
 		<action-template id="repair" />
 		<action-template id="hit_points" />
-		<action-template id="oil_tank" />
+		<action-template id="deal_dmg" />
 	</action-templates>
 	
 	<ship-part-categories>
 		<default-ship-part-category name="ship-part.{catId}.name" desc="ship-part.{catId}.desc" img="gfx/ship-part.{catId}.png" obligatory="true">
-			<default-ship-part name="ship-part.{catId}.{id}.name" desc="ship-part.{catId}.{id}.desc" img="gfx/ship-part.{catId}.{id}.png">
+			<default-ship-part name="ship-part.{catId}.{id}.name" desc="ship-part.{catId}.{id}.desc" img="gfx/ship-part.{catId}.{id}.png" imgDefault="gfx/ship-part.default.png">
 				<action id="more_space" value="-1" />
 				<action id="accelerate" value="-1" />
 				<action id="hit_points" value="5" />

@@ -49,6 +49,7 @@ public class AloneSpaceParser
 		String dName = XMLHelper.getAttrOfName( dShipPart, "name" );
 		String dDesc = XMLHelper.getAttrOfName( dShipPart, "desc" );
 		String dImg = XMLHelper.getAttrOfName( dShipPart, "img" );
+		String dImgDefault = XMLHelper.getAttrOfName( dShipPart, "imgDefault" );
 
 		Map<String, Action> actionList = AloneSpaceParser.parseActions( XMLHelper.getChildrenOfName( dShipPart,
 				"action" ), actions );
@@ -73,10 +74,19 @@ public class AloneSpaceParser
 
 				String imgPath = dImg.replace( "{catId}", catId ).replace( "{id}", id );
 				Drawable loadImage = AssetHelper.loadImage( imgPath, assetManager );
+				if( loadImage == null )
+				{
+					imgPath = dImgDefault;
+					loadImage = AssetHelper.loadImage( imgPath, assetManager );
+				}
+				else
+				{
+					System.out.println( "nie jest nullem: " + imgPath );
+				}
 
 				ShipPart tmp = new ShipPart( id, dName.replace( "{catId}", catId ).replace( "{id}", id ),
 						dDesc.replace( "{catId}", catId ).replace( "{id}", id ), loadImage, tmpActions.values(),
-						shipPartCats.get( catId ) );
+						shipPartCats.get( catId ), imgPath );
 
 				HashMap<String, ShipPart> hashMap = shipParts.get( catId );
 				hashMap.put( id, tmp );
@@ -199,7 +209,7 @@ public class AloneSpaceParser
 			{
 				throw new RuntimeException( "Action of id " + id + " has wrong id. Please add this id to actions tag" );
 			}
-			int value = Integer.parseInt( XMLHelper.getAttrOfName( dAction, "value" ) );
+			float value = Float.parseFloat( XMLHelper.getAttrOfName( dAction, "value" ) );
 			res.put( id, new Action( actionTemplates.get( id ), value ) );
 		}
 		return res;
@@ -218,7 +228,8 @@ public class AloneSpaceParser
 		for( Node action : actions )
 		{
 			String id = XMLHelper.getAttrOfName( action, "id" );
-			actionList.put( id, new ActionTemplate( id, AssetHelper.loadImage( dImg, assetManager ), dName, dDesc ) );
+			ActionTemplate.Type type = ActionTemplate.Type.valueOf( id );
+			actionList.put( id, new ActionTemplate( type, AssetHelper.loadImage( dImg, assetManager ), dName, dDesc ) );
 		}
 		return actionList;
 	}

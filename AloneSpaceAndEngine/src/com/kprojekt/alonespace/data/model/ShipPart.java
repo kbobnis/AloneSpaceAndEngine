@@ -2,6 +2,10 @@ package com.kprojekt.alonespace.data.model;
 
 import java.util.Collection;
 
+import org.andengine.opengl.texture.region.TextureRegion;
+
+import com.kprojekt.alonespace.data.model.ActionTemplate.Type;
+
 import android.graphics.drawable.Drawable;
 
 /**
@@ -14,11 +18,13 @@ public class ShipPart
 	private transient String name;
 	private transient String desc;
 	private transient Drawable img;
+	private transient TextureRegion imgRegion;
 	private final Collection<Action> actions;
 	private final ShipPartCategory category;
+	private transient String imgPath;
 
 	public ShipPart( String id, String name, String desc, Drawable img, Collection<Action> actions,
-			ShipPartCategory category )
+			ShipPartCategory category, String imgPath )
 	{
 		this.id = id;
 		this.name = name;
@@ -26,6 +32,7 @@ public class ShipPart
 		this.img = img;
 		this.actions = actions;
 		this.category = category;
+		this.imgPath = imgPath;
 	}
 
 	public void fillBlanks( AloneSpaceModel model )
@@ -34,6 +41,7 @@ public class ShipPart
 		this.name = part.name;
 		this.desc = part.desc;
 		this.img = part.img;
+		this.imgPath = part.imgPath;
 		for( Action action : this.actions )
 		{
 			action.fillBlanks( model );
@@ -72,4 +80,31 @@ public class ShipPart
 		return this.img;
 	}
 
+	public TextureRegion getTextureRegion()
+	{
+		return this.imgRegion;
+	}
+
+	public String getImgPath()
+	{
+		return this.imgPath;
+	}
+
+	public void setTextureImg( TextureRegion textureRegion )
+	{
+		this.imgRegion = textureRegion;
+	}
+
+	public float getActionValue( ActionTemplate.Type type )
+	{
+		float val = 0;
+		for( Action action : this.actions )
+		{
+			if( action.getType() == type )
+			{
+				val += action.getValue();
+			}
+		}
+		return val;
+	}
 }

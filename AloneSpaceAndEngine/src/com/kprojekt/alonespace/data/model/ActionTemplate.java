@@ -8,33 +8,35 @@ import android.graphics.drawable.Drawable;
  */
 public class ActionTemplate
 {
-	protected final String id;
 	protected transient Drawable imgPos;
 	protected transient String namePos;
 	protected transient String descPos;
+	protected Type type;
 
-	public ActionTemplate( String id, Drawable imgPos, String namePos, String descPos )
+	public enum Type
 	{
-		if( id.equals( "" ) || id.equals( " " ) )
-		{
-			throw new RuntimeException( "You can not ad action template with id empty " );
-		}
-		this.id = id;
+		rotate, deal_dmg, decelerate, accelerate, resist_dmg, scan_radius, more_space, repair, hit_points, oil_tank
+	}
+
+	public ActionTemplate( ActionTemplate.Type type, Drawable imgPos, String namePos, String descPos )
+	{
+		this.type = type;
 		this.imgPos = imgPos;
 		this.namePos = namePos;
 		this.descPos = descPos;
 	}
 
+	public Type getType()
+	{
+		return this.type;
+	}
+
 	public void fillBlanks( AloneSpaceModel model )
 	{
-		ActionTemplate actionTemplate = model.getActionTemplate( this.id );
+		ActionTemplate actionTemplate = model.getActionTemplate( this.type );
 		this.imgPos = actionTemplate.imgPos;
 		this.namePos = actionTemplate.namePos;
 		this.descPos = actionTemplate.descPos;
 	}
 
-	public String getId()
-	{
-		return this.id;
-	}
 }

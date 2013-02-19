@@ -6,23 +6,23 @@ package com.kprojekt.alonespace.data.model;
  */
 public class Action extends ActionTemplate
 {
-	private final int value;
+	private final float value;
 
-	public Action( ActionTemplate template, int value )
+	public Action( ActionTemplate template, float value )
 	{
-		super( template.id, template.imgPos, template.namePos, template.descPos );
+		super( template.type, template.imgPos, template.namePos, template.descPos );
 		this.value = value;
-	}
-
-	public String getId()
-	{
-		return this.id;
 	}
 
 	@Override
 	public String toString()
 	{
-		return this.id + ": " + this.value;
+		return this.type + ": " + this.value;
+	}
+
+	public float getValue()
+	{
+		return this.value;
 	}
 
 }

@@ -9,9 +9,12 @@ import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.math.MathUtils;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.kprojekt.alonespace.data.model.ActionTemplate;
+import com.kprojekt.alonespace.data.model.Ship;
 
 /**
  * @author Krzysiek Bobnis
@@ -24,12 +27,14 @@ public class ShipSprite extends Sprite implements IOnSceneTouchListener, IUpdate
 	private float touchedDownY;
 	private Vector2 moveVector = new Vector2();
 	private ZoomCamera camera;
+	private Ship shipModel;
 
 	public ShipSprite( int posX, int posY, TextureRegion shipTextureRegion,
-			VertexBufferObjectManager vertexBufferObjectManager, ZoomCamera camera )
+			VertexBufferObjectManager vertexBufferObjectManager, ZoomCamera camera, Ship shipModel )
 	{
 		super( posX, posY, shipTextureRegion, vertexBufferObjectManager );
 		this.camera = camera;
+		this.shipModel = shipModel;
 	}
 
 	@Override
@@ -75,25 +80,39 @@ public class ShipSprite extends Sprite implements IOnSceneTouchListener, IUpdate
 	@Override
 	protected void onManagedUpdate( float pSecondsElapsed )
 	{
+		this.useRotationEngine();
+		this.usePrimaryEngine();
+
+		this.camera.onUpdate( pSecondsElapsed );
+	}
+
+	private void usePrimaryEngine()
+	{
 		Vector2 linearVelocity = this.shipBody.getLinearVelocity();
 		if( this.moveVector.len() > 1 )
 		{
-			//Log.d( "speed", "move vector: " + this.moveVector );
-			this.shipBody.setLinearVelocity( linearVelocity.add( this.moveVector ) );
-			//this.shipBody.applyLinearImpulse( this.moveVector.x, this.moveVector.y, this.getX(), this.getY() );
+			this.shipBody.setLinearVelocity( this.moveVector.add( linearVelocity ) );
 			this.moveVector.set( 0, 0 );
 		}
-		//Log.d( "speed", "linear velocity: " + linearVelocity + ", movevector: " + this.moveVector );
-		//		Log.d( "ship ", "ship x: " + this.shipBody.getPosition().x + ", y: " + this.shipBody.getPosition().y
-		//		+ ", vel x: " + this.shipBody.getLinearVelocity().x + ", vel y: " + this.shipBody.getLinearVelocity().y
-		//	+ ", camera.x " + this.camera.getXMin() );
-		//
-		//		Vector2 vel = this.shipBody.getLinearVelocity();
-		//		float moveVectorAngle = (float)(180 - MathUtils.radToDeg( (float)Math.atan2( vel.x, vel.y ) ));
-		//
-		//		this.shipBody.setTransform( this.shipBody.getPosition().x, this.shipBody.getPosition().y,
-		//				MathUtils.degToRad( moveVectorAngle ) );
+		System.out.println( "LInear velocity " + this.shipBody.getLinearVelocity().len() );
+	}
 
-		this.camera.onUpdate( pSecondsElapsed );
+	private void useRotationEngine()
+	{
+		Vector2 vel = this.shipBody.getLinearVelocity();
+		float moveVectorAngle = Math.round( 180 - MathUtils.radToDeg( (float)Math.atan2( vel.x, vel.y ) ) );
+		float shipAngle = Math.round( MathUtils.radToDeg( this.shipBody.getAngle() ) % 360 );
+		if( shipAngle < 0 )
+		{
+			shipAngle = 360 + shipAngle;
+		}
+		float delta = moveVectorAngle - shipAngle;
+		float rotate_max = this.shipModel.getActionValue( ActionTemplate.Type.rotate );
+		float angularVelocity = MathUtils.radToDeg( this.shipBody.getAngularVelocity() );
+		angularVelocity -= Math.signum( angularVelocity ) * 1;
+		if( Math.abs( angularVelocity ) > 0 )
+		{
+			//this.shipBody.setAngularVelocity( MathUtils.degToRad( moveVectorAngle ) ); //MathUtils.degToRad( angularVelocity ) );
+		}
 	}
 }

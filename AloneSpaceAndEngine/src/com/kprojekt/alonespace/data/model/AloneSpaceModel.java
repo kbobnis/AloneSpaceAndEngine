@@ -3,6 +3,8 @@ package com.kprojekt.alonespace.data.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kprojekt.alonespace.data.model.ActionTemplate.Type;
+
 /**
  * @author Krzysiek Bobnis
  * @since 03:00:11 06-01-2013
@@ -59,16 +61,16 @@ public class AloneSpaceModel
 		return null;
 	}
 
-	public ActionTemplate getActionTemplate( String id )
+	public ActionTemplate getActionTemplate( Type type )
 	{
 		for( ActionTemplate actionTemplate : this.actionTemplates )
 		{
-			if( actionTemplate.getId().equals( id ) )
+			if( actionTemplate.getType() == type )
 			{
 				return actionTemplate;
 			}
 		}
-		return null;
+		throw new RuntimeException( "There is no action template with type: " + type );
 	}
 
 	public ShipPartCategory getCategory( String id )
@@ -81,5 +83,10 @@ public class AloneSpaceModel
 			}
 		}
 		return null;
+	}
+
+	public List<ShipPart> getAllParts()
+	{
+		return this.allShipParts;
 	}
 }

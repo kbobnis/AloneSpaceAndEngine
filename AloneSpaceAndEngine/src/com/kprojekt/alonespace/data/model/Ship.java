@@ -127,4 +127,19 @@ public class Ship
 		this.equippedParts.add( shipPart );
 	}
 
+	public void addPart( ShipPart part )
+	{
+		this.allParts.add( part );
+	}
+
+	public float getActionValue( ActionTemplate.Type type )
+	{
+		float val = 0;
+		for( ShipPart part : this.allParts )
+		{
+			val += part.getActionValue( type );
+		}
+		return val;
+	}
+
 }

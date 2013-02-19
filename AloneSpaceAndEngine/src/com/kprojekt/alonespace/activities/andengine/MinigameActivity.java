@@ -43,6 +43,7 @@ import com.kprojekt.alonespace.data.Core;
 import com.kprojekt.alonespace.data.minigame.AsteroidsManager;
 import com.kprojekt.alonespace.data.minigame.ShipSprite;
 import com.kprojekt.alonespace.data.minigame.StarsLayer;
+import com.kprojekt.alonespace.data.model.ShipPart;
 
 /**
  * @author Krzysiek Bobnis
@@ -169,6 +170,21 @@ public class MinigameActivity extends SimpleBaseGameActivity
 			SmartList<TextureRegion> iconRegions = new SmartList<TextureRegion>();
 			iconRegions.add( TextureRegionFactory.extractFromTexture( iconTexture ) );
 
+			for( final ShipPart part : Core.model.getAllParts() )
+			{
+				BitmapTexture shipPartRegion = new BitmapTexture( this.getTextureManager(), new IInputStreamOpener()
+				{
+					@Override
+					public InputStream open() throws IOException
+					{
+						return getAssets().open( part.getImgPath() ); //"gfx/icons/oil.png" );
+					}
+				} );
+				shipPartRegion.load();
+				part.setTextureImg( TextureRegionFactory.extractFromTexture( shipPartRegion ) );
+
+			}
+
 			final ITexture droidFontTexture = new BitmapTextureAtlas( this.getTextureManager(), 512, 512,
 					TextureOptions.BILINEAR );
 			FontFactory.setAssetBasePath( "font/" );
@@ -204,13 +220,15 @@ public class MinigameActivity extends SimpleBaseGameActivity
 
 		this.mPhysicsWorld = new PhysicsWorld( new Vector2( 0, 0 ), false );
 
-		ship = new ShipSprite( 0, 0, this.shipTextureRegion, this.getVertexBufferObjectManager(), this.camera );
+		ship = new ShipSprite( 0, 0, this.shipTextureRegion, this.getVertexBufferObjectManager(), this.camera,
+				Core.loggedProfile.getShip() );
 		shipBody = PhysicsFactory.createBoxBody( mPhysicsWorld, ship, BodyType.DynamicBody,
 				PhysicsFactory.createFixtureDef( 15f, 0.1f, 0.9f ) );
 		ship.addBody( shipBody );
 
-		scene.attachChild( new AsteroidsManager( camera, 10, this.mPhysicsWorld, manager, this.asteroidRegions,
-				this.iconsRegion ) );
+		AsteroidsManager asteroidsManager = new AsteroidsManager( camera, 10, this.mPhysicsWorld, manager,
+				this.asteroidRegions, this.iconsRegion, scene );
+		scene.attachChild( asteroidsManager );
 
 		this.camera.setChaseEntity( ship );
 		scene.attachChild( ship );
